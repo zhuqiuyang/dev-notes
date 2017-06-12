@@ -1,0 +1,24 @@
+# 生成ssh key
+ssh-keygen
+
+# get ssh-key
+cat ~/.ssh/id_rsa.pub
+
+# 删除远程v1.3.0分支
+git push origin --delete v1.3.0
+
+# 删除本地分支
+git branch -d [branch_name]
+
+# 查看远程所有branch
+git branch -a
+
+# 获取remote最新信息
+git fetch
+
+# 切换到远程origin/dev分支,并与local dev分支对应起来.
+git checkout -b dev origin/dev
+
+# 缓存当前修改到stash
+git stash
+git stash pop
