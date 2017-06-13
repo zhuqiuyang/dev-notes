@@ -1,2 +1,2 @@
-# js-notes
-Js Learning Notes
+# Dev-notes
+Dev Learning Notes
