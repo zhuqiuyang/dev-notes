@@ -18,6 +18,8 @@ koa:
 - 在所有middleware执行完成后再发送响应,
 - 中间件执行过程中可以对body和header进行任意修改
 
+![Image](./koa_mw.jpg)
+
 为什么不用pm2?
 - 因为它本身就是master起起来的.
 - pm2代码比本身代码都要大.
