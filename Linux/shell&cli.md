@@ -57,7 +57,13 @@ tar jcvf file.tar.bz2 dirName #压缩
 3.管道线
 |    (linux CLI哲学的基石)
 ```
+![Image](./linux_std.jpg)
 cat 连接文件内容
+![Image](./linux_cat.jpg)
+标准错误输出
+![Image](./linux_std_err.jpg)
+管道符
+![Image](./linux_pipe.jpg)
 
 ##6.用户和文件权限
 ### 6.0引言
@@ -66,11 +72,12 @@ cat 连接文件内容
 ### 6.1三种权限
 - r,w,x 读,写,执行
 - 根据对文件权限的不同,可以分为三类:owner,group,world
-
+![Image](./linux_file_auth.jpg)
 
 ```shell
 ls -l
 ```
+![Image](./linux_file.jpg)
 上图中:
 - `1`表示link的数量
 - 第一个`peter`表示owner;
@@ -143,3 +150,4 @@ locate file
 6.远程执行
 7.确认执行
 8.其他语言脚本
+![Image](./linux_shell.jpg)

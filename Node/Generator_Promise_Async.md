@@ -13,6 +13,7 @@
 - Promise实例:`then`内的两个参数,是Promise 实例执行后的callback.
 - *catch* 是then方法的特例.
 - Promise实例被创建后 *立即执行*,然后,then方法指定的回调函数，将在当前脚本所有同步任务执行完才会执行，所以“Resolved”最后输出。
+![Image](./Promise.jpg)
 - *then* 方法返回的是一个新的Promise实例.
 
 ### Babel
