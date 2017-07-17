@@ -1,5 +1,26 @@
 ### koa & node-fetch
+
+1. 当`ctx.body`是stream时，koa内部直接调用pipe，所以可以直接绕过koa，使用`cres.pipe(ctx.res)`
+
+```js
+if (body instanceof Stream) return body.pipe(res);
+```
+
+2. node-fetch opts中body字段，可以直接传入`sreq`
+   - fetch 返回res的 `res.header.raw()` 对应原生`resp.headers`
+   - fetch 返回res的 `res.body` 对应原生的 `resp`
+   - fetch 返回res的 `res.status`对应原生 `resp.statusCode`
+
+
+```js
+// fetch 传入的opts字段会直接，传给new Request
+const request = new Request(url, opts);
+```
+
+3. 在`koa.prototype`上增加 `app.get/post`，在`use`外封装一层。
+
 #### writableStream
+
 koa中ctx.body
 node-fetch中request的body
 
