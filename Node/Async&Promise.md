@@ -1,5 +1,9 @@
 ### Async
 
+#### Essence
+
+进一步说，`async`函数完全可以看作多个异步操作，包装成的一个 Promise 对象，而`await`命令就是内部`then`命令的语法糖。 (es6.ruanyifeng.com)
+
 `async`函数返回的是一个Promise对象.
 
 #### await 命令(http://es6.ruanyifeng.com/#docs/async#await-命令)

@@ -54,3 +54,7 @@ error record:
 const requestP = Promise.promisify(http.request);
 ```
 因为 `http.request`会返回一个 `http.clientRequest`实例.
+
+### Koa中间件
+
+- Koa中间件可以是一个 `async`函数或者 返回Promise的普通函数, 是因为`async函数`默认返回的是Promise.
