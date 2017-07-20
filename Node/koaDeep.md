@@ -58,3 +58,60 @@ const requestP = Promise.promisify(http.request);
 ### Koa中间件
 
 - Koa中间件可以是一个 `async`函数或者 返回Promise的普通函数, 是因为`async函数`默认返回的是Promise.
+
+### Compose
+
+koa: 
+
+koa 的`callback`是listen端口是传入的callback
+
+```js
+  callback() {
+    const fn = compose(this.middleware);
+
+    if (!this.listeners('error').length) this.on('error', this.onerror);
+
+    const handleRequest = (req, res) => {
+      res.statusCode = 404;
+      const ctx = this.createContext(req, res);
+      const onerror = err => ctx.onerror(err);
+      const handleResponse = () => respond(ctx);
+      onFinished(res, onerror);
+      return fn(ctx).then(handleResponse).catch(onerror);
+    };
+
+    return handleRequest;
+  }
+```
+
+
+
+koa-compose: 
+
+```js
+function compose (middleware) {
+// ... 删除了异常检测代码
+  return function (context, next) {
+    // last called middleware #
+    let index = -1
+    return dispatch(0)
+    function dispatch (i) {
+      if (i <= index) return Promise.reject(new Error('next() called multiple times'))
+      index = i
+      let fn = middleware[i]
+      // 此处 next 传入的是undefined, 此时代表最后一个中间件
+      // 调用了next()方法, 返回 Promise.resolve()
+      if (i === middleware.length) fn = next
+      if (!fn) return Promise.resolve()
+      try {
+        return Promise.resolve(fn(context, function next () {
+          return dispatch(i + 1)
+        }))
+      } catch (err) {
+        return Promise.reject(err)
+      }
+    }
+  }
+}
+```
+
