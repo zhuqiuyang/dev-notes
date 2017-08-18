@@ -115,3 +115,7 @@ function compose (middleware) {
 }
 ```
 
+### Koa
+1. koa ctx.url use for url rewrite.
+2. set path会先parse; set url 直接设置 ctx.req.url
+
