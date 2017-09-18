@@ -19,6 +19,9 @@ git fetch
 # 切换到远程origin/dev分支,并与local dev分支对应起来.
 git checkout -b dev origin/dev
 
+# If you wish to set tracking information for this branch you can do so with:
+git branch --set-upstream-to=origin/<branch> dev
+
 # 缓存当前修改到stash
 git stash
 git stash pop
