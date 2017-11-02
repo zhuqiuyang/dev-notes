@@ -119,3 +119,6 @@ function compose (middleware) {
 1. koa ctx.url use for url rewrite.
 2. set path会先parse; set url 直接设置 ctx.req.url
 
+#### app.keys = []
+> Set signed cookie keys, based on `KeyGrip`.
+1. Keys is array, Key优先级是从高到底的, 这样新Key在对前插入, `old digest`校验index不等于0, 则重新赋值.
