@@ -21,3 +21,14 @@ http://www.paulgraham.com/diff.html
 
 ### http://wiki.c2.com/?CompileTime
 ### http://wiki.c2.com/?EssExpressions
+### http://www.paulgraham.com/lispfaq1.html
+
+### http://wiki.c2.com/?VirtualMachine
+### compiler
+assembler language: 汇编语言
+vm: A VirtualMachine is a program that translates a standard series of instruction codes into hardware specific MachineLanguage.
+
+### http://www.tldp.org/HOWTO/Unix-and-Internet-Fundamentals-HOWTO/languages.html
+11.1. Compiled languages: C
+11.2. Interpreted languages: Lisp
+11.3. P-code languages: python, perl, java
