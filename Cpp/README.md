@@ -56,6 +56,7 @@ And we got these obj file, and we can `link` them into one excutable which conta
 #include <iostream>
 
 // Log signature
+// default is external
 void Log (const char* message)
 // static Log (const char* message)
 // inline Log (const char* message)
@@ -80,8 +81,13 @@ static int Multiply(int a, int b) {
   return a * b;
 }
 ```
-- include `.h` cause function definition 重复.
+- Err: `dublicate symbols`: include `.h` maybe causes.
+> Functions or variables which have the same name and same signature.
+> The reason: 
+> Because Linker not know which one to link to, it's ambigulous.(歧义)
   - solution: 
-    - `static`: means belong to one file.
-    - `inline`: move definition to transformation.
+    - `static`: means it's **internal**, every `.obj` file have its own version.
+    - `inline`: take our actual function body and replace the code with it.
+    - move the definition of this into one translation unit:
+      -  `.h` just have the declaration, the actual function to link to is included inside `Log.cpp` once in one translation unit in our project.
 - dynamic Linking 
