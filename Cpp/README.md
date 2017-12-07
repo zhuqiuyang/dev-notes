@@ -33,3 +33,55 @@ std::out.print("hell").print(std::endl);
   - cannot find will report link error.
   - Linker's job is to `resolve symbol`.
 - compiler compile each `cpp` file to `.obj` file.
+
+### 4. How Cpp compiler works?
+
+#### stage1: pre-processor (get all cpp code)
+1. `#include` just copy
+2. `#define` CONSTANT replace
+3. `#if #endif` eval
+
+#### stage2: compile cpp code to machine code
+
+The gist of how a compiler work:
+it will take our `source files` and output and `.obj file` which contains machine code and other constant data that's we defined.
+And we got these obj file, and we can `link` them into one excutable which contain all of the machine code that we actually need to run.
+
+### 5. Linker
+- entry point!
+  - `.exe` has to have some kind of entry point.
+- know err happen in which stage: `C` compile, `LNK` link.
+
+```cpp
+#include <iostream>
+
+// Log signature
+void Log (const char* message)
+// static Log (const char* message)
+// inline Log (const char* message)
+
+int Multiply(int a, int b) {
+  Log("Multiply");
+  return a * b;
+}
+
+int main () {
+  std::cout << Multiply(5, 8) << std::endl;
+  std::cin.get();
+}
+```
+- `err LNK2019: unresolved external symbol`: Link阶段未找到声明的symbol.
+  - if not call that function, eg: `Log`, Linker will not have Link this function call to real function.
+
+```cpp
+
+static int Multiply(int a, int b) {
+  Log("Multiply");
+  return a * b;
+}
+```
+- include `.h` cause function definition 重复.
+  - solution: 
+    - `static`: means belong to one file.
+    - `inline`: move definition to transformation.
+- dynamic Linking 
