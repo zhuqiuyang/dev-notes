@@ -58,3 +58,15 @@ class X {
 ```cpp
 const X * const this
 ```
+
+### Function
+1. inline function:
+1~5 行的小程序, 减小调用开销
+- 第一次声明需用`inline` 关键字, 否则被视为普通函数
+- 不能包含: 循环, 分支语句
+- 不能包含递归调用.
+
+2. 重载(简单地多态)
+
+3. Vitual Function(动态联编)
+- `switch` 属于动态联编.
