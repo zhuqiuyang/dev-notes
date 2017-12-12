@@ -20,3 +20,17 @@ p = &a;
 int a = 5;
 int &ra = a; // ra is the same as a, just use when 初始化
 ```
+
+### Class & Structure
+Class基于C的Structure
+- 私有成员 write in first line, `private`可省略.
+```cpp
+class Array {
+  int * Ap; int len; // private
+  public:
+
+}
+```
+structure 也可以定义类, 默认所有成员都是`public`
+- 在class外定义成员需要使用`::`(作用域区分符)
+- `.`, `->`用于访问对象成员
