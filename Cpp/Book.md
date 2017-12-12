@@ -145,6 +145,18 @@ b.A::a;
 3. Vitual Function(动态联编)
 - `switch` 属于动态联编.
 
+### Operator Overload
+运算符函数是一种特殊的成员函数或友员函数
+```cc
+void Calclator::operator ++() {
+  //...
+}
+```
+
+### Vitual Function
+> Polymorphism(多态性)是指一个名字, 多种语义.
+> 重载函数是多态性的一种简单形式
+
 ### Template
 compiler匹配函数过程:
 1. 函数名, 参数类型匹配
