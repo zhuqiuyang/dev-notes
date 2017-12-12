@@ -1,3 +1,6 @@
+## No Magic
+Find confuse, find essence.
+
 ### 1. Welcome to Cpp
 - basic of yourself
 - why?: directly control hardware, fast and performance

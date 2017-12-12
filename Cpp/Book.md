@@ -59,6 +59,37 @@ class X {
 const X * const this
 ```
 
+### Inherence
+```cpp
+class A: public B1, protect B2, private B3 {
+
+};
+```
+
+- `public`成员在类外模块可见.
+- `protect`成员专为继承设计, 子类中可见, 而类外模块不可见.
+- 父类的`private`成员, 子类不可见(但是会继承).
+> 从上至下, 约束增强. (类外模块可见-> 只在子类中可见 -> 子类中不可见)
+
+#### 访问声明
+1. 子类中不能提升/降低父类成员的可访问性.
+```cpp
+class B {
+  public: int a;
+  protect: int b;
+  private: int c;
+};
+class A: private B {
+  public:
+  B::a; // correct
+  B::b // wrong
+};
+```
+2. 重载函数的访问声明, 将改变父类所有同名函数的访问性:
+- 调整同名重载函数
+- 父类中不同访问域的重载函数, 不可做访问声明.(歧义) (p273)
+- 子类中同名成员, 不可做访问声明. (歧义)
+
 ### Function
 1. inline function:
 1~5 行的小程序, 减小调用开销
@@ -70,3 +101,9 @@ const X * const this
 
 3. Vitual Function(动态联编)
 - `switch` 属于动态联编.
+
+### Template
+compiler匹配函数过程:
+1. 函数名, 参数类型匹配
+2. 函数模板 -> (实例化) 模板函数
+3. 可以通过类型转换进行参数匹配的*重载函数*
