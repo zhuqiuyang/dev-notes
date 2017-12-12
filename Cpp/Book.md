@@ -59,6 +59,44 @@ class X {
 const X * const this
 ```
 
+### constructor & destructor
+```cc
+class A {
+  public:
+  A();
+  ~A();
+}
+```
+- 带参数的constructor
+```cc
+Date::Date(int y, int m, int d): year(y), month(m), day(d)
+```
+- 重载构造函数, 允许多个
+- 复制构造函数.
+```cpp
+class A {
+  public:
+  A(int);
+  A(const A&, int = 1);
+}
+// ...
+A a(1);
+A b(a, 0); // call copy constructor
+A c = b    // call copy constructor
+```
+
+- `static` 静态成员, 只依赖于类存在
+- `friend` 友员函数
+  - 不受访问限制
+  - 必须在参数中显式声明要访问的对象.
+- `friend` class
+```cc
+// B可以把A的所有成员函数作为`friend` function
+class A {
+  friend class B;
+}
+```
+
 ### Inherence
 ```cpp
 class A: public B1, protect B2, private B3 {
@@ -89,6 +127,11 @@ class A: private B {
 - 调整同名重载函数
 - 父类中不同访问域的重载函数, 不可做访问声明.(歧义) (p273)
 - 子类中同名成员, 不可做访问声明. (歧义)
+
+3. 同名成员, 调用需显式调用
+```cpp
+b.A::a;
+```
 
 ### Function
 1. inline function:
