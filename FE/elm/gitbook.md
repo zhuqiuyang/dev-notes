@@ -1,0 +1,39 @@
+### Comparing Records and Objects
+
+Records in Elm are similar to objects in JavaScript, but there are some crucial differences. The major differences are that with records:
+
+- You cannot ask for a field that does not exist.
+- No field will ever be undefined or null.
+- You cannot create recursive records with a this or self keyword.
+`Elm encourages a strict separation of data and logic`, and the ability to say this is primarily used to break this separation. This is a systemic problem in Object Oriented languages that Elm is purposely avoiding.
+
+## Architecture
+### The Basic Pattern
+
+The logic of every Elm program will break up into three cleanly separated parts:
+
+- Model — the `state` of your application (pure state)
+- Update — a way to update your state (`action handler`)
+- View — a way to view your state as HTML
+
+## User input
+### buttons
+```elm
+view model =
+  div []
+    [ button [ onClick Decrement ] [ text "-" ]
+    , div [] [ text (toString model) ]
+    , button [ onClick Increment ] [ text "+" ]
+    ] 
+```
+div` and `button` are normal Elm functions. These functions take
+1. a list of attributes 
+2. a list of child nodes.
+**Since we are using normal Elm functions, we have the full power of the Elm programming language to help us build our views!**
+
+**The view code is entirely declarative.** (要展示什么, 而不关注如何操作DOM)
+We take in a Model and produce some Html, That is it.
+
+
+## Type
+- `type alias` 为新的数据类型起alias
