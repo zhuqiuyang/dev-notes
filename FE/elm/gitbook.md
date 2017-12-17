@@ -1,3 +1,9 @@
+## Core language
+- values
+- list (array)
+- tuple ()
+  > A tuple can hold a fixed number of values, and each value can have any type.
+- records (object)
 ### Comparing Records and Objects
 
 Records in Elm are similar to objects in JavaScript, but there are some crucial differences. The major differences are that with records:
@@ -35,6 +41,8 @@ div` and `button` are normal Elm functions. These functions take
 We take in a Model and produce some Html, That is it.
 
 ## Effect
+- Commands — A Cmd lets you do stuff: generate a random number, send an HTTP request, etc.
+- Subscriptions — A Sub lets you register that you are interested in something: tell me about location changes, listen for web socket messages, etc.
 ### Random
 - 难点1: Union Type(下有, 底层如何实现的?)
   ```elm
@@ -42,6 +50,18 @@ We take in a Model and produce some Html, That is it.
     = Roll
     | NewFace Int
   ```
+
+### HTTP
+
+> Result(*)
+```elm
+type Result error value
+  = Err error
+  | Ok value
+
+(Result Http.Error String)
+```
+means: 
 
 
 
