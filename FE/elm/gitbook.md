@@ -34,6 +34,59 @@ div` and `button` are normal Elm functions. These functions take
 **The view code is entirely declarative.** (要展示什么, 而不关注如何操作DOM)
 We take in a Model and produce some Html, That is it.
 
+## Effect
+### Random
+- 难点1: Union Type(下有, 底层如何实现的?)
+  ```elm
+  type Msg
+    = Roll
+    | NewFace Int
+  ```
+
+
 
 ## Type
+> Type Inference (elm compiler可以check出拼写或类型错误)
+
+### Reading Type
+#### primitives
+- Number (Int, Float)
+- String
+- Char
+- Bool
+
+#### Functions
+- Between the `backslash` and the `arrow`, you list the arguments of the function:
+> 函数的参数在`\`和 `->`中间
+- anonymouse Functions
+  ```elm
+  \n -> n / 2
+  <function> : Float -> Float
+  (\n -> n / 2) 128
+  64 : Float
+  ```
+- all of following named styles are equivalent:
+  ```elm
+  > divide x y = x / y
+  > divide x = \y -> x / y
+  > divide = \x -> (\y -> x / y)
+  <function> : Float -> Float -> Float
+  ```
+`Float -> Float -> Float` 实际是  `Float -> (Float -> Float)`
+
+### Type alias
+> alias 全是为了易于阅读.
 - `type alias` 为新的数据类型起alias
+
+### Union Type
+> Note: Union types are sometimes called `tagged unions`. Some communities call them `ADTs`.
+```elm
+> type User = Anonymous | Named String
+
+> Anonymous
+Anonymous : User
+
+> Named
+<function> : String -> User
+```
+`Named` is a function `String -> User` (*难点)
