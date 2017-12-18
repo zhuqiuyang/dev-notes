@@ -1,7 +1,7 @@
 ## Core language
 - values
 - list (array)
-- tuple ()
+- tuple (eg: `(True, "name accepted!")`)
   > A tuple can hold a fixed number of values, and each value can have any type.
 - records (object)
 ### Comparing Records and Objects
@@ -110,3 +110,39 @@ Anonymous : User
 <function> : String -> User
 ```
 `Named` is a function `String -> User` (*难点)
+
+## Error Handling and Tasks
+### Maybe
+```elm
+type alias User =
+  { name : String
+  , age : Maybe Int
+  }
+
+sue : User
+sue =
+  { name = "Sue", age = Nothing }
+
+tom : User
+tom =
+  { name = "Tom", age = Just 24 }
+```
+
+### Result
+```elm
+type Result error value
+  = Err error
+  | Ok value
+```
+### Task
+
+
+## Interop
+### Advice
+> evolve gradually(no replace all at once) !
+### Js
+- port and flags
+> Sending values out to JS is a command. Listening for values coming in from JS is a subscription
+
+## Scaling The Elm Architecture
+reuse views.
