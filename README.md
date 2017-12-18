@@ -100,5 +100,15 @@ Ap.of(add).ap(Maybe.of(2)).ap(Maybe.of(3));
 #### Monad (functor)
 - 数据包含`值`和`type`(使用的context)
 > Monad就是一种设计模式，表示将一个运算过程，通过函数拆解成互相连接的多个步骤。 (http://www.ruanyifeng.com/blog/2015/07/monad.html?utm_source=tuicool)
+```js
+class Monad extends Functor {
+  join() {
+    return this.val;
+  }
+  flatMap(f) {
+    return this.map(f).join();
+  }
+}
+```
 #### I/O 操作
 Monad 函子的重要应用，就是实现 I/O （输入输出）操作。
