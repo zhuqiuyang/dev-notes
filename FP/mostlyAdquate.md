@@ -49,3 +49,59 @@ var checkAge = function(age) {
   return age >= minimum;
 };
 ```
+### Side Effect
+
+> It is not that we're forbidden to use them, rather we want to contain them and run them in a controlled way. We'll learn how to do this when we get to *functors* and *monads* in later chapters, but for now, let's try to keep these insidious functions *separate* from our pure ones.
+
+Of course, you might want to calculate instead of hand writing things out, but this illustrates a different way to think about functions.
+```js
+var toLowerCase = {
+  'A': 'a',
+  'B': 'b',
+  'C': 'c',
+  'D': 'd',
+  'E': 'e',
+  'F': 'f',
+};
+
+toLowerCase['C'];
+//=> 'c'
+```
+> Here comes the dramatic reveal: Pure functions are mathematical functions and they're what functional programming is all about. Programming with these little angels can provide huge benefits. Let's look at some reasons why we're willing to go to great lengths to preserve purity.
+
+### The case for purity
+#### Cacheable
+```js
+var squareNumber = memoize(function(x) {
+  return x * x;
+});
+
+squareNumber(4);
+//=> 16
+
+squareNumber(4); // returns cache for input 4
+//=> 16
+```
+#### Portable / Self-Documenting
+```js
+//pure
+var signUp = function(Db, Email, attrs) {
+  return function() {
+    var user = saveUser(Db, attrs);
+    welcomeUser(Email, user);
+  };
+};
+
+var saveUser = function(Db, attrs) {
+    ...
+};
+
+var welcomeUser = function(Email, user) {
+    ...
+};
+```
+> Contrary to "typical" methods and procedures in imperative programming rooted deep in their environment via state, dependencies, and available effects, pure functions can be run anywhere our hearts desire.
+>
+> When was the last time you copied a method into a new app? One of my favorite quotes comes from **Erlang** creator, Joe Armstrong: "The problem with object-oriented languages is they’ve got all this implicit environment that they carry around with them. You wanted a banana but what you got was a gorilla holding the banana... and the entire jungle".
+
+## Chapter 4: Curry
