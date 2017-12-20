@@ -105,3 +105,61 @@ var welcomeUser = function(Email, user) {
 > When was the last time you copied a method into a new app? One of my favorite quotes comes from **Erlang** creator, Joe Armstrong: "The problem with object-oriented languages is they’ve got all this implicit environment that they carry around with them. You wanted a banana but what you got was a gorilla holding the banana... and the entire jungle".
 
 ## Chapter 4: Curry
+Giving a function fewer arguments than it expects is typically called **partial** application.
+
+> higher order functions(Higher order function: A function that takes or returns a function).
+
+```js
+var _ = require('ramda');
+
+// Exercise 1
+//==============
+// Refactor to remove all arguments by partially applying the function.
+
+var words = function(str) {
+  return _.split(' ', str);
+};
+
+// =>
+var words = _.split(' ');
+
+// Exercise 1a
+//==============
+// Use map to make a new words fn that works on an array of strings.
+
+var sentences = undefined;
+
+// =>
+var sentences = _.map(words);
+
+
+// Exercise 2
+//==============
+// Refactor to remove all arguments by partially applying the functions.
+
+var filterQs = function(xs) {
+  return _.filter(function(x) {
+    return match(/q/i, x);
+  }, xs);
+};
+
+// =>
+var filterQs = _.filter(match(/q/i));
+```
+
+## Chap 5: Coding by Composing
+### 函数饲养
+> **Composition** feels like function husbandry. You, breeder of functions.(函数饲养员)
+```js
+var toUpperCase = function(x) {
+  return x.toUpperCase();
+};
+var exclaim = function(x) {
+  return x + '!';
+};
+var shout = compose(exclaim, toUpperCase);
+
+shout("send in the clowns");
+//=> "SEND IN THE CLOWNS!"
+```
+通过left direction, 代理函数的嵌套:
