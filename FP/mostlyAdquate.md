@@ -163,3 +163,57 @@ shout("send in the clowns");
 //=> "SEND IN THE CLOWNS!"
 ```
 通过left direction, 代理函数的嵌套:
+
+```js
+// 结合律（associativity）
+var associative = compose(f, compose(g, h)) == compose(compose(f, g), h);
+// true
+```
+> compose 小管道s => 长管道
+> 结合律的一大好处是, 函数可任意拆分/组合.
+
+### PointFree
+```js
+// 非 pointfree，因为提到了数据：word
+var snakeCase = function (word) {
+  return word.toLowerCase().replace(/\s+/ig, '_');
+};
+
+// pointfree
+var snakeCase = compose(replace(/\s+/ig, '_'), toLowerCase);
+```
+> pointfree 模式能够帮助我们减少不必要的命名，让代码保持简洁和通用。
+>
+> pointfree 是非常好的石蕊试验，因为它能告诉我们一个函数是否是接受输入返回输出的小函数。比如，while 循环是不能组合的。
+>
+> pointfree 就像是一把双刃剑，不能使用的时候就用普通函数。
+
+### Debug (实用)
+> 在管道中的某一点, 输出数据流到这里的Value(是否是后续管道需要的)
+```js
+var trace = curry(function(tag, x){
+  console.log(tag, x);
+  return x;
+});
+
+var dasherize = compose(join('-'), toLower, trace("after split"), split(' '), replace(/\s{2,}/ig, ' '));
+// after split [ 'The', 'world', 'is', 'a', 'vampire' ]
+```
+
+### Category theory (范畴学)
+在范畴学中，有一个概念叫做...范畴。有着以下这些组件（component）的搜集（collection）就构成了一个范畴：
+- objects(对象)的搜集
+- morphisms(态射)的搜集
+- 态射的组合
+- identity 这个独特的态射
+
+#### identity 这个独特的态射
+```js
+var id = function(x){ return x; };
+
+// id 函数跟组合一起使用简直完美。下面这个特性对所有的一元函数（unary function）（一元函数：只接受一个参数的函数） f 都成立：
+// identity
+compose(id, f) == compose(f, id) == f;
+// true
+```
+# 组合像一系列管道那样把不同的函数联系在一起，数据就可以也必须在其中流动
