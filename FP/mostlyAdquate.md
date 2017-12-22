@@ -305,8 +305,9 @@ Container.of("flamethrowers").map(function(s){ return s.toUpperCase() })
 
 等等，如果我们能一直调用 map，那它不就是个组合（composition）么！这里边是有什么数学魔法在起作用？是 functor。各位，这个数学魔法就是 functor。
 > functor 是实现了 map 函数并遵守一些特定规则的容器类型。
-没错，`functor` 就是一个签了合约的接口。我们本来可以简单地把它称为 `Mappable`
-把值装进一个容器，而且只能使用`map`来处理它，这么做的理由到底是什么呢？如果我们换种方式来问，答案就很明显了：让容器自己去运用函数能给我们带来什么好处？答案是抽象，对于函数运用的抽象。当`map`一个函数的时候，我们请求容器来运行这个函数。不夸张地讲，这是一种十分**强大**的理念。
+没错，`functor` 就是一个签了合约的接口。
+# 让容器(Functor)自己去运用函数:
+好处是`抽象`，对于函数运用的抽象。当`map`一个函数的时候，我们请求容器来运行这个函数。不夸张地讲，这是一种十分**强大**的理念。
 
 ### Maybe
 ```js
@@ -314,11 +315,30 @@ Maybe.prototype.map = function(f) {
   return this.isNothing() ? Maybe.of(null) : Maybe.of(f(this.__value));
 }
 ```
-这种点记法（dot notation syntax）已经足够函数式了，但是正如在第 1 部分指出的那样，我们更想保持一种 pointfree 的风格。碰巧的是，map 完全有能力以 curry 函数的方式来“代理”任何 functor：
+
+`map`完全有能力以`curry`函数的方式来“代理”任何functor：
 ```js
 //  map :: Functor f => (a -> b) -> f a -> f b
 var map = curry(function(f, any_functor_at_all) {
   return any_functor_at_all.map(f);
 });
 ```
+> 见下`map`使用, 先接受函数, 返回一个操作Functor(容器的)函数
 
+### Use cases
+```js
+//  safeHead :: [a] -> Maybe(a)
+var safeHead = function(xs) {
+  return Maybe.of(xs[0]);
+};
+
+var streetName = compose(map(_.prop('street')), safeHead, _.prop('addresses'));
+
+streetName({addresses: []});
+// Maybe(null)
+
+streetName({addresses: [{street: "Shady Ln.", number: 4201}]});
+// Maybe("Shady Ln.")
+```
+
+### 释放容器里的值
