@@ -217,3 +217,108 @@ compose(id, f) == compose(f, id) == f;
 // true
 ```
 # 组合像一系列管道那样把不同的函数联系在一起，数据就可以也必须在其中流动
+
+## Chap 6: Example Application
+```js
+// map's composition law
+var law = compose(map(f), map(g)) === map(compose(f, g));
+```
+> 我们已经见识到如何在一个小而不失真实的应用中运用新技能了，也已经使用过函数式这个“数学框架”来推导和重构代码了。但是异常处理以及代码分支呢？如何让整个应用都是函数式的，而不仅仅是把破坏性的函数放到命名空间下？如何让应用更安全更富有表现力？这些都是本书第 2 部分将要解决的问题。
+
+## Chap 7:  Hindley-Milner and Me
+> 刚接触函数式编程的人很容易深陷类型签名（type signatures）的泥淖。类型（type）是让所有不同背景的人都能高效沟通的元语言。很大程度上，类型签名是以 “Hindley-Milner” 系统写就的
+>
+> 类型签名不但可以用于编译时检测（compile time checks），还是最好的文档。所以类型签名在函数式编程中扮演着非常重要的角色——重要程度远远超出你的想象。+
+>
+### Tales from the cryptic (神秘的传奇故事)
+```js
+//  strLength :: String -> Number
+var strLength = function(s){
+  return s.length;
+}
+
+//  match :: Regex -> (String -> [String])
+var match = curry(function(reg, s){
+  return s.match(reg);
+});
+
+//  onHoliday :: String -> [String]
+var onHoliday = match(/holiday/ig);
+```
+
+```js
+//  id :: a -> a
+var id = function(x){ return x; }
+
+//  map :: (a -> b) -> [a] -> [b]
+var map = curry(function(f, xs){
+  return xs.map(f);
+});
+```
+
+### Narrowing the possibility(缩小可能性范围)
+
+### Free as in the Theory (自由定理)
+(暂未理解)
+```js
+// head :: [a] -> a
+compose(f, head) == compose(head, map(f));
+
+// filter :: (a -> Bool) -> [a] -> [a]
+// map(f) 在 filter(compose(p, f)), 已经隐含执行了?
+compose(map(f), filter(compose(p, f))) == compose(filter(p), map(f));
+```
+
+## Chap 8: Tupperware
+> 但是，控制流（control flow）、异常处理（error handling）、异步操作（asynchronous actions）和状态（state）呢？还有更棘手的作用（effects）呢？本章将对上述这些抽象概念赖以建立的基础作一番探究。
+
+### 强大的容器
+```js
+var Container = function(x) {
+  this.__value = x;
+}
+
+Container.of = function(x) { return new Container(x); };
+```
+Some rules:
+- `Container` 是个只有一个属性的对象。尽管容器可以有不止一个的属性，但大多数容器还是只有一个。我们很随意地把 Container 的这个属性命名为 `__value`。
+- `__value` 不能是某个特定的类型，不然 Container 就对不起它这个名字了。
+- 数据一旦存放到 `Container`，就会一直待在那儿。我们可以用 .__value 获取到数据，但这样做有悖初衷。
+
+### First Functor
+
+(态射?)
+```js
+Container.prototype.map = function(f){
+  return Container.of(f(this.__value))
+}
+```
+用法
+```js
+Container.of(2).map(function(two){ return two + 2 })
+//=> Container(4)
+
+
+Container.of("flamethrowers").map(function(s){ return s.toUpperCase() })
+//=> Container("FLAMETHROWERS")
+```
+
+等等，如果我们能一直调用 map，那它不就是个组合（composition）么！这里边是有什么数学魔法在起作用？是 functor。各位，这个数学魔法就是 functor。
+> functor 是实现了 map 函数并遵守一些特定规则的容器类型。
+没错，`functor` 就是一个签了合约的接口。我们本来可以简单地把它称为 `Mappable`
+把值装进一个容器，而且只能使用`map`来处理它，这么做的理由到底是什么呢？如果我们换种方式来问，答案就很明显了：让容器自己去运用函数能给我们带来什么好处？答案是抽象，对于函数运用的抽象。当`map`一个函数的时候，我们请求容器来运行这个函数。不夸张地讲，这是一种十分**强大**的理念。
+
+### Maybe
+```js
+Maybe.prototype.map = function(f) {
+  return this.isNothing() ? Maybe.of(null) : Maybe.of(f(this.__value));
+}
+```
+这种点记法（dot notation syntax）已经足够函数式了，但是正如在第 1 部分指出的那样，我们更想保持一种 pointfree 的风格。碰巧的是，map 完全有能力以 curry 函数的方式来“代理”任何 functor：
+```js
+//  map :: Functor f => (a -> b) -> f a -> f b
+var map = curry(function(f, any_functor_at_all) {
+  return any_functor_at_all.map(f);
+});
+```
+
