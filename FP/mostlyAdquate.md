@@ -306,7 +306,7 @@ Container.of("flamethrowers").map(function(s){ return s.toUpperCase() })
 等等，如果我们能一直调用 map，那它不就是个组合（composition）么！这里边是有什么数学魔法在起作用？是 functor。各位，这个数学魔法就是 functor。
 > functor 是实现了 map 函数并遵守一些特定规则的容器类型。
 没错，`functor` 就是一个签了合约的接口。
-# 让容器(Functor)自己去运用函数:
+# 容器(Functor): 函数使用者(主动权)
 好处是`抽象`，对于函数运用的抽象。当`map`一个函数的时候，我们请求容器来运行这个函数。不夸张地讲，这是一种十分**强大**的理念。
 
 ### Maybe
@@ -342,3 +342,47 @@ streetName({addresses: [{street: "Shady Ln.", number: 4201}]});
 ```
 
 ### 释放容器里的值
+如果我们想返回一个自定义的值然后还能继续执行后面的代码的话，是可以做到的；要达到这一目的，可以借助一个帮助函数`maybe`
+```js
+//  maybe :: b -> (a -> b) -> Maybe a -> b
+// x是一个默认值, f是态射, m是`functor`
+var maybe = curry(function(x, f, m) {
+  return m.isNothing() ? x : f(m.__value);
+});
+```
+> maybe 使我们得以避免普通 map 那种命令式的 if/else 语句：if(x !== null) { return f(x) }。
+>
+> Maybe 能够非常有效地帮助我们增加函数的安全性。
+
+### “纯”错误处理
+```js
+var Left = function(x) {
+  this.__value = x;
+}
+
+Left.of = function(x) {
+  return new Left(x);
+}
+
+Left.prototype.map = function(f) {
+  return this;
+}
+
+var Right = function(x) {
+  this.__value = x;
+}
+
+Right.of = function(x) {
+  return new Right(x);
+}
+
+Right.prototype.map = function(f) {
+  return Right.of(f(this.__value));
+}
+```
+> 说出来可能会让你震惊，throw/catch 并不十分“纯”。当一个错误抛出的时候，我们没有收到返回值，反而是得到了一个警告！
+
+#### Lift
+> 尽管 fortune 使用了 Either，它对每一个 functor 到底要干什么却是毫不知情的。前面例子中的 finishTransaction 也是一样。通俗点来讲，一个函数在调用的时候，如果被`map`包裹了，那么它就会从一个非`functor函数`转换为一个 `functor函数`.我们把这个过程叫做 lift。一般情况下，普通函数更适合操作普通的数据类型而不是容器类型，在必要的时候再通过 lift 变为合适的容器去操作容器类型。这样做的好处是能得到更简单、重用性更高的函数，它们能够随需求而变，兼容任意 functor。
+
+### Old McDonald had Effects(王老先生有作用)
