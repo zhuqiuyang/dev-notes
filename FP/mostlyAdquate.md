@@ -70,9 +70,9 @@ toLowerCase['C'];
 > Here comes the dramatic reveal: Pure functions are mathematical functions and they're what functional programming is all about. Programming with these little angels can provide huge benefits. Let's look at some reasons why we're willing to go to great lengths to preserve purity.
 
 ### The case for purity
-#### Cacheable
+#### Cacheable(缓存)
 ```js
-var squareNumber = memoize(function(x) {
+var squareNumber = memorize(function(x) {
   return x * x;
 });
 
