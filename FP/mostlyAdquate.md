@@ -397,3 +397,29 @@ Right.prototype.map = function(f) {
 > IO 会成为一个忠诚的伴侣，帮助我们驯化那些狂野的非纯操作。下一节我们将学习一种跟 IO 在精神上相似，但是用法上又千差万别的类型。
 
 ### 异步任务
+我们必须调用`fork`方法才能运行`Task`，这种机制与`unsafePerformIO`类似。
+```js
+var fs = require('fs');
+
+//  readFile :: String -> Task(Error, JSON)
+var readFile = function(filename) {
+  return new Task(function(reject, result) {
+    fs.readFile(filename, 'utf-8', function(err, data) {
+      err ? reject(err) : result(data);
+    });
+  });
+};
+
+```
+
+### 一点理论
+`functor`的概念来自范畴学
+```js
+// identity
+// id接受任何functor都会返回其本身
+map(id) === id;
+
+// composition
+compose(map(f), map(g)) === map(compose(f, g));
+```
+在范畴学中，`functor`接受一个范畴的对象和`态射（morphism）`，然后把它们映射`（map）`到另一个范畴里去。
