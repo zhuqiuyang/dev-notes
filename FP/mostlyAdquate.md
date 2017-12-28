@@ -423,3 +423,42 @@ map(id) === id;
 compose(map(f), map(g)) === map(compose(f, g));
 ```
 在范畴学中，`functor`接受一个范畴的对象和`态射（morphism）`，然后把它们映射`（map）`到另一个范畴里去。
+
+# `F a`: 表示的是Functor`F`(容器), 其`__value`属性值为`a`
+
+比如，Maybe 就把类型和函数的范畴映射到这样一个范畴：即每个对象都有可能不存在，每个态射都有空值检查的范畴。
+> `态射(morphism)`是指`f`函数
+>
+> `a -> b`直接使用`f`, `map(f)`本质是把态射`f`传递给`Functor F`使用.)
+
+![map](./img/functormap.png)
+
+
+这张图除了能表示态射借助`functor F`完成从一个范畴到另一个范畴的映射之外，我们发现它还符合交换律，也就是说，顺着箭头的方向往前，形成的每一个路径都指向同一个结果。
+```js
+//  topRoute :: String -> Maybe(String)
+var topRoute = compose(Maybe.of, reverse);
+
+//  bottomRoute :: String -> Maybe(String)
+var bottomRoute = compose(map(reverse), Maybe.of);
+
+topRoute("hi");
+// Maybe("ih")
+
+bottomRoute("hi");
+// Maybe("ih")
+```
+
+functor 也能嵌套使用：
+```js
+var nested = Task.of([Right.of("pillows"), Left.of("no sleep for you")]);
+
+// 第一个map拿到`Task Functor`的`value`
+// 第二个map拿到数组的每个元素`Right Functor`, `Left Functor`
+// 第三个map对`Right, Left`传入态射`toUpperCase`
+// map一次就打开一次`Functor`
+map(map(map(toUpperCase)), nested);
+// Task([Right("PILLOWS"), Left("no sleep for you")])
+```
+
+## Chap 9: Monad
