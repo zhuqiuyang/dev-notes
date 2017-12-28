@@ -386,9 +386,16 @@ Right.prototype.map = function(f) {
 > 尽管 fortune 使用了 Either，它对每一个 functor 到底要干什么却是毫不知情的。前面例子中的 finishTransaction 也是一样。通俗点来讲，一个函数在调用的时候，如果被`map`包裹了，那么它就会从一个非`functor函数`转换为一个 `functor函数`.我们把这个过程叫做 lift。一般情况下，普通函数更适合操作普通的数据类型而不是容器类型，在必要的时候再通过 lift 变为合适的容器去操作容器类型。这样做的好处是能得到更简单、重用性更高的函数，它们能够随需求而变，兼容任意 functor。
 
 ### Old McDonald had Effects(王老先生有作用)
-```
+```js
 // IO
 // chap8.js
+var IO = function(f) {
+  this.unsafePerformIO = f;
+};
+
+IO.prototype.map = function(f) {
+  return new IO(_.compose(f, this.unsafePerformIO));
+};
 ```
 > 当调用 IO 的 map 的时候，我们把传进来的函数放在了 map 函数里的组合的最末端（也就是最左边），反过来这个函数就成为了新的 IO 的新 __value，并继续下去。传给 map 的函数并没有运行，我们只是把它们压到一个“运行栈”的最末端而已，一个函数紧挨着另一个函数，就像小心摆放的多米诺骨牌一样，让人不敢轻易推倒。
 >
@@ -479,6 +486,11 @@ var mmo = Maybe.of(Maybe.of("nunchucks"));
 
 mmo.join();
 // Maybe("nunchucks")
+```
+
+```js
+//  join :: Monad m => m (m a) -> m a
+var join = function(mma){ return mma.join(); }
 ```
 
 如果有两层相同类型的嵌套，那么就可以用`join`把它们压扁到一块去。这种结合的能力，functor 之间的联姻，就是`monad`之所以成为`monad`的原因。来看看它更精确的完整定义：
