@@ -429,6 +429,8 @@ compose(map(f), map(g)) === map(compose(f, g));
 比如，Maybe 就把类型和函数的范畴映射到这样一个范畴：即每个对象都有可能不存在，每个态射都有空值检查的范畴。
 > `态射(morphism)`是指`f`函数
 >
+> Lift: 
+>
 > `a -> b`直接使用`f`, `map(f)`本质是把态射`f`传递给`Functor F`使用.)
 
 ![map](./img/functormap.png)
@@ -462,3 +464,29 @@ map(map(map(toUpperCase)), nested);
 ```
 
 ## Chap 9: Monad
+### pointed functor
+真实情况是，of 方法不是用来避免使用 new 关键字的，而是用来把值放到默认最小化上下文（default minimal context）中的。是的，of 没有真正地取代构造器——它是一个我们称之为 pointed 的重要接口的一部分。
+> pointed functor 是实现了 of 方法的 functor。
+
+这里的关键是把任意值丢到容器里然后开始到处使用 map 的能力。
+
+### 混合比喻
+我说过`monad`像洋葱(嵌套的Functor)，那是因为当我们用`map`剥开嵌套的 functor 以获取它里面的值的时候，就像剥洋葱一样让人忍不住想哭。不过，我们可以擦干眼泪，做个深呼吸，然后使用一个叫作 join 的方法。
+
+```js
+var mmo = Maybe.of(Maybe.of("nunchucks"));
+// Maybe(Maybe("nunchucks"))
+
+mmo.join();
+// Maybe("nunchucks")
+```
+
+如果有两层相同类型的嵌套，那么就可以用`join`把它们压扁到一块去。这种结合的能力，functor 之间的联姻，就是`monad`之所以成为`monad`的原因。来看看它更精确的完整定义：
+> monad 是可以变扁（flatten）的 pointed functor。
+
+`join`只解决了一层嵌套.
+
+### chain 函数
+`chain`叫做`>>=`读作`bind`）或者`flatMap`
+
+因为 chain 可以轻松地嵌套多个作用，因此我们就能以一种纯函数式的方式来表示 序列（sequence） 和 变量赋值（variable assignment）。
