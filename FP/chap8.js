@@ -18,9 +18,12 @@ Maybe.prototype.join = function() {
   return this.isNothing() ? Maybe.of(null) : this.__value;
 }
 Maybe.prototype.chain = function(f) { return this.map(f).join(); }
+
+
 // IO
+// 使用`unsafePerformIO`代替 __value, 更确切.
 var IO = function(f) {
-  this.__value = f;
+  this.unsafePerformIO = f;
 };
 
 IO.of = function(x) {
@@ -30,7 +33,20 @@ IO.of = function(x) {
 };
 
 IO.prototype.map = function(f) {
-  return new IO(R.compose(f, this.__value));
+  return new IO(_.compose(f, this.unsafePerformIO));
+};
+
+// 中文版 chap 9:
+IO.prototype.join = function() {
+  return this.unsafePerformIO();
+}
+
+// 英文版 chap 9:
+IO.prototype.join = function() {
+  var thiz = this;
+  return new IO(function() {
+    return thiz.unsafePerformIO().unsafePerformIO();
+  });
 };
 
 var io_window = new IO(function() {
@@ -75,3 +91,5 @@ var findParam = function(key) {
 };
 
 console.log(findParam("a").__value());
+
+

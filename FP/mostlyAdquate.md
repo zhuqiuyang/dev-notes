@@ -489,6 +489,12 @@ mmo.join();
 ```
 
 ```js
+Maybe.prototype.join = function() {
+  return this.isNothing() ? Maybe.of(null) : this.__value;
+}
+IO.prototype.join = function() {
+  return this.unsafePerformIO();
+}
 //  join :: Monad m => m (m a) -> m a
 var join = function(mma){ return mma.join(); }
 ```
@@ -498,7 +504,62 @@ var join = function(mma){ return mma.join(); }
 
 `join`只解决了一层嵌套.
 
-### chain 函数
-`chain`叫做`>>=`读作`bind`）或者`flatMap`
+### chain 函数 (执行一次, mapy一次, join一次, 剥开一层Functor)
+你可能已经从上面的例子中注意到这种模式了:
+> 我们总是在紧跟着`map`的后面调用`join`。让我们把这个行为抽象到一个叫做`chain`的函数里。
 
-因为 chain 可以轻松地嵌套多个作用，因此我们就能以一种纯函数式的方式来表示 序列（sequence） 和 变量赋值（variable assignment）。
+```js
+//  chain :: Monad m => (a -> m b) -> m a -> m b
+var chain = curry(function(f, m){
+  return m.map(f).join(); // 或者 compose(join, map(f))(m)
+});
+```
+
+`chain`叫做`>>=`读作`bind`）或者`flatMap`
+我们用`chain`重构下上面两个例子: 
+```js
+// map/join
+var firstAddressStreet = compose(
+  join, map(safeProp('street')), join, map(safeHead), safeProp('addresses')
+);
+
+// chain
+var firstAddressStreet = compose(
+  chain(safeProp('street')), chain(safeHead), safeProp('addresses')
+);
+```
+
+我把所有的`map/join`都替换为了`chain`，这样代码就显得整洁了些。整洁固然是好事，但`chain`的能力却不止于此——它更多的是龙卷风而不是吸尘器。因为`chain`可以轻松地嵌套多个作用，因此我们就能以一种纯函数式的方式来表示序列（sequence）和变量赋值（variable assignment）。
+> 注意: IO.of接受的是一个值`x`, 生成`unsafePerform`, new IO(f)接收的`f`就是`unsafePerfrom`
+```js
+// getJSON :: Url -> Params -> Task JSON
+// querySelector :: Selector -> IO DOM
+
+
+getJSON('/authenticate', {username: 'stale', password: 'crackers'})
+  .chain(function(user) {
+    return getJSON('/friends', {user_id: user.id});
+});
+// Task([{name: 'Seimith', id: 14}, {name: 'Ric', id: 39}]);
+
+
+// 理解困难:
+querySelector("input.username").chain(function(uname) {
+  return querySelector("input.email").chain(function(email) {
+    return IO.of(
+      "Welcome " + uname.value + " " + "prepare for spam at " + email.value
+    );
+  });
+});
+// IO("Welcome Olivia prepare for spam at olivia@tremorcontrol.net");
+
+
+Maybe.of(3).chain(function(three) {
+  return Maybe.of(2).map(add(three));
+});
+// Maybe(5);
+
+
+Maybe.of(null).chain(safeProp('address')).chain(safeProp('street'));
+// Maybe(null);
+```
