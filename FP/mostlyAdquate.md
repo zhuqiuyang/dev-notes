@@ -531,10 +531,14 @@ var firstAddressStreet = compose(
 
 我把所有的`map/join`都替换为了`chain`，这样代码就显得整洁了些。整洁固然是好事，但`chain`的能力却不止于此——它更多的是龙卷风而不是吸尘器。因为`chain`可以轻松地嵌套多个作用，因此我们就能以一种纯函数式的方式来表示序列（sequence）和变量赋值（variable assignment）。
 > 注意: IO.of接受的是一个值`x`, 生成`unsafePerform`, new IO(f)接收的`f`就是`unsafePerfrom`
+
+# chain的本质是传递给Functor一个f, 让其执行后, 开瓶取值:
+# 如果f接受Functor的__value执行后, 返回了一个新的`Functor`那就形成了嵌套, 所以join开瓶
+# .chain之所以能链式调用, 是利用了解释性语言的优势, 默认开瓶的返回值是一个有chain方法的Functor.
+
 ```js
 // getJSON :: Url -> Params -> Task JSON
 // querySelector :: Selector -> IO DOM
-
 
 getJSON('/authenticate', {username: 'stale', password: 'crackers'})
   .chain(function(user) {
@@ -542,8 +546,7 @@ getJSON('/authenticate', {username: 'stale', password: 'crackers'})
 });
 // Task([{name: 'Seimith', id: 14}, {name: 'Ric', id: 39}]);
 
-
-// 理解困难:
+// 理解困难: 
 querySelector("input.username").chain(function(uname) {
   return querySelector("input.email").chain(function(email) {
     return IO.of(
@@ -563,3 +566,6 @@ Maybe.of(3).chain(function(three) {
 Maybe.of(null).chain(safeProp('address')).chain(safeProp('street'));
 // Maybe(null);
 ```
+
+#### chain总结: 总之记住，返回的如果是“普通”值就用 map，如果是 functor 就用 chain。
+
