@@ -472,7 +472,7 @@ map(map(map(toUpperCase)), nested);
 
 ## Chap 9: Monad
 ### pointed functor
-真实情况是，of 方法不是用来避免使用 new 关键字的，而是用来把值放到默认最小化上下文（default minimal context）中的。是的，of 没有真正地取代构造器——它是一个我们称之为 pointed 的重要接口的一部分。
+真实情况是，of 方法不是用来避免使用 new 关键字的，而是用来把值放到默认最小化上下文（default minimal context）中的。是的，of 没有真正地取代构造器——它是一个我们称之为`pointed`的重要接口的一部分。
 > pointed functor 是实现了 of 方法的 functor。
 
 这里的关键是把任意值丢到容器里然后开始到处使用 map 的能力。
@@ -499,7 +499,7 @@ IO.prototype.join = function() {
 var join = function(mma){ return mma.join(); }
 ```
 
-如果有两层相同类型的嵌套，那么就可以用`join`把它们压扁到一块去。这种结合的能力，functor 之间的联姻，就是`monad`之所以成为`monad`的原因。来看看它更精确的完整定义：
+# Monad 定义:
 > monad 是可以变扁（flatten）的 pointed functor。
 
 `join`只解决了一层嵌套.
@@ -568,4 +568,182 @@ Maybe.of(null).chain(safeProp('address')).chain(safeProp('street'));
 ```
 
 #### chain总结: 总之记住，返回的如果是“普通”值就用 map，如果是 functor 就用 chain。
+### 炫耀
+```js
+//  upload :: String -> Either String (Future Error JSON)
+var upload = compose(map(chain(httpPost('/uploads'))), readFile);
+```
+> upload 返回的是一堆瓶子.
+
+### 理论
+```js
+  // 结合律
+  compose(join, map(join)) == compose(join, join)
+```
+> 开瓶的内外顺序不同.
+
+![map](./img/monad_associativity.png)
+
+值得注意的一点是`map(join) != join`:
+- `map(join)`: 是return`join(Functor.__value)`
+- `join`: 是return `Functor.join()`
+
+`Functor.map(f)`调用后返回的是一个新的`Functor`(其__value经过f态射)
+
+组合函数来给出一个完整定义: (不理解`M`是什么)
+```js
+  var mcompose = function(f, g) {
+    return compose(chain(f), chain(g));
+  }
+
+  // 左同一律
+  mcompose(M, f) == f
+
+  // 右同一律
+  mcompose(f, M) == f
+
+  // 结合律
+  mcompose(mcompose(f, g), h) == mcompose(f, mcompose(g, h))
+```
+### chap9 总结: 
+> 是的，monad 非常强大，但我们还需要一些额外的容器函数。比如，假设我们想同时运行一个列表里的 api 调用，然后再搜集返回的结果，怎么办？是可以使用 monad 实现这个任务，但必须要等每一个 api 完成后才能调用下一个。合并多个合法性验证呢？我们想要的肯定是持续验证以搜集错误列表，但是 monad 会在第一个 Left 登场的时候停掉整个演出。
+
+## Chap10: Applicative Functor
+### 应用 applicative functor
+问题: 
+```js
+// 这样是行不通的，因为 2 和 3 都藏在瓶子里。
+add(Container.of(2), Container.of(3));
+//NaN
+```
+chain的实现方式:
+```js
+Container.of(2).chain(function(two) {
+  return Container.of(3).map(add(two));
+});
+```
+实现, 但有问题:
+> 只不过，这种方式有一个问题，那就是 monad 的顺序执行问题：所有的代码都只会在前一个 monad 执行完毕之后才执行。想想看，我们的这两个值足够强健且相互独立，如果仅仅为了满足 monad 的顺序要求而延迟 Container(3) 的创建，我觉得是非常没有必要的。
+
+事实上，当遇到这种问题的时候，要是能够无需借助这些不必要的函数和变量，以一种简明扼要的方式把一个 functor 的值应用到另一个上去就好了。
+
+### 瓶中之船
+`ap` Functor
+```js
+Container.of(add(2)).ap(Container.of(3));
+// Container(5)
+
+// all together now
+Container.of(2).map(add).ap(Container.of(3));
+// Container(5)
+```
+
+> applicative functor 是实现了 ap 方法的 pointed functor
+```js
+Container.prototype.ap = function(other_container) {
+  return other_container.map(this.__value);
+}
+```
+
+```js
+F.of(x).map(f) == F.of(f).ap(F.of(x))
+```
+这行代码翻译成人类语言就是，`map`一个`f`等价于`ap`一个值为`f`的 functor
+
+Task，这是 applicative functor 主要的用武之地
+### 协调与激励
+```js
+var signIn = curry(function(username, password, remember_me){ /* signing in */  })
+
+IO.of(signIn).ap(getVal('#email')).ap(getVal('#password')).ap(IO.of(false));
+// IO({id: 3, email: "gg@allin.com"})
+```
+signIn是一个接收`3`个参数的`curry`函数，因此我们需要调用`ap`3 次。
+
+### Lift
+> 补充chap8: f如果被`map`包裹了，叫做lift, 普通函数-> 适合容器的函数
+```js
+var liftA2 = curry(function(f, functor1, functor2) {
+  return functor1.map(f).ap(functor2);
+});
+//liftA4, etc
+```
+```js
+Either.of(createUser).ap(checkEmail(user)).ap(checkName(user));
+// Left("invalid email")
+
+liftA2(createUser, checkEmail(user), checkName(user));
+// Left("invalid email")
+```
+`liftA2`的版本没有提到`Either`，这就使得它更加通用灵活，因为不必与特定的数据类型耦合在一起.
+
+### 操作符
+
+在haskell、scala、PureScript以及 swift等语言中，开发者可以创建自定义的中缀操作符（infix operators）
+```hs
+-- haskell
+add <$> Right 2 <*> Right 3
+```
+```js
+// JavaScript
+map(add, Right(2)).ap(Right(3))
+```
+`<$>`就是`map`（亦即`fmap`），`<*>`不过就是`ap`。
+
+### 免费开瓶器
+- easy: `of/ap`等价于`map`: 提供一个让Functor使用的f.
+- diffcult:
+```js
+// 从 chain 衍生出的 map
+// a是functor的__value
+X.prototype.map = function(f) {
+  var m = this;
+  return m.chain(function(a) {
+    return m.constructor.of(f(a));
+  });
+}
+
+// 从 chain/map 衍生出的 ap
+X.prototype.ap = function(other) {
+  // f也是functor的__value
+  return this.chain(function(f) {
+    return other.map(f);
+  });
+};
+```
+
+定义一个 monad，就既能得到 applicative 也能得到 functor。这一点非常强大，相当于这些“开瓶器”全都是免费的！
+为啥不直接使用`monad`？因为最好用合适的力量来解决合适的问题，一分不多，一分不少。这样就能通过排除可能的功能性来做到最小化认知负荷。因为这个原因，相比`monad`，我们更倾向于使用`applicative`。
+
+### 定律:
+`applicative functor`是“组合关闭”（closed under composition）的，意味着`ap`永远不会改变容器类型（另一个胜过 monad 的原因）
+#### 同一律（identity）
+```js
+A.of(id).ap(v) == v
+```
+
+#### 同态
+```js
+A.of(f).ap(A.of(x)) == A.of(f(x))
+```
+
+#### 互换
+> 互换(interchange)表明的是选择让函数在`ap`的左边还是右边发生`lift`是无关紧要的。
+```js
+// v的__value是主动调用的f
+v.ap(A.of(x)) == A.of(function(f) { return f(x) }).ap(v)
+```
+
+#### 组合（composition）
+最后是组合。组合不过是在检查标准的函数组合是否适用于容器内部的函数调用。
+```js
+// 组合
+// 依次让`v.f`, `u.f`作用于`w.__value`
+A.of(compose).ap(u).ap(v).ap(w) == u.ap(v.ap(w));
+```
+
+### Chap10 总结:
+处理多个`functor`作为参数的情况，是`applicative functor`一个非常好的应用场景。
+
+
 
