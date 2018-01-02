@@ -819,7 +819,59 @@ an ounce of prevention is worth a pound of cure.(重在预防)
 定义: `Natural transformations` are functions on our functors themselves.
 可以帮助我们处理: 
 * nested types
-* homogenizing our functors to the lowest common denominator.
+* homogenizing(均质化) our functors to the lowest common denominator(最小公倍数).
 
 Next up, we'll look at reordering our types with Traversable.
 ## Chapter 12: Traversing the Stone
+And now for our next trick, we'll look at `traversals`. We'll watch types soar over one another as if they were trapeze artists holding our value `intact`. (玩杂技, 但保证value完好无损)
+
+### Types n' types
+```js
+// readFile :: FileName -> Task Error String
+
+// firstWords :: String -> String
+const firstWords = compose(join(' '), take(3), split(' '))
+
+// tldr :: FileName -> Task Error String
+const tldr = compose(map(firstWords), readFile)
+
+map(tldr, files)
+// [Task('hail the monarchy'), Task('smash the patriarchy')]
+```
+提出问题: 如何把`[Task Error String]`转换成`Task Error [String]`?
+我们需要一个`future value`保存所有的结果, 并且是可以根据`async need`进行修改的.
+
+### Types n' types
+```js
+// getAttribute :: String -> Node -> Maybe String
+// $ :: Selector -> IO Node
+
+// getControlNode :: IO (Maybe (IO Node))
+const getControlNode = compose(map(map($)), map(getAttribute('aria-controls')), $)
+```
+问题: 两个`IO`瓶子相距太远, 简化成`IO (Maybe Node)`.
+
+### Type Feng Shui
+The `Traversable` interface consists of two glorious functions: `sequence` and `traverse`.
+
+Let's rearrange our types using sequence:
+```js
+sequence(Array, Maybe(['the facts'])) // [Maybe('the facts')]
+sequence(Task.of, Map({a: Task.of(1), b: Task.of(2)})) // Task(Map({a: 1, b: 2}))
+sequence(IO.of, Right(IO.of('buckle my shoe'))) // IO(Right('buckle my shoe'))
+sequence(Either.of, [Right('wing')]) // Right(['wing'])
+sequence(Task.of, Left('wing')) // Task(Left('wing'))
+```
+
+```js
+// sequence :: (Traversable t, Applicative f) => (a -> f a) -> t (f a) -> f (t a)
+const sequence = curry((of, x) => x.sequence(of))
+
+Right.prototype.sequence = function(of) {
+  return this.__value.map(Right)
+}
+
+Left.prototype.sequence = function(of) {
+  return of(this)
+}
+```
