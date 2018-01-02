@@ -745,5 +745,44 @@ A.of(compose).ap(u).ap(v).ap(w) == u.ap(v.ap(w));
 ### Chap10 总结:
 处理多个`functor`作为参数的情况，是`applicative functor`一个非常好的应用场景。
 
+## Ch11: Transform Again, Naturally
 
+### Curse this nest
+### A situational comedy
+```js
+IO(Task(IO(1000)))
 
+const saveComment = compose(map(map(map(postComment))), map(map(validate)), getValue('#comment'))
+```
+> 瓶子嵌套太多.
+
+### All natural
+A Natural Transformation is a **"morphism between functors"**(瓶子转换, 类型转换), that is, a `function` which operates on the `containers` themselves.
+
+### Principled Type Conversions
+```js
+// eitherToTask :: Either a b -> Task a b
+const eitherToTask = either(Task.rejected, Task.of)
+
+// ioToTask :: IO a -> Task () a
+const ioToTask = x => new Task((reject, resolve) => resolve(x.unsafePerform()))
+```
+>Note that we cannot convert asynchronous to synchronous in JavaScript so we cannot write taskToIO - that would be a supernatural transformation.
+
+### Feature Envy(令人羡慕的特性?)
+**Natural transformations** provide a nice way to `convert` to the target type knowing our map will be sound.
+```js
+const {List} = require('immutable')
+
+// arrayToList :: [a] -> List a
+const arrayToList = List
+
+// 先对Array的每个元素作用f, 再转换成List
+const doListyThings = compose(sortBy(h), filter(g), arrayToList, map(f))
+// 先把Array转换成List, 再对其元素作用f
+const doListyThings_ = compose(sortBy(h), filter(g), map(f), arrayToList) // law applied
+```
+
+### Isomorphic JavaScript
+同态: 瓶子来回转换, 数据没有丢失.
+When we can completely go back and forth without losing any information, that is considered an `isomorphism`.
