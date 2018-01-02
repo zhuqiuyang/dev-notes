@@ -231,6 +231,12 @@ var law = compose(map(f), map(g)) === map(compose(f, g));
 > 类型签名不但可以用于编译时检测（compile time checks），还是最好的文档。所以类型签名在函数式编程中扮演着非常重要的角色——重要程度远远超出你的想象。+
 >
 ### Tales from the cryptic (神秘的传奇故事)
+In HM，函数都写成`a -> b`.
+```js
+//  capitalize :: String -> String
+```
+`capitalize`的函数的类型签名, 表示函数的类型签名可以理解为`一个接受 String 返回 String 的函数`
+
 ```js
 //  strLength :: String -> Number
 var strLength = function(s){
@@ -268,6 +274,13 @@ compose(f, head) == compose(head, map(f));
 // map(f) 在 filter(compose(p, f)), 已经隐含执行了?
 compose(map(f), filter(compose(p, f))) == compose(filter(p), map(f));
 ```
+
+### 类型约束
+签名也可以把类型约束为一个特定的接口（interface）
+```js
+// sort :: Ord a => [a] -> [a]
+```
+`fat arrow`胖箭头左边表明的是这样一个事实`a`一定是个`Ord`对象。
 
 ## Chap 8: Tupperware
 > 但是，控制流（control flow）、异常处理（error handling）、异步操作（asynchronous actions）和状态（state）呢？还有更棘手的作用（effects）呢？本章将对上述这些抽象概念赖以建立的基础作一番探究。
@@ -786,3 +799,27 @@ const doListyThings_ = compose(sortBy(h), filter(g), map(f), arrayToList) // law
 ### Isomorphic JavaScript
 同态: 瓶子来回转换, 数据没有丢失.
 When we can completely go back and forth without losing any information, that is considered an `isomorphism`.
+
+### A broader definition
+```js
+// head :: [a] -> a
+```
+`natural transformation`law 同样可以作用于上述function. 
+`head :: [a] -> a` can be viewed as `head :: [a] -> Identity a`.
+证明了`a` is isomorphic to `Identity a` (isomorphisms到处都存在).
+
+### One nesting solution
+```js
+const saveComment = compose(chain(postComment), chain(eitherToTask), map(validate), chain(maybeToTask), getValue('#comment'))
+```
+we avoid nesting right at the source.
+an ounce of prevention is worth a pound of cure.(重在预防)
+
+### In summary
+定义: `Natural transformations` are functions on our functors themselves.
+可以帮助我们处理: 
+* nested types
+* homogenizing our functors to the lowest common denominator.
+
+Next up, we'll look at reordering our types with Traversable.
+## Chapter 12: Traversing the Stone
