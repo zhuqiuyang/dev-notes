@@ -851,7 +851,7 @@ const getControlNode = compose(map(map($)), map(getAttribute('aria-controls')), 
 ```
 问题: 两个`IO`瓶子相距太远, 简化成`IO (Maybe Node)`.
 
-### Type Feng Shui
+### Type Feng Shui (风水)
 The `Traversable` interface consists of two glorious functions: `sequence` and `traverse`.
 
 Let's rearrange our types using sequence:
@@ -865,13 +865,61 @@ sequence(Task.of, Left('wing')) // Task(Left('wing'))
 
 ```js
 // sequence :: (Traversable t, Applicative f) => (a -> f a) -> t (f a) -> f (t a)
+// of:: (a -> fa)
+// x:: t (f a)
+// t.sequence(of):: f (t a)
 const sequence = curry((of, x) => x.sequence(of))
+```
+解读:
+- 第二个参数`x`必须是一个`traversable`(functor) holding a `applicative`(functor).
+- 第一个参数起辅助作用, 只有在弱类型语言中是必要的.`It is a type constructor (our of)`.
 
+```js
 Right.prototype.sequence = function(of) {
   return this.__value.map(Right)
 }
-
+```
+`__value` must be a `applicative` functor.
+#### 疑问:  是否应该是`this.__value.map(Right.of)`, `right` 是一个构造函数, 单独调用的意义?
+我们完全忽略了传入的`of`, 传入`of`是为了应对`mapping`无效的场景, as is the case with `Left`:
+```js
 Left.prototype.sequence = function(of) {
   return of(this)
 }
 ```
+
+### Effect assortment
+Different orders have different outcomes where our containers are concerned.
+- `[Maybe a]`, that's a collection of possible values (The former indicates we'll be forgiving and keep "the good ones",)
+- `a Maybe [a]`, that's a possible collection of values.(while the latter means it's an "all or nothing" type of situation.)
+
+```js
+// fromPredicate :: (a -> Bool) -> Either a a
+
+// partition :: (a -> Bool) -> [a] -> [Either a a]
+const partition = f => map(fromPredicate(f))
+
+// validate :: (a -> Bool) -> [a] -> Either a [a]
+const validate = f => traverse(Either.of, fromPredicate(f))
+```
+`partition` 有利用保存后续有用的数据, 而不是filer it out like洗澡水.
+`validate` will only move forward if everything is ok.
+
+### Waltz of the types(华尔兹)
+```js
+// 本章开头的例子改写成:
+traverse(Task.of, tldr, files)
+// Task(['hail the monarchy', 'smash the patriarchy'])
+```
+使用`traverse`代替`map`, 就像`Promise.all()`
+
+### No law and order
+A natural consequence of this law is:
+```js
+traverse(A.of, A.of) === A.of
+```
+Which, again, is nice from a performance standpoint.
+
+### In summary
+`Traversable` 是一种强大的接口, 赋予了我们重新筹备我们`types`的能力.
+接下来, 让我们一起看看一函数式编程最强大的接口 and perhaps even algebra itself: `Monoids bring it all together`
