@@ -28,6 +28,11 @@ div 92 10
 doubleSmallNumber' x = (if x > 100 then x else x*2) + 1  
 ```
 `'` 用于表示严格表示函数
+- 函数首字母不能大写
+- 无参函数, 可视为`definition`(如下)
+```hs
+conano'Brien = "xxx"
+```
 
 #### 2.3 An intro to lists
 
@@ -99,3 +104,42 @@ ghci> read "5" :: Int
 ```
 * 所有numbers都是`polymorphic constant`(多态常量)
 
+### 4. Syntax in Functions
+#### 4.1 Pattern matching
+- 
+- last should catch all !
+> Note that (x:[]) and (x:y:[]) could be rewriten as [x] and [x,y] (because its syntatic sugar, we don't need the parentheses). We can't rewrite (x:y:_) with square brackets because it matches any list of length 2 or more.
+
+- 递归定义:
+```hs
+sum' :: (Num a) => [a] -> a  
+sum' [] = 0  
+sum' (x:xs) = x + sum' xs  
+```
+
+- `xs@(x:y:ys)`, `@`前`xs`代表匹配的整体
+
+#### 4.2 Guards, guards!
+- 见4.3, 以`|`分隔
+- `otherwise` catch all.
+#### 4.3 Where!?
+```hs
+bmiTell :: (RealFloat a) => a -> a -> String  
+bmiTell weight height  
+    | bmi <= skinny = "You're underweight, you emo, you!"  
+    | bmi <= normal = "You're supposedly normal. Pffft, I bet you're ugly!"  
+    | bmi <= fat    = "You're fat! Lose some weight, fatty!"  
+    | otherwise     = "You're a whale, congratulations!"  
+    where bmi = weight / height ^ 2  
+          skinny = 18.5  
+          normal = 25.0  
+          fat = 30.0
+```
+#### 4.4 Let it be
+`let` 与 `where` 对比
+- `where`在后定义
+- `where` cross `guard`, `let`not.
+- `let...in...` 是expression
+
+#### 4.5 Case expressions
+`pattern match` in expression 是`case expressions`的语法糖. (*)
