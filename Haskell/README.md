@@ -111,7 +111,7 @@ ghci> read "5" :: Int
 
 ### 4. Syntax in Functions
 #### 4.1 Pattern matching
-- 
+定义: `Pattern matching`由指定的`patterns`组成, 对应数据会**check**是否与`pattern`一致, 或可根据`pattern`进行**deconstruct**.
 - last should catch all !
 > Note that (x:[]) and (x:y:[]) could be rewriten as [x] and [x,y] (because its syntatic sugar, we don't need the parentheses). We can't rewrite (x:y:_) with square brackets because it matches any list of length 2 or more.
 
