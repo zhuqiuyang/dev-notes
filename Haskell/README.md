@@ -62,6 +62,11 @@ ghci> "Steve Buscemi" !! 6
 ghci> [x*2 | x <- [1..10], x*2 >= 12]  
 [12,14,16,18,20]  
 ```
+- serveral predicates:
+```hs
+ghci> [ x | x <- [10..20], x /= 13, x /= 15, x /= 19]  
+[10,11,12,14,16,17,18,20]
+```
 
 #### 2.6Tuples
 两个元素的`Tuple`称作`pair`
@@ -143,3 +148,32 @@ bmiTell weight height
 
 #### 4.5 Case expressions
 `pattern match` in expression 是`case expressions`的语法糖. (*)
+
+### 5. Recursion
+#### 5.1 Hello recursion!
+- `Recursion`是一种定义`functions`的方式, 其会在内部调用自身.
+- `edge condition`(基础条件): non-recursively, likely `F(0), F(1)`在Fibonacci.
+
+#### 5.2 Maximum awesome
+rewrite `maximum`: (elegant)
+```hs
+maximum' :: (Ord a) => [a] -> a  
+maximum' [] = error "maximum of empty list"  
+maximum' [x] = x  
+maximum' (x:xs) = max x (maximum' xs)  
+```
+
+#### 5.3 A few more recursive functions (举例)
+> `replicate`, `take` , `repeat`, `elem` ...
+
+#### 5.4 Quick, sort!
+Neat(!)
+```hs
+quicksort :: (Ord a) => [a] -> [a]  
+quicksort [] = []  
+quicksort (x:xs) =   
+    let smallerSorted = quicksort [a | a <- xs, a <= x]  
+        biggerSorted = quicksort [a | a <- xs, a > x]  
+    in  smallerSorted ++ [x] ++ biggerSorted 
+```
+#### 5.5 Thinking recursively
