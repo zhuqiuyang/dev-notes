@@ -62,6 +62,8 @@ ghci> "Steve Buscemi" !! 6
 ghci> [x*2 | x <- [1..10], x*2 >= 12]  
 [12,14,16,18,20]  
 ```
+
+通过`predicate`对`list`进行筛选 called **`filtering`**
 - serveral predicates:
 ```hs
 ghci> [ x | x <- [10..20], x /= 13, x /= 15, x /= 19]  
@@ -177,3 +179,8 @@ quicksort (x:xs) =
     in  smallerSorted ++ [x] ++ biggerSorted 
 ```
 #### 5.5 Thinking recursively
+
+### 6. High Order Function
+Higher order functions 凝聚了很多Haskell的开发经验. 它证明, 如果你想 `define computations by defining what stuff is` instead of `defining steps that change some state and maybe looping them`, higher order functions 是不可缺少的.
+> 如果更declative, higher order functions 是必不可少的.
+
