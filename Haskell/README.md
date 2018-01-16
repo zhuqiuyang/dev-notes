@@ -184,3 +184,23 @@ quicksort (x:xs) =
 Higher order functions 凝聚了很多Haskell的开发经验. 它证明, 如果你想 `define computations by defining what stuff is` instead of `defining steps that change some state and maybe looping them`, higher order functions 是不可缺少的.
 > 如果更declative, higher order functions 是必不可少的.
 
+## 6.1 Curried functions (重要)
+默认所有Function都是单参的
+- 所有多参函数, 都是**curried functions** 
+- call a function少于它所需要的参数, 我们将得到**partial applied**function.
+
+#### Some higher-orderism is in order
+`->` 默认是`right accociation`
+> Note: 为了简便, 称`a -> a -> a`为双参函数
+
+#### Maps and filters
+`map`和`filter`是一对搭档, 在FP中使用极广.
+- 使用`map`解决问题(更易读), 也可用`list comprehension`替代.
+  > `map (+3) [1,5,3,1,6]` same as `[x+3 | x <- [1,5,3,1,6]]`
+- `takeWhile` 截取List直到`predicate`不满足
+  > `takeWhile (/=' ') "elephants know how to party"` and it would return `"elephants"`
+#### Lambdas
+`lambda`是普通函数, 一般使用only once.
+
+有些场景, partial applied更易读
+- ` map (+x) [1..]` same as `map (\x -> x + 3) [1..]`
