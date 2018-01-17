@@ -189,18 +189,40 @@ Higher order functions 凝聚了很多Haskell的开发经验. 它证明, 如果�
 - 所有多参函数, 都是**curried functions** 
 - call a function少于它所需要的参数, 我们将得到**partial applied**function.
 
-#### Some higher-orderism is in order
+#### 6.2 Some higher-orderism is in order
 `->` 默认是`right accociation`
 > Note: 为了简便, 称`a -> a -> a`为双参函数
 
-#### Maps and filters
+#### 6.3 Maps and filters
 `map`和`filter`是一对搭档, 在FP中使用极广.
 - 使用`map`解决问题(更易读), 也可用`list comprehension`替代.
   > `map (+3) [1,5,3,1,6]` same as `[x+3 | x <- [1,5,3,1,6]]`
 - `takeWhile` 截取List直到`predicate`不满足
   > `takeWhile (/=' ') "elephants know how to party"` and it would return `"elephants"`
-#### Lambdas
+#### 6.4 Lambdas
 `lambda`是普通函数, 一般使用only once.
 
 有些场景, partial applied更易读
 - ` map (+x) [1..]` same as `map (\x -> x + 3) [1..]`
+
+#### 6.5 Only folds and horses
+- `folds`遍历list, 返回a signle value(acc)
+  - 次序: `foldl`, `foldr`
+  - `foldr1`: 使用第一个元素, 作为`acc`初始值
+> `folds`和`maps`, `filters`同为最常用的函数
+- `scan` 返回`acc`的状态list
+
+#### 6.6 Function application with $
+`$`和空格, 同为函数调用的两种方式
+- `空格`是左结合
+- `$`是右结合
+```hs
+sqrt (3 + 4 + 9)
+-- same as
+sqrt $ 3 + 4 + 9
+```
+`$` has the lowest precedence of any operator.
+
+#### 6.7 Function composition
+`.` 接收两个函数, 返回一个新的函数.
+- point free风格
