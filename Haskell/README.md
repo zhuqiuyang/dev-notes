@@ -27,7 +27,7 @@ div 92 10
 ```hs
 doubleSmallNumber' x = (if x > 100 then x else x*2) + 1  
 ```
-`'` 用于表示严格表示函数
+`'` 表示严格函数(not lazy)
 - 函数首字母不能大写
 - 无参函数, 可视为`definition`(如下)
 ```hs
