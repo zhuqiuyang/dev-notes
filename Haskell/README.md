@@ -10,6 +10,11 @@
 * 精简
 
 #### 1.3 What you need to dive in
+```sh
+ghci
+:quit
+```
+
 ### 2. Starting Out
 #### 2.1 Ready, set, go!
 - GHC
@@ -226,3 +231,56 @@ sqrt $ 3 + 4 + 9
 #### 6.7 Function composition
 `.` 接收两个函数, 返回一个新的函数.
 - point free风格
+
+### 7.Modules
+#### 7.1 Loading modules
+* `import Data.List`: 则`Data.List`exports 全局可用.
+* `import Data.List (nub, sort)`: 导出指定
+* `import Data.List hiding (nub)`
+* `import qualified Data.Map as M`, 使用时则`M.filter`.
+
+
+#### 7.6 Making our own modules
+```hs
+module Shapes   
+( Point(..)  
+, Shape(..)  
+, surface  
+, nudge  
+, baseCircle  
+, baseRect  
+) where 
+```
+通过`Shape(..)`(8.1例子), `Shape`的所有value constructor都会被导出
+
+### 8. Making Our Own Types and Typeclasses
+#### 8.1
+* 通过`data`来自定义data type
+* `value constructors` 是函数, 接收一些列参数, 返回相应的value of some type.
+
+#### 8.2 Record
+better way than `data Person = Person String String Int Float String String deriving (Show)`
+
+```hs
+data Person = Person { firstName :: String  
+                     , lastName :: String  
+                     , age :: Int  
+                     , height :: Float  
+                     , phoneNumber :: String  
+                     , flavor :: String  
+                     } deriving (Show)   
+```
+
+### 9. Input and Output
+
+### 10. Functionally Solving Problems
+#### 10.1 Reverse Polish notation calculator
+#### 10.2 Heathrow to London
+
+#### 11. Functors, Applicative Functors and Monoids
+**computation context**比喻`Functor`, 更确切
+
+#### 11.1 Functors redux
+#### 11.2 Applicative functors
+#### 11.3 The newtype keyword
+#### 11.4 Monoids
