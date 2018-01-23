@@ -293,6 +293,11 @@ Record Syntax 优势:
 
 `Type paramter`适用于`List`, `Maybe`这类不关心元素具体类型的type.
 
+> 不要在data declaration中添加typeclass 限制, 放在函数的type declaration中.
+
+`data Vector a = Vector a a a deriving (Show)`:
+* `=`前的`Vector`是 **`type constructor`**
+* `=`后的`Vector`是 **`value constructor`**
 
 #### 8.4 Derived instances
 
