@@ -254,11 +254,11 @@ module Shapes
 通过`Shape(..)`(8.1例子), `Shape`的所有value constructor都会被导出
 
 ### 8. Making Our Own Types and Typeclasses
-#### 8.1
+#### 8.1 intro
 * 通过`data`来自定义data type
 * `value constructors` 是函数, 接收一些列参数, 返回相应的value of some type.
 
-#### 8.2 Record
+#### 8.2 Record Syntax
 better way than `data Person = Person String String Int Float String String deriving (Show)`
 
 ```hs
@@ -270,6 +270,31 @@ data Person = Person { firstName :: String
                      , flavor :: String  
                      } deriving (Show)   
 ```
+Record Syntax 优势:
+* 自动create取值函数`firstName::Person -> String`
+* when `derive`from `Show`, 展示出具体字段名
+  ```hs
+  data Car = Car String String Int deriving (Show)  
+  
+  ghci> Car "Ford" "Mustang" 1967
+  Car "Ford" "Mustang" 1967
+  --
+  data Car = Car {company :: String, model :: String, year :: Int} deriving (Show)  
+  
+  ghci> Car {company="Ford", model="Mustang", year=1967}
+  Car {company = "Ford", model = "Mustang", year = 1967}  
+  ```
+
+#### 8.3 Type parameters
+`data Maybe a = Nothing | Just a`, 由于`a`是一个`type parameter`, 所以我们称`Maybe`是`type constructor`.
+* `Just 'a'` 的type为`Maybe Char`
+* empty list(`[]`)的type为`[a]`
+  > 所以我们可以进行`[1,2,3] ++ []`和`["ha","ha","ha"] ++ []`操作.
+
+`Type paramter`适用于`List`, `Maybe`这类不关心元素具体类型的type.
+
+
+#### 8.4 Derived instances
 
 ### 9. Input and Output
 
