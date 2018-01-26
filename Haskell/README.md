@@ -254,7 +254,7 @@ module Shapes
 通过`Shape(..)`(8.1例子), `Shape`的所有value constructor都会被导出
 
 ### 8. Making Our Own Types and Typeclasses
-#### 8.1 intro
+#### 8.1 Algebraic data types intro
 * 通过`data`来自定义data type
 * `value constructors` 是函数, 接收一些列参数, 返回相应的value of some type.
 
@@ -300,6 +300,89 @@ Record Syntax 优势:
 * `=`后的`Vector`是 **`value constructor`**
 
 #### 8.4 Derived instances
+
+```hs
+data Day = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday   
+           deriving (Eq, Ord, Show, Read, Bounded, Enum)
+
+ghci> Wednesday  
+Wednesday  
+ghci> show Wednesday  
+"Wednesday"  
+ghci> read "Saturday" :: Day  
+Saturday
+ghci> Saturday > Friday  
+True  
+ghci> Monday `compare` Wednesday  
+LT  
+```
+#### 8.5 Type synonyms
+
+**type synonyms**: `String`和`[Char]`是相等且能interchangable(可交换的).
+```hs
+type String = [Char]
+```
+#### Type synonyms can also be parameterized (参数化)
+```hs
+type AssocList k v = [(k,v)]
+```
+
+### concrete type
+`AssocList`: is a `type constructor` + two `types` => **`concrete type`**(like `AssocList Int String`, **fully applied types**, `type constructor`完整调用).
+> `data Int = ...`, 无参的`type constructor`, 本身就是 concrete type.
+
+### 自己理解-与_data_定义的`type constructor`的区别
+- `data`的`type constructor`主要定义`type`的具体内部实现
+- `type`主要定义别名.
+
+#### Either
+`data Either a b = Left a | Right b deriving (Eq, Ord, Read, Show)`
+* Maybe不能展示failure的信息, Either 可以.
+
+#### 8.6 Recursive data structures
+algebratic data types 实现List:
+```hs
+data List a = Empty | Cons a (List a) deriving (Show, Read, Eq, Ord)
+```
+
+当我们把function定义成操作符, 需要使用`fixity声明`
+```hs
+-- 自定义一个操作符 :-:
+infixr 5 :-:
+data List a = Empty | a :-: (List a) deriving (Show, Read, Eq, Ord) 
+```
+`*`的fixity是`infixl 7 *`.(数值越高优先级越高, `infixl`代表中缀, 左结合)
+
+#### 8.7 Typeclasses 102
+```hs
+class Eq a where  
+    (==) :: a -> a -> Bool  
+    (/=) :: a -> a -> Bool  
+    x == y = not (x /= y)  
+    x /= y = not (x == y)
+```
+`a`是一个 concrete type, 因为函数只接收concrete type. (举例: 函数的type不能为`a -> Maybe`, 但是可以是`a -> Maybe a`,或`Maybe Int -> Maybe String`)
+
+
+```hs
+instance Eq TrafficLight where  
+    Red == Red = True  
+    Green == Green = True  
+    Yellow == Yellow = True  
+    _ == _ = False  
+```
+`class`关键字用于定义一个新的`typeclass`, `instance`is for making our `types instances` of `typeclasses`.
+`instance Eq TrafficLight where`.我们用`actual type`替换了`a`
+
+##### subclass
+```hs
+class (Eq a) => Num a where  
+   ...
+```
+
+#### 8.8 A yes-no typeclass
+#### 8.9 The Functor typeclass
+#### 8.10 Kinds and some type-foo
 
 ### 9. Input and Output
 
