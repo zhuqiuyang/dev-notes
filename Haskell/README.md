@@ -495,8 +495,6 @@ instance Functor Maybe where
 
 Haskell 对`pure`和 `impure`做了分离.
 
-`runhaskell`in CLI, 可以运行`.hs`文件
-
 #### 9.1 Hello, world!
 
 ```hs
@@ -510,6 +508,43 @@ main = do
 * `do`把多个`IO`合并成一个
 * `<-` 从`IO`结果中获取数据
 * `getLine`Action 是**impure**的, 因为执行多次, 并不能确保结果一致
+
+##### 运行
+
+* `ghc --make helloworld`, `./helloworld`
+  `runhaskell`in CLI, 可以运行`.hs`文件
+
+#### 9.2 Files and streams
+* `getChar`: reads a single character from the terminal
+* `getLine`: reads a single line from the terminal
+* `getContents`:  reads everything from the standard input , 直到遇到`end-of-file`character
+
+```hs
+-- capslocker.hs
+import Data.Char  
+  
+main = do  
+    contents <- getContents  
+    putStr (map toUpper contents)  
+```
+* 当`getContents` is bound to `contents`, 在内存中它将不是一个`string`, 而是一个promise最终会产生`string`
+* 当`map toUpper over contents`, 仍是一个promise `map that function over the eventual contents`
+* 直到遇到`putStr`:
+  * it对前一个promise: "Hey, I need a capslocked line!"
+  * 然后再请求`contents`: "Hey, how about actually getting a line from the terminal?"
+
+lines & unlines:
+```hs
+> lines "a\nb\n"
+["a","b"]
+> unlines ["a", "b"]
+"a\nb\n"
+```
+
+##### interact
+`interact` 接受一个函数作为参数(`String -> String`) , 并返回一个`I/O action` that will take some input, 返回函数执行过的结果, 打印显示.
+(study end)
+
 
 ### 10. Functionally Solving Problems
 
