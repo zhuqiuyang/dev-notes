@@ -493,7 +493,9 @@ instance Functor Maybe where
 
 ### 9. Input and Output
 
-Haskell 对`pure`和`impure`做了分离.
+Haskell 对`pure`和 `impure`做了分离.
+
+`runhaskell`in CLI, 可以运行`.hs`文件
 
 #### 9.1 Hello, world!
 
@@ -513,11 +515,23 @@ main = do
 
 #### 10.1 Reverse Polish notation calculator
 
+`RPN`: 逆波兰表达式
+
 #### 10.2 Heathrow to London
 
 #### 11. Functors, Applicative Functors and Monoids
 
 **computation context**比喻`Functor`, 更确切
+
+Functor 的 instance, like `[]`, `Maybe`, `Either a` and a `Tree`.
+这一节, 我们接触另两种 functor, namely `IO` and `(->) r`.
+
+```hs
+instance Functor IO where  
+    fmap f action = do  
+        result <- action  
+        return (f result)
+```
 
 #### 11.1 Functors redux
 
