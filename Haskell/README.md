@@ -498,6 +498,13 @@ Haskell 对`pure`和 `impure`做了分离.
 #### 9.1 Hello, world!
 
 ```hs
+ghci> :t putStrLn "hello, world"  
+putStrLn "hello, world" :: IO ()
+```
+
+`IO Action`定义: 是指当执行带有`side effect`的`action`(reading from the input or printing stuff to the screen)时, 会返回一个`result.`(上述返回的时`()`, 空调 tuple)
+
+```hs
 main = do  
     putStrLn "Hello, what's your name?"  
     name <- getLine  
@@ -515,25 +522,28 @@ main = do
   `runhaskell`in CLI, 可以运行`.hs`文件
 
 #### 9.2 Files and streams
+
 * `getChar`: reads a single character from the terminal
 * `getLine`: reads a single line from the terminal
-* `getContents`:  reads everything from the standard input , 直到遇到`end-of-file`character
+* `getContents`: reads everything from the standard input , 直到遇到`end-of-file`character
 
 ```hs
 -- capslocker.hs
 import Data.Char  
-  
+
 main = do  
     contents <- getContents  
     putStr (map toUpper contents)  
 ```
-* 当`getContents` is bound to `contents`, 在内存中它将不是一个`string`, 而是一个promise最终会产生`string`
-* 当`map toUpper over contents`, 仍是一个promise `map that function over the eventual contents`
+
+* 当`getContents` is bound to `contents`, 在内存中它将不是一个`string`, 而是一个 promise 最终会产生`string`
+* 当`map toUpper over contents`, 仍是一个 promise `map that function over the eventual contents`
 * 直到遇到`putStr`:
-  * it对前一个promise: "Hey, I need a capslocked line!"
+  * it 对前一个 promise: "Hey, I need a capslocked line!"
   * 然后再请求`contents`: "Hey, how about actually getting a line from the terminal?"
 
 lines & unlines:
+
 ```hs
 > lines "a\nb\n"
 ["a","b"]
@@ -542,9 +552,9 @@ lines & unlines:
 ```
 
 ##### interact
+
 `interact` 接受一个函数作为参数(`String -> String`) , 并返回一个`I/O action` that will take some input, 返回函数执行过的结果, 打印显示.
 (study end)
-
 
 ### 10. Functionally Solving Problems
 
@@ -561,12 +571,18 @@ lines & unlines:
 Functor 的 instance, like `[]`, `Maybe`, `Either a` and a `Tree`.
 这一节, 我们接触另两种 functor, namely `IO` and `(->) r`.
 
+1. IO
+
 ```hs
 instance Functor IO where  
     fmap f action = do  
         result <- action  
         return (f result)
 ```
+
+2. (->) r
+   `r -> a` 的 function type 可重写为`(->) r a`, 就如同`2 + 3` as `(+) 2 3`
+   不同的是`(->)`是一个`type constructor`, 接受两个`type parameters`作为参数, 就像`Either`.
 
 #### 11.1 Functors redux
 
