@@ -566,6 +566,8 @@ lines & unlines:
 
 #### 11. Functors, Applicative Functors and Monoids
 
+#### 11.1 Functors redux
+
 **computation context**比喻`Functor`, 更确切
 
 Functor 的 instance, like `[]`, `Maybe`, `Either a` and a `Tree`.
@@ -584,7 +586,20 @@ instance Functor IO where
    `r -> a` 的 function type 可重写为`(->) r a`, 就如同`2 + 3` as `(+) 2 3`
    不同的是`(->)`是一个`type constructor`, 接受两个`type parameters`作为参数, 就像`Either`.
 
-#### 11.1 Functors redux
+`fmap` over function, 本质是函数的组合
+
+```hs
+instance Functor ((->) r) where
+    fmap = (.)
+```
+
+Lift:
+`fmap`接收一个函数, 返回一个操作`Functor`的函数.
+
+Functor Law:
+
+1. 同一律: `fmap id = id`
+2. 交换律: `fmap (f . g) F = fmap f (fmap g F)`
 
 #### 11.2 Applicative functors
 
