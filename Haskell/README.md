@@ -603,6 +603,43 @@ Functor Law:
 
 #### 11.2 Applicative functors
 
+`Applicative` typeclass. 位于`Control.Applicative` module, 其定义了两个 method: `pure` 和 `<*>`.
+
+```hs
+class (Functor f) => Applicative f where
+    pure :: a -> f a
+    (<*>) :: f (a -> b) -> f a -> f b
+```
+
+* `pure`: `f`在这里表示`applicative functor instance`(type construcor)
+* `<*>`: 从一个 Functor 中获取 Lift 的函数. 对比`fmap :: (a -> b) -> f a -> f b`
+
+`Applicative` instance implementation for `Maybe`:
+
+```hs
+instance Applicative Maybe where  
+    pure = Just
+    Nothing <*> _ = Nothing
+    (Just f) <*> something = fmap f something
+```
+
+`Applicative functors` 允许用一个 function 来操作多个 functor:
+
+```hs
+ghci> pure (+) <*> Just 3 <*> Just 5  
+Just 8
+```
+
+* `<*>`是左结合的
+* `pure f <*> x` 等于 `fmap f x`
+
+`fmap`的中缀操作符`<$>`:
+
+```hs
+(<$>) :: (Functor f) => (a -> b) -> f a -> f b  
+f <$> x = fmap f x  
+```
+
 #### 11.3 The newtype keyword
 
 #### 11.4 Monoids
