@@ -611,8 +611,10 @@ class (Functor f) => Applicative f where
     (<*>) :: f (a -> b) -> f a -> f b
 ```
 
+#### !!!
+
 * `pure`: `f`在这里表示`applicative functor instance`(type construcor)
-* `<*>`: 从一个 Functor 中获取 Lift 的函数. 对比`fmap :: (a -> b) -> f a -> f b`
+* `<*>`: 从一个 Functor 中提取 Lift 的函数. 对比`fmap :: (a -> b) -> f a -> f b`
 
 `Applicative` instance implementation for `Maybe`:
 
@@ -633,7 +635,7 @@ Just 8
 * `<*>`是左结合的
 * `pure f <*> x` 等于 `fmap f x`
 
-`fmap`的中缀操作符`<$>`:
+##### `fmap`的中缀操作符`<$>`: !!
 
 ```hs
 (<$>) :: (Functor f) => (a -> b) -> f a -> f b  
