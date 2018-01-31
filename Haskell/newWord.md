@@ -1,0 +1,1 @@
+* deterministic: 确定性的

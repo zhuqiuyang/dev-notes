@@ -642,6 +642,27 @@ Just 8
 f <$> x = fmap f x  
 ```
 
+Applicative Functor Instance:
+
+* Maybe
+* List
+* IO
+* (-> r)
+
+  * call `<*>` with 两个 ap, 返回一个 ap; with 两个 function, 返回一个 function:
+
+  ```hs
+  ghci> :t (+) <$> (+3) <*> (*100)  
+  (+) <$> (+3) <*> (*100) :: (Num a) => a -> a
+  -- 返回一个函数 use `+` on the result of `+3` 和 `*100`
+  ```
+
+  解释: `k <$> f <*> g` 返回一个函数, call `f` with 最终结果 from `f` 和 `g`
+
+  > 可以把函数想象成 box(that contain 最终的结果),
+
+* ZipList
+
 #### 11.3 The newtype keyword
 
 #### 11.4 Monoids
