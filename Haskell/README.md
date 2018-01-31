@@ -665,4 +665,97 @@ Applicative Functor Instance:
 
 #### 11.3 The newtype keyword
 
+到现在为止, 我们学习了:
+
+* make algebraic data types by using the `data` keyword.
+* 如何给 existing types synonyms with the `type` keyword.
+* 这一章, 学习如何 make new types out of existing data types by using the `newtype` keyword and why we'd want to do that in the first place.
+
+##### 背景
+
+> 待解决的问题: 为了让函数一一匹配, 引入了`ZipList`, 如何通过`newtype`实现?
+
+```hs
+ghci> [(+1),(*100),(*5)] <*> [1,2,3]  
+[2,3,4,100,200,300,5,10,15]
+
+ghci> getZipList $ ZipList [(+1),(*100),(*5)] <*> ZipList [1,2,3]  
+[2,200,15]  
+```
+
+1. 通过`data`来实现
+
+```hs
+data ZipList a = ZipList { getZipList :: [a] }
+```
+
+> `newtype`主要应用于 wrap 已有的`type`, 制造新的`type`:
+
+2. 通过`newtype`来实现:
+
+```hs
+newtype ZipList a = ZipList { getZipList :: [a] }
+```
+
+为什么用`newtype`:
+
+* `newtype` 内部实现更快, hs 不做多余的`wrap`和`unwrap`
+
+为什么不使用`newtype`替代`data`:
+
+* 限制: 使用`newtype`, 只允许 `one constructor` with `one field`
+
+举例:
+
+```hs
+newtype CharList = CharList { getCharList :: [Char] } deriving (Eq, Show)
+
+ghci> CharList "this will be shown!"  
+CharList {getCharList = "this will be shown!"}
+
+CharList :: [Char] -> CharList
+
+getCharList :: CharList -> [Char]
+```
+
+`CharList` 和`getCharList`是两个相反的过程, 可以认为是对`[Char]`的 wrap 和 unwrap.
+
+##### Using newtype to make type class instances
+
+以前我们实现`Maybe`只需要这样:
+
+```hs
+instance Functor Maybe where
+```
+
+如果我们想 make 一个`tuple` 作为`Functor`的 instance, 实现`fmap (+3) (1,1)`(只作用于第一个 component)返回`(4,1)`, 如何做呢?
+
+* 第二个`type parameter`, 是 tuple 的第一个 component:
+
+```hs
+newtype Pair b a = Pair { getPair :: (a,b) }
+```
+
+然后`fmap`只作用于 1st component:
+
+```hs
+instance Functor (Pair c) where
+    fmap f (Pair (x,y)) = Pair (f x, y)
+```
+
+效果:
+
+```hs
+ghci> getPair $ fmap (*100) (Pair (2,3))  
+(200,3)
+```
+
+##### On newtype laziness
+
+##### type vs. newtype vs. data
+
+* If you just want your type signatures to look cleaner and be more descriptive, you probably want type synonyms.
+* If you want to take an existing type and wrap it in a new type in order to make it an instance of a type class, chances are you're looking for a newtype.
+* And if you want to make something completely new, odds are good that you're looking for the data keyword.
+
 #### 11.4 Monoids
