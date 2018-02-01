@@ -779,6 +779,49 @@ class Monoid m where
 
 `mconcat`是一个一个 List 的 monoid 从右 `reduce`成一个 single value, 执行`mappend`
 
+##### List 是 monoid
+
+```hs
+instance Monoid [a] where
+    mempty = []
+    mappend = (++)
+```
+
+`Monoid`require 一个`concrete type`, 因此用`[a]`(其表示 a List 可以 hold 任何 type)
+
+##### product & sum
+
+* `+`的 identity value 是`0`
+
+##### Any & All(或, 与) Bool
+
+* `||` id value `False`
+* `&&` id value `True`
+
+##### The Ording Monoid
+
+`LT`, `EQ` ,`GT` means : less , equal, greater
+
+##### Maybe the monoid
+
+`Maybe a` 是 monoid, 当其 type parameter `a` 是一个 monoid. `Nothing`是 identity.
+
+```hs
+instance Monoid a => Monoid (Maybe a) where
+    mempty = Nothing
+    Nothing `mappend` m = m
+    m `mappend` Nothing = m
+    Just m1 `mappend` Just m2 = Just (m1 `mappend` m2)
+```
+
+#### Using monoids to fold data structures (用途!)
+
+使用`folds` 操作各种 `data structures`, `Foldable` type class 需要引入.
+
+```hs
+import qualified Foldable as F 
+```
+
 ### 12. A Fistful of Monads (一把 Monads)
 
 ### 13. 更多的 Monads
