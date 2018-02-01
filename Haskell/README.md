@@ -763,3 +763,24 @@ ghci> getPair $ fmap (*100) (Pair (2,3))
 * And if you want to make something completely new, odds are good that you're looking for the data keyword.
 
 #### 11.4 Monoids
+
+定义: Monoid 是一个二元函数, 并且具有`identity value`, 例如:
+
+* `++` 的 `[]`
+* `*` 的 `1` (任何数\* 1 等于其自身)
+
+```hs
+class Monoid m where
+    mempty :: m
+    mappend :: m -> m -> m
+    mconcat :: [m] -> m
+    mconcat = foldr mappend mempty
+```
+
+`mconcat`是一个一个 List 的 monoid 从右 `reduce`成一个 single value, 执行`mappend`
+
+### 12. A Fistful of Monads (一把 Monads)
+
+### 13. 更多的 Monads
+
+### 14. Zipper
