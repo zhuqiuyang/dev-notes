@@ -662,6 +662,10 @@ Applicative Functor Instance:
   > 可以把函数想象成 box(that contain 最终的结果),
 
 * ZipList
+  * `[(+3),(*2)] <*> [1,2]` 会返回`[4,5,2,4]`
+  * 而`ZipList [(+3),(*2)] <*> ZipList [1,2]`会返回`[4, 4]`(`[1 + 3, 2 * 2]`)
+  * `(,,)`函数 same as `\x y z -> (x,y,z)`
+    > 第六章 有`zipWith`定义
 
 #### 11.3 The newtype keyword
 
