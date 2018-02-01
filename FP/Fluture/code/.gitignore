@@ -1,0 +1,11 @@
+.DS_Store
+node_modules
+octopus-open
+npm-debug.log
+package-lock.json
+.vscode
+*.fasthttp.gz
+github.com
+*.js.map
+*.css.map
+.idea
