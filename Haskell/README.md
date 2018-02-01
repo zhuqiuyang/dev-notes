@@ -819,10 +819,18 @@ instance Monoid a => Monoid (Maybe a) where
 使用`folds` 操作各种 `data structures`, `Foldable` type class 需要引入.
 
 ```hs
-import qualified Foldable as F 
+import qualified Foldable as F
 ```
 
+(读到 Tree 停止)
+
 ### 12. A Fistful of Monads (一把 Monads)
+
+#### 12.1 Getting our feet wet with Maybe
+
+`Monad`: 就是支持`>>=`(bind)的 `ap`. (ap 的升级版)
+
+#### 12.2 The Monad type class
 
 ### 13. 更多的 Monads
 
