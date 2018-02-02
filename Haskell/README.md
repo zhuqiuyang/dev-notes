@@ -899,6 +899,53 @@ ghci> return (0,0) >>= landLeft 1 >> Nothing >>= landRight 1
 Nothing
 ```
 
+书上有对比, 不使用`Maybe`的复杂实现.
+
+a neat chain of monadic applications with `>>=`的一个典型例子就是: 利用`Maybe`进行持续计算(which 会有失败的可能.)
+
+#### 12.4 do notation
+
+> 是 chaining monadic value 的语法糖, 就像`async/await`之于`Promise`.
+>
+> 把 glue 在一起的`>>=`, 用`do <-`分开
+
+```hs
+foo :: Maybe String  
+foo = Just 3   >>= (\x ->
+      Just "!" >>= (\y ->
+      Just (show x ++ y)))
+--
+
+foo :: Maybe String
+foo = do
+    x <- Just 3
+    y <- Just "!"
+    Just (show x ++ y)
+```
+
+In `do` 表达式中:
+
+* 每一个都是 monadic type
+* 一个是`Nothing`, `do`就返回`Nothing`
+* 运行对 `monadic value`绑定 name, 并可以进行**pattern matching**
+
+pattern match 失败, 不会导致 program crash:
+
+```hs
+-- 忽略error 信息, 返回Nothing
+fail _ = Nothing
+
+-- 则 pattern match失败, whole result为`Nothing`
+wopwop :: Maybe Char  
+wopwop = do
+    (x:xs) <- Just ""
+    return x
+```
+
+##### 11.5 The list monad
+
+##### 11.6 Monad laws
+
 ### 13. 更多的 Monads
 
 ### 14. Zipper
