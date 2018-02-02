@@ -832,6 +832,29 @@ import qualified Foldable as F
 
 #### 12.2 The Monad type class
 
+```hs
+class Monad m where  
+    return :: a -> m a
+
+    (>>=) :: m a -> (a -> m b) -> m b
+
+    (>>) :: m a -> m b -> m b
+    x >> y = x >>= \_ -> y
+
+    fail :: String -> m a
+    fail msg = error msg
+```
+
+> return 类似 Promise.resolve
+>
+> > > = 类似 Promise.then
+>
+> fail 类似 Promise.reject
+
+Haskell 中`return` 是一个普通函数, 把 value 放入一个 context 中. 并无其他 language 中`end`的含义.
+
+#### 12.3 Walk the line
+
 ### 13. 更多的 Monads
 
 ### 14. Zipper
