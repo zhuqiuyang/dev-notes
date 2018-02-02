@@ -855,6 +855,26 @@ Haskell 中`return` 是一个普通函数, 把 value 放入一个 context 中. �
 
 #### 12.3 Walk the line
 
+> 背景: 走钢丝, 平衡杆上停的 bird. 通过 Monad 来计算.
+
+pipe?:
+
+```hs
+x -: f = f x
+
+ghci> (0,0) -: landLeft 1 -: landRight 4 -: landLeft (-1) -: landRight (-2)
+(0,2)
+```
+
+问题: 第三个执行完应当 `fail`, 改进后:
+
+```hs
+ghci> return (0,0) >>= landLeft 1 >>= landRight 4 >>= landLeft (-1) >>= landRight (-2)  
+Nothing
+```
+
+> 个人理解: Monad pipe
+
 ### 13. 更多的 Monads
 
 ### 14. Zipper
