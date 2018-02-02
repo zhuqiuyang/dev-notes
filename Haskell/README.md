@@ -942,9 +942,76 @@ wopwop = do
     return x
 ```
 
-##### 11.5 The list monad
+##### 12.5 The list monad
 
-##### 11.6 Monad laws
+我们刚学习了`Maybe` with`>>=`
+这一节, 看一下如何从 `monadic` 视角看待`lists`, 并把 non-determinism 引入我们的 code.
+
+list monad:
+
+```hs
+instance Monad [] where
+    return x = [x]
+    xs >>= f = concat (map f xs)
+    fail _ = []
+```
+
+Ch 7.Module 提到`concat`:
+
+> 把元素为 list 的 list, flatten 成 list.
+
+```hs
+ghci> concat ["foo","bar","car"]  
+"foobarcar"  
+```
+
+多个 list 链式调用:
+
+```hs
+ghci> [1,2] >>= \n -> ['a','b'] >>= \ch -> return (n,ch)  
+[(1,'a'),(1,'b'),(2,'a'),(2,'b')]  
+```
+
+`[1,2]` gets bound to `n` and `['a','b']` gets bound to `ch`
+
+> 强大: 之前通过`>>=`提取的 value, 后续 `>>=`的函数中也可以访问.(个人理解: js Promise.then 做不到, 需要 async)
+
+类似`do`如下:
+
+```hs
+listOfTuples :: [(Int,Char)]  
+listOfTuples = do
+    n <- [1,2]
+    ch <- ['a','b']
+    return (n,ch)
+```
+
+#### `list comprehensions` use lists as monads 的**语法糖**
+
+```hs
+ghci> [ (n,ch) | n <- [1,2], ch <- ['a','b'] ]
+[(1,'a'),(1,'b'),(2,'a'),(2,'b')]
+```
+
+因为 non-deterministic, 所以需要`filter`?
+
+```hs
+sevensOnly :: [Int]  
+sevensOnly = do  
+    x <- [1..50]  
+    guard ('7' `elem` show x)  
+    return x
+--
+
+ghci> [ x | x <- [1..50], '7' `elem` show x ]  
+[7,17,27,37,47]  
+```
+
+`filtering` in list comprehensions is the same as using `guard`.
+
+##### 12.6 A knight's quest(八皇后问题)
+
+##### 12.7 Monad laws
 
 ### 13. 更多的 Monads
 
