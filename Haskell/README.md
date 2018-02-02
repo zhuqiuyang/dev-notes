@@ -866,7 +866,8 @@ ghci> (0,0) -: landLeft 1 -: landRight 4 -: landLeft (-1) -: landRight (-2)
 (0,2)
 ```
 
-问题: 第三个执行完应当 `fail`, 改进后:
+问题: 第三个执行完应当 `fail`
+改进: 使用 monadic application (>>=) instead of normal application:
 
 ```hs
 ghci> return (0,0) >>= landLeft 1 >>= landRight 4 >>= landLeft (-1) >>= landRight (-2)  
@@ -874,6 +875,29 @@ Nothing
 ```
 
 > 个人理解: Monad pipe
+
+### 注意: 平衡杆的例子中, `Maybe`若只是`ap`, 无法实现上述效果.
+
+> 因为 ap 做不到在 function apply 之后, 继续更多的 interaction,
+
+#### >> `Anythig >> Nothing` : 表示一定返回`Nothing`到下一轮
+
+> 用于替代函数(which 忽略输入, 返回预定的 monadic value)
+
+eg (踩到香蕉皮一定 fail):
+
+```hs
+banana :: Pole -> Maybe Pole  
+banana _ = Nothing
+
+ghci> return (0,0) >>= landLeft 1 >>= banana >>= landRight 1  
+Nothing
+
+-- 使用>>
+
+ghci> return (0,0) >>= landLeft 1 >> Nothing >>= landRight 1
+Nothing
+```
 
 ### 13. 更多的 Monads
 
