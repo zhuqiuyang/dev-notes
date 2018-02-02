@@ -845,11 +845,11 @@ class Monad m where
     fail msg = error msg
 ```
 
-> return 类似 Promise.resolve
+> `return` 类似 Promise.resolve
 >
-> > > = 类似 Promise.then
+> `>>=` 类似 Promise.then
 >
-> fail 类似 Promise.reject
+> `fail` 类似 Promise.reject
 
 Haskell 中`return` 是一个普通函数, 把 value 放入一个 context 中. 并无其他 language 中`end`的含义.
 
