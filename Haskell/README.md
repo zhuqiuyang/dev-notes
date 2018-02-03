@@ -942,7 +942,7 @@ wopwop = do
     return x
 ```
 
-##### 12.5 The list monad
+#### 12.5 The list monad
 
 我们刚学习了`Maybe` with`>>=`
 这一节, 看一下如何从 `monadic` 视角看待`lists`, 并把 non-determinism 引入我们的 code.
@@ -1009,10 +1009,60 @@ ghci> [ x | x <- [1..50], '7' `elem` show x ]
 
 `filtering` in list comprehensions is the same as using `guard`.
 
-##### 12.6 A knight's quest(八皇后问题)
+#### 12.6 A knight's quest(八皇后问题)
 
-##### 12.7 Monad laws
+#### 12.7 Monad laws
+
+#### 12.7.1 Left identity
+
+`return x >>= f` is the same damn thing as `f x`
+
+#### 12.7.2 Right identity
+
+`m >>= return` is no different than just `m`
+
+##### <=< (组合 monadic functions)
+
+> just like `.`组合普通函数
+
+```hs
+(<=<) :: (Monad m) => (b -> m c) -> (a -> m b) -> (a -> m c)
+f <=< g = (\x -> g x >>= f)
+```
+
+#### 12.7.3 Associate
+
+`(m >>= f) >>= g` is just like doing `m >>= (\x -> f x >>= g)`
 
 ### 13. 更多的 Monads
 
+* Writer
+* Reader
+* state
+* Error error on the wall
+
+#### 13.5 Some useful monadic functions
+
+* liftM (操作 Monad 的`fmap`)
+
+* join (剥开外层 Monad)
+
+* filterM
+
+* foldM
+
+#### 13.6 Making monads
+
 ### 14. Zipper
+
+背景: 由于引用透明(same input -> same output), 也有不如 impure 方便之处, 比如:
+
+* 修改一个 tree 的节点, 需要继续 root 节点到其的路径, 然后返回一个新的 tree.
+
+这样不高效, 本章学习一种高效的方式.
+
+With a pair of Tree a and Breadcrumbs a, we have all the information to rebuild the whole tree and we also have a focus on a sub-tree.
+
+```hs
+type Zipper a = (Tree a, Breadcrumbs a)
+```
