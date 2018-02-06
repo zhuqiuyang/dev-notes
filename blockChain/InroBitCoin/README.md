@@ -38,3 +38,22 @@
 * 查看: `blockchain.info/address/地址`
 
 > 选择一款钱包应用, 导入**私钥**, 即可使用
+
+#### 1.5 交易所购买比特币
+
+> 火币网
+> http://lixiaolai.tumblr.com/post/70183678689/%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E8%B6%B3%E5%A4%9F%E5%AE%89%E5%85%A8%E7%9A%84%E5%AF%86%E7%A0%81
+
+### 第二章：专题介绍 blockchain.info
+
+#### 2.1 第一部分
+
+> blockchain.info
+
+* 创建 wallet, 起别名.
+
+#### 2.2 第二部分
+
+#### 2.3 第三部分
+
+#### 2.4 第四部分
