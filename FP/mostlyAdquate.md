@@ -849,7 +849,7 @@ map(tldr, files)
 // getControlNode :: IO (Maybe (IO Node))
 const getControlNode = compose(map(map($)), map(getAttribute('aria-controls')), $)
 ```
-问题: 两个`IO`瓶子相距太远, 简化成`IO (Maybe Node)`.
+问题: 两个`IO`瓶子相距太远, 简化成`IO (Maybe Node)`.
 
 ### Type Feng Shui (风水)
 The `Traversable` interface consists of two glorious functions: `sequence` and `traverse`.
