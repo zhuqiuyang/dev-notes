@@ -1,4 +1,4 @@
-## Concurrency is not parallelism:
+## 2012: Concurrency is not parallelism:
 
 https://talks.golang.org/2012/waza.slide
 
@@ -10,7 +10,7 @@ https://talks.golang.org/2013/advconc.slide#8
 
 > Goroutines are independently executing fuctions in the same address space.
 
-## 5.Google IO 2012 - Go Concurrency Patterns
+## Google IO 2012 - Go Concurrency Patterns
 
 https://www.youtube.com/watch?v=f6kdp27TYZs
 slides: https://talks.golang.org/2012/concurrency.slide#40
