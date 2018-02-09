@@ -9,6 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fluture": "^8.0.1"
+    "data.task": "^3.1.1",
+    "fluture": "^8.0.1",
+    "folktale": "^2.0.1",
+    "rambda": "^1.0.11"
   }
 }
