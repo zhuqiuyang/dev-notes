@@ -891,7 +891,7 @@ Left.prototype.sequence = function(of) {
 ### Effect assortment
 Different orders have different outcomes where our containers are concerned.
 - `[Maybe a]`, that's a collection of possible values (The former indicates we'll be forgiving and keep "the good ones",)
-- `a Maybe [a]`, that's a possible collection of values.(while the latter means it's an "all or nothing" type of situation.)
+- `Maybe [a]`, that's a possible collection of values.(while the latter means it's an "all or nothing" type of situation.)
 
 ```js
 // fromPredicate :: (a -> Bool) -> Either a a
@@ -905,13 +905,14 @@ const validate = f => traverse(Either.of, fromPredicate(f))
 `partition` 有利用保存后续有用的数据, 而不是filer it out like洗澡水.
 `validate` will only move forward if everything is ok.
 
+## 使用`traverse`代替`map`, 就像`Promise.all()`
+
 ### Waltz of the types(华尔兹)
 ```js
 // 本章开头的例子改写成:
 traverse(Task.of, tldr, files)
 // Task(['hail the monarchy', 'smash the patriarchy'])
 ```
-使用`traverse`代替`map`, 就像`Promise.all()`
 
 ### No law and order
 A natural consequence of this law is:

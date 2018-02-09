@@ -4,6 +4,11 @@
 - 易于流程控制(Promise)
 - `function`第一等公民
 
+### 规范及实现
+> https://github.com/fantasyland/fantasy-land
+> 
+> https://github.com/fluture-js/Fluture
+
 # 容器(Functor): 函数使用者(主动权)
 ## Functor, Monad
 - `Monad`是容器
