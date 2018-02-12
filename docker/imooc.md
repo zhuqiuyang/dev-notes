@@ -121,3 +121,22 @@ docker run -p 80:80 -d -v $PWD/html:/usr/share/nginx/html nginx
 * 直接 Host 内修改, 即可映射到容器.
 
 ##### 挂载一个已有数据的容器, 并将它当做`Volume`挂载到其他容器.
+
+```sh
+docker create -v $PWD/data:/var/mydata --name data_container ubuntu
+
+# 从另外一个容器挂载
+docker run -it --volumes-from data_container ubuntu /bin/bash
+```
+
+#### 5.1 Registry 介绍
+
+```sh
+docker search whalesay
+docker pull docker/whalesay
+docker push
+```
+
+#### 5.2 Registry 实战
+
+> 发布一个 Image, tag 就像 npm 里的 version.
