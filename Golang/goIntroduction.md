@@ -49,3 +49,10 @@ str := string(bs)
 ```
 
 6. Test
+
+### chap 10. Channel
+
+方向:
+
+* channel 默认是`bidirection`, `<- chan` 表示只读, `chan <-` 表示只写
+* 双向 channel 可以传参给 只读/写, 反过来不可以.(\*)
