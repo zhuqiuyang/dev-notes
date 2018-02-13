@@ -4,6 +4,3 @@
 
 > eg, mysql 查询
 
-#### CSP 适合于 procedual language
-
-> Go embodies a variant of CSP with first-class channels.

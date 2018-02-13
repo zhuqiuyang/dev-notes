@@ -2,13 +2,6 @@
 
 > https://github.com/golang/go/wiki/LearnConcurrency
 
-### 2012: Go at Google: Language Design in the Service of Software Engineering
-
-> https://talks.golang.org/2012/splash.article
-
-> Go's purpose is therefore not to do research into programming language design; it is to improve the working environment for its designers and their coworkers. Go is more about software engineering than programming language research. Or to rephrase, it is about language design in the service of software engineering.
-
-
 ## 2012: Concurrency is not parallelism:
 
 https://talks.golang.org/2012/waza.slide
