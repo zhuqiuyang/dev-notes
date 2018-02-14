@@ -13,3 +13,21 @@
 #### range channel
 
 The loop for `i := range c` 重复地从`c`channel 中取值, 直到其被`close`.
+
+可以`close`一个非空的`channel`, 再其值取完后, 会自动`close`.
+
+```go
+package main
+import "fmt"
+func main() {
+
+    queue := make(chan string, 2)
+    queue <- "one"
+    queue <- "two"
+    close(queue)
+
+    for elem := range queue {
+        fmt.Println(elem)
+    }
+}
+```
