@@ -140,3 +140,38 @@ docker push
 #### 5.2 Registry 实战
 
 > 发布一个 Image, tag 就像 npm 里的 version.
+
+### 6. 多容器 APP
+
+#### 6.1 介绍
+
+`docker-compose`安装:
+
+* Mac/Window 自带
+* Linux curl 安装
+
+#### 6.2 linux 安装 compose
+
+```sh
+curl -L https://github.com/docker/compose/releases/download/1.9.0/docker-compose-$\(uname -s\)-$\(uname -m\) > /usr/local/bin/docker-compose
+# $(uname -s) 意思是把 `uname -s`输出添加到此
+
+chmod a+x /usr/local/bin/..
+# a+x 所有人都可以执行这个文件.
+
+docker-compose --version
+```
+
+#### 6.3 compose 实战
+
+nginx -> ghost app -> mysql
+
+```sh
+docker-compose up -d
+# -d表示所有容器以daemon方式运行
+
+docker-compose stop
+docker-compose rm
+
+docker-compose build
+```
