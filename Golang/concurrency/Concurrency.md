@@ -12,3 +12,8 @@
 传统的并发模型(JAVA, C++, Python), 是通过 share memory, 并通过 Lock 来控制访问.
 Go 提倡使用 channel 在 goroutines 间传递 the ref of data.
 这样确保, 同一时间, 只有一个 goroutine 可以访问数据.
+
+### FAQ
+
+1. goroutine 如何关闭, 在`urlpoll.go` 的 `StateMonitor`函数中使用了 pipeline.
+> 进程退出才会关闭, 函数调用完成并不会? 
