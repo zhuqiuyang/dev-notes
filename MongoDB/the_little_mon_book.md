@@ -115,3 +115,41 @@ db.employees.insert({_id: ObjectId( "4d85c7039ab0fd70a117d735"),
 #### Indexes
 
 > 建立索引, 提升查询速度
+
+```sh
+# 1表示升序
+db.unicorns.ensureIndex({name: 1});
+```
+
+#### explain
+
+查看 query 是否使用了 index, 使用`explain`
+
+```sh
+db.unicorns.find().explain()
+```
+
+#### replication (不讨论)
+
+#### sharding (不讨论)
+
+cluster
+
+> Combining replication with sharding is the perscribed approach to achieve scaling and high availability.
+
+#### Stats
+
+```js
+db.stats();
+db.unicorns.stats();
+```
+
+#### Profiler (概要, 日志?)
+
+#### Backups and Restore
+
+`mongoexport` and `mongoimport` 用于导入/出 JSON or CSV
+
+> Note that `mongoexport` and `mongoimport` cannot always represent your data. Only `mongodump` and `mongorestore` should ever be used for actual backups
+
+####
