@@ -93,3 +93,25 @@ db.employees.insert({_id: ObjectId( "4d85c7039ab0fd70a117d735"),
 #### Writes
 
 `capped(有上限的) collection`可以设置 limite, 超出则 purge(清除)
+
+#### Chap 9
+
+### Chap 6 - Aggregating (总数, 聚合) Data
+
+#### Aggregation Pipeline
+
+> 聚合 pipeline 处理
+
+```sh
+> db.unicorns.aggregate([{$group:{_id:'$gender', total: {$sum:1}}}])
+{ "_id" : "f", "total" : 3 }
+{ "_id" : "m", "total" : 4 }
+```
+
+#### Chapter 10
+
+### Chapter 7 - Performance and Tools
+
+#### Indexes
+
+> 建立索引, 提升查询速度
