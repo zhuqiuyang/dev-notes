@@ -58,7 +58,38 @@ show dbs
 * skip: 略过前几条
 
 #### Count (计数)
+
 ```sh
 > db.unicorns.count({vampires: {$gt: 50}})
 4
 ```
+
+#### Chap 7
+
+### Chap 4: Data Modeling
+
+#### No joins
+
+#### Array 和 embeded Document (\*)
+
+```sh
+db.employees.insert({_id: ObjectId( "4d85c7039ab0fd70a117d735"),
+  name: 'Chani',
+  family: [ {relation:'mother',name: 'Chani'},
+    {relation:'father',name: 'Paul'},
+    {relation:'brother', name: 'Duncan'}]})
+```
+
+单个 document 限制在 16Mb
+
+#### Chap 8
+
+### Chap 5: When To Use Mongo
+
+#### Flexible Schema
+
+> 是 Mongo 的一个重要特性. (允许 collection 存储不同格式的 document)
+
+#### Writes
+
+`capped(有上限的) collection`可以设置 limite, 超出则 purge(清除)
