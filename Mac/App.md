@@ -32,6 +32,7 @@
 * weixin
 * chrome
 * CleanMyMac: "id506291039148odr"
+* Dr Cleaner
 
 ### Not Free
 
@@ -39,7 +40,7 @@
 * ulyssess -> atom
 * quiver
 * 1password -> chrome
-* iStateMenus: "9665-5955-6856-2071-0000"
+* ~~iStateMenus: "9665-5955-6856-2071-0000"~~
 * Next
 
 ### Binary
