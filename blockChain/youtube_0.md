@@ -1,7 +1,9 @@
 ### Building a blockchain for business with the Hyperledger Project
+
 > https://www.youtube.com/watch?v=EKa5Gh9whgU
 
 Fabric: developer candidate(开发者候选)
+
 * Supply chain(供应链)
 * Capital market(资本市场)
 * Manufacturing(制造业)
@@ -15,15 +17,16 @@ Peer: Endorser(背书节点), Commiter()
 Consenter: Consenter(同意者)
 
 #### How it works ?
-问题: 
-> Market(我)以低价买萝卜, 而其他marktet以标准价
 
-Fabric 解决了: 
-> 更多的party(监管, 海关)参与, 但不会了解到special low price.
+问题:
 
+> Market(我)以低价买萝卜, 而其他 marktet 以标准价
+
+Fabric 解决了:
+
+> 更多的 party(监管, 海关)参与, 但不会了解到 special low price.
 
 **Without** passing everything through a **central authority**
-
 
 > Hyperledger® is one of the fastest growing open source blockchain communities. Anyone can help lead it. Learn more and join the community: www.hyperledger.org. Or, head here, http://ibm.co/2dbtffw.
 
