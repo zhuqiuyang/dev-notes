@@ -58,3 +58,24 @@ int main() {
 * 避免 generate 出来的 code 难以理解.
 
 ### 55. macro
+
+> gcc: A macro is a fragment of code which has been given a name. Whenever the name is used, it is replaced by the contents of the macro.
+>
+> 不建议 overuse macros, 不易读.
+
+```cc
+#include <iostream>
+#include <string>
+
+#define LOG(x) std::out << x << std::endl
+
+int main() {
+  LOG("HELLO");
+  std::cin.get();
+}
+
+#define MAIN int main() \
+{\
+  std::cin.get();\
+}
+```
