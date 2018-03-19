@@ -2,6 +2,11 @@
 
 Find confuse, find essence.
 
+### Macro & Template
+
+* Cpp 的 Macro 可以生成 code(pre-processor); 而 Lisp 的宏可以调用 compiler, 执行 code -> 生成 code.
+* Template 可以生成模板 Function 或 class.
+
 ### Bjarne Stroustrup: Why I Created C++
 
 In the late 1970s, Stroustrup applied the idea of "classes" to the C programming language to create a new language that allows for high level abstraction—but is efficient and close to the hardware. Read more at BigThink.com:
