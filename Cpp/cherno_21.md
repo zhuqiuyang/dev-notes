@@ -1,4 +1,28 @@
-### 23. Virtual Functions in C++
+### 27. Inheritance
+
+write `:`(colon) 在 class 声明之后, 添加基类
+
+```cc
+class Entity
+{
+  public:
+    float X, Y;
+
+    void Move(float xa, float ya) {
+      X += xa;
+      Y += ya;
+    }
+};
+
+class Player : Entity
+{
+
+}
+```
+
+* 子类包含父类所有的东西.
+
+### 28. Virtual Functions in C++
 
 ```cc
 #include <iostream>
