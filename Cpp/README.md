@@ -25,3 +25,7 @@ Another aspect that’s necessary for infrastructure is `stability`. When you bu
 `C++’s problem` is the complexity part because we haven’t been able to clean it up. There’s still code written in the 80’s that are running and people don’t like their running codes to break. It could cost them millions or more.
 
 Interviewed by Max Miller
+
+### Compare with C
+
+* C 是中级语言, 面向过程, Cpp 增加了 OOP 和泛型 (class 和 template)
