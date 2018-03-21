@@ -4,12 +4,12 @@
 * why?: directly control hardware, fast and performance
 * java pCode run in vm vs. cpp to machine code for that platform (Linux, Mac, Windows)
 
-### 2. SetUp on Mac
+### 3. SetUp on Mac
 
 * Xcode
 * MacOS-> CommandLineTool-> Cpp
 
-### 3. How cpp Works?
+### 5. How cpp Works?
 
 * series of source file to excutable binaries(programs or Library).
 * preprocess statement `#`
@@ -38,9 +38,19 @@ std::out.print("hell").print(std::endl);
   * Linker's job is to `resolve symbol`.
 * compiler compile each `cpp` file to `.obj` file.
 
-### 4. How Cpp compiler works?
+### 6. How Cpp compiler works?
+
+> text file -> application computer can run. 两块操作: compiling & linking.
+>
+> compiler only to do: 把 text file, convert 成 intermediate format, call `obj` file, 然后 pass to linker.
 
 #### stage1: pre-processor (get all cpp code)
+
+> 所有的 preprocess statement 在此被 evaluate
+>
+> English lang -> AST (Abstract Syntax Tree) being created
+>
+> AST 再 generate machine code; 再单独存储 CONSTANT data. (2min ago)
 
 1.  `#include` just copy
 2.  `#define` CONSTANT replace
@@ -52,7 +62,7 @@ The gist of how a compiler work:
 it will take our `source files` and output and `.obj file` which contains machine code and other constant data that's we defined.
 And we got these obj file, and we can `link` them into one excutable which contain all of the machine code that we actually need to run.
 
-### 5. Linker
+### 7. Linker
 
 * entry point!
   * `.exe` has to have some kind of entry point.
