@@ -1,5 +1,7 @@
 `mylib.h`, `mylib.cpp`
 
+> `clang | klaŋ |`
+
 ```sh
 # 编译mylib
 chmod +x compile_lib.sh
