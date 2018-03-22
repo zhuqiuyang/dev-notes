@@ -14,6 +14,7 @@
  mkdir glfw-build
  cd glfw-build
  cmake ..
+ # 开启 BUILD_SHARED_LIBS 选项, 才能生成后续dylib
 
  # 生成include 和 lib
  export DESTDIR=/INSTALL/DIR

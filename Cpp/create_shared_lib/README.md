@@ -1,5 +1,7 @@
-`mylib.h`, `mylib.cpp`
-
+> https://www.youtube.com/watch?v=PRUR_bN3r-E
+>
+> `mylib.h`, `mylib.cpp`
+>
 > `clang | klaŋ |`
 
 ```sh
