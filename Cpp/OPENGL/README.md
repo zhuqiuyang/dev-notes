@@ -1,6 +1,13 @@
 ### Xcode setting
 
 ```sh
+mkdir build
+cd build
+cmake -DBUILD_SHARED_LIBS=ON ..
+make
+sudo make install
+# ...
+
 -- Install configuration: ""
 -- Installing: /usr/local/include/GLFW
 -- Installing: /usr/local/include/GLFW/glfw3.h

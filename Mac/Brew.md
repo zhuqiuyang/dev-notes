@@ -7,5 +7,17 @@ brew install zsh
 #安装在 /usr/local/bin/zsh 目录下
 
 
-brew install zsh ssh-copy-id z macvim maven git n
+brew install zsh ssh-copy-id z macvim
+n
+cmake
+git
+grafana
+influxdb
+mongodb
+openssl
+screen
+supervisor
+tree
+wrk
+z
 ```
