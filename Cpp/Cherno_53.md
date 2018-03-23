@@ -135,3 +135,14 @@ int main() {
   std::cin.get();\
 }
 ```
+
+### 60. Why I don't "using namespace std"
+
+> `using namespaceing std` 不用 type`std::`every time, 也可以定义在函数 scope 中.
+>
+> js 中的`with`与之类似.
+
+* 便于一眼看出, 使用了`std`库中的哪些函数.
+* 造成 compiler 识别 ambigious, 两个 namespaceing 下有同名内容.
+
+Eg: `EASTL`
