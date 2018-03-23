@@ -143,6 +143,18 @@ int main() {
 > js 中的`with`与之类似.
 
 * 便于一眼看出, 使用了`std`库中的哪些函数.
-* 造成 compiler 识别 ambigious, 两个 namespaceing 下有同名内容.
+* 避免 possible error.造成 compiler 识别 ambigious, 两个 namespaceing 下有同名内容.
 
-Eg: `EASTL`
+Eg:
+
+1.  `EASTL`
+2.  `apple`and `orange`事例:
+
+* `print("Hello");`中的`"Hello"`是`(const char[6])"Hello"`
+* 如果没有`orange`中的, 将进行`implicit conversion` (隐式转换)
+
+## Never use namespace in `.h`
+
+* 如果使用, 尽量 inside function scope, also not in `.cpp`
+
+> 很难 Track 到哪里 include, 哪里没有 (13:00)
