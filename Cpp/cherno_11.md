@@ -212,3 +212,33 @@ int main() {
 * `public`, 允许在 class 外进行访问.
 * Anything you can do with `class`, you can do `without` class.(07:55, This is why language like c exit.)
 * `class`只是一种 sugar, 便于 organize our code.
+
+### 12. CLASSES vs STRUCTS in C++
+
+> 此集内容: when to use class, when to use structs?
+
+Visibility:
+
+* `class` is `private` (by default)
+* `struct` is `public` (by default)
+  * `private`可显示声明
+
+```cpp
+struct Player {
+ private:
+  int x,y;
+  int speed;
+}
+```
+
+> 没有完全去除`struct` keyword which in C language.
+
+#### Usage (03:40)
+
+> 没有绝对的对错, 取决于你的编程 style. 以下是作者观点:
+
+`struct`: plain of data, just represent variable.
+
+* never use `inheritance` in `struct`
+
+`class`: add method
