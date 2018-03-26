@@ -15,13 +15,16 @@ Dev Learning Notes
 * OOP(class), FP(Functor), Macro(code-> code), 各种语法 Sugar
 * 简化并发模型:
   * Go 的 channel
-  * Node 的 event-driven, non-blocking I/O 模型
+  * Node async/await
   * Erlang/Elixir 的 Actor 模型(未接触)
 
 #### 高效的产物
 
 * Pointer(指针), Ref(引用)
   > 减小 Copy Cost, 但增加了开发难度
+* C++ 手动 GC
+* Node 的 event-driven, non-blocking I/O 模型
+* Vue.js 的响应式数据
 
 #### 安全的产物
 
