@@ -76,11 +76,68 @@ Math program & Logic program
 ### 16. POINTERS in C++
 
 > wall pointer ? ,not smart pointer.
+>
+> Nothing you can do , if without Memory.
+>
+> Pointer 对于 manerge 和 manipulate memory 十分重要.
 
-Nothing you can do , if without Memory.
-
-Pointer 对于 manerge 和 manipulate memory 十分重要.
-
-Pointer 是 Interge, which 存储 memory address(one byte). 和 type 无关. (\*)
+**`Pointer` just a Interge, which hold a `memory address`(one byte). 和 type 完全无关. (\*)**
 
 * `void* ptr`: 暂时只需要一个 address, 不关心其将指向的 type.(04:40)
+  > 下面三种是相同的.
+
+```cpp
+void* ptr = 0;
+// #define NULL 0
+void* ptr = NULL;
+// cpp 独有的
+void* ptr = nullptr;
+```
+
+* `&`: means give me your memory address:
+
+```cpp
+int main () {
+  int var = 8;
+  void* ptr = &var;
+  std::cin.get();
+}
+
+int main() {
+  int var = 8;
+  double* ptr =(double*)&var;
+}
+```
+
+* `*ptr`: dereference that pointer, which means I now access the data (读或写).
+
+`int* ptr`: 只是 adress 内 data 的所存 type.
+
+#### heap
+
+```cpp
+int main () {
+  char* buffer = new char[8];
+  memset(buffer, 0, 8);
+
+  delete[] buffer;
+  std::cin.get();
+}
+```
+
+* allocate 8 byte `memeory` for us
+* point to the `beginning` of the memory
+
+#### pointer to pointer
+
+```cpp
+int main () {
+  char* buffer = new char[8];
+  memset(buffer, 0, 8);
+
+  char** ptr = &buffer;
+
+  delete[] buffer;
+  std::cin.get();
+}
+```
