@@ -12,7 +12,7 @@ Dev Learning Notes
 
 #### 易用的产物:
 
-* OOP(class), FP(Functor), Macro(code-> code), 各种语法 Sugar
+* OOP(class), FP(Functor), Template, Macro(code-> code), 各种语法 Sugar
 * 简化并发模型:
   * Go 的 channel
   * Node async/await

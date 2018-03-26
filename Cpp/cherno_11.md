@@ -181,3 +181,7 @@ Increment(a);
 
 * pointer 功能更强大, ref 只是部分简单地场合的 syatax sugar;
 * 使用 reference 更简洁.
+
+### 18. Class
+
+> class 是结合 data 和 Function 的一种方式. (organized)
