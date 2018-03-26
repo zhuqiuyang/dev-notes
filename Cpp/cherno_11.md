@@ -213,7 +213,7 @@ int main() {
 * Anything you can do with `class`, you can do `without` class.(07:55, This is why language like c exit.)
 * `class`只是一种 sugar, 便于 organize our code.
 
-### 12. CLASSES vs STRUCTS in C++
+### 19. CLASSES vs STRUCTS in C++
 
 > 此集内容: when to use class, when to use structs?
 
@@ -242,3 +242,13 @@ struct Player {
 * never use `inheritance` in `struct`
 
 `class`: add method
+
+### 20. How to Write a C++ Class?
+
+> 前言: Log System (日志系统)
+
+作者的习惯:
+
+* `public` method one section
+* `public` variable another section
+* `public` static variable 也是独立的 section
