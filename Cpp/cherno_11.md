@@ -141,3 +141,43 @@ int main () {
   std::cin.get();
 }
 ```
+
+### 17. Reference
+
+> ref are just extension of pointer. (syntax sugar)
+>
+> pretty much the same thing.
+>
+> write and use, 有 subtle difference
+
+* ref to 只针对已存在的 variable(声明时必须赋值), 其本身不是`new variable`, 不占用内存和存储空间.
+* 一旦声明, 不可更改
+
+```cpp
+int main() {
+  int a = 5;
+  int& ref = a;
+  std::cin.get();
+}
+```
+
+more complicated:
+
+```cpp
+void Increment (int value) {
+  value++;
+}
+
+void Increment (int* value) {
+  (*value)++;
+}
+Increment(&a);
+
+void Increment (int& value) {
+  value++;
+}
+Increment(a);
+```
+
+* pointer 功能更强大, ref 只是部分简单地场合的 syatax sugar;
+* 使用 reference 更简洁.
