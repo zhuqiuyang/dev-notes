@@ -10,11 +10,26 @@
 
 #define LOG(x) std::cout << x << std::endl
 
-int main(int argc, const char * argv[]) {
-    int a = 5;
-    int& ref = a;
-    ref = 2;
-    
-    LOG(a);
-    return 0;
+class Player {
+ public:
+  int x, y;
+  int speed;
+
+  void Move(int xa, int ya) {
+    x += xa * speed;
+    y += ya * speed;
+  }
+};
+
+int main(int argc, const char* argv[]) {
+  int a = 5;
+  int& ref = a;
+  ref = 2;
+
+  Player player;
+  player.x = 2;
+  LOG(player.x);
+
+  LOG(a);
+  return 0;
 }

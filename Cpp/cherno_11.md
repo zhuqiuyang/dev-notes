@@ -185,3 +185,30 @@ Increment(a);
 ### 18. Class
 
 > class 是结合 data 和 Function 的一种方式. (organized)
+
+```cpp
+class Player {
+  int x,y;
+  int speed;
+
+  // 访问属性不需要 this?
+  void Move(int xa, int ya) {
+    x += xa * speed;
+    y += ya * speed;
+  }
+}
+
+void Move(Player& player, int xa, int ya) {
+  player.x += xa * player.speed;
+  player.y += ya * player.speed;
+}
+
+int main() {
+  Player player;
+}
+```
+
+* class 中成员, 默认都是`private`的,(只有其内 function 可以访问)
+* `public`, 允许在 class 外进行访问.
+* Anything you can do with `class`, you can do `without` class.(07:55, This is why language like c exit.)
+* `class`只是一种 sugar, 便于 organize our code.
