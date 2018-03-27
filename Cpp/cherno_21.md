@@ -109,6 +109,35 @@ public:
 * 拥有`pure virtual function`的 class 称为`abstract class`
 * 不实现基类的`pure virtual function`, 这个类不能被初始化.
 
-#### 结论(使用场景-Generic): (\*)
+#### 结论(使用场景-Generic): (!!!)
 
 * 确保 some `class`拥有 certain function, 所以你可以 pass it to `fairly generic method` that we'll just call that function.
+
+### 30. Visibility in C++
+
+> visible: who can see/call/use them ?
+>
+> vidibility 并不是 program 实际运行方式, just for write better code.(help organize code) !!!
+
+#### private:
+
+* itself 和 friend 可以访问 private members;
+* `main()`中不可以访问
+
+#### protected:
+
+* subclass 可以访问 protected members;
+* `main()`中不可以访问
+
+#### public
+
+* Public for all, anyone can Access.
+
+##### TLDR; (short answer)
+
+> 作者阐述 When and why to use visibility ?
+
+个人理解:
+
+* 便于维护, 长期之后, 知道哪些内容是被保护的, 防止破坏
+* 暴露的 API 是 public, 内部实现可以是 private.
