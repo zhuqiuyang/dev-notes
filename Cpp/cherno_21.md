@@ -106,7 +106,7 @@ public:
 };
 ```
 
-* 只包含 pure virtual function 的称为`abstract class`
+* 拥有`pure virtual function`的 class 称为`abstract class`
 * 不实现基类的`pure virtual function`, 这个类不能被初始化.
 
 #### 结论(使用场景-Generic): (\*)
