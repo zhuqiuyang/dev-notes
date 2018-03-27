@@ -91,3 +91,24 @@ std::string GetName() override { return m_Name; }
 * 每次 call, 都会通过 vtable 查找, call 正确的 function.
 
 > CPU 紧缺的嵌入式系统, 少用
+
+### 29. Interfaces in C++ (Pure Virtual Functions)
+
+> pure function in c++ , 如同 JAVA, C# 中的 interface
+>
+> Cpp 中 interface 就是 class.
+
+```cpp
+class Entity
+{
+public:
+    virtual std::string GetName() = 0;
+};
+```
+
+* 只包含 pure virtual function 的称为`abstract class`
+* 不实现基类的`pure virtual function`, 这个类不能被初始化.
+
+#### 结论(使用场景-Generic): (\*)
+
+* 确保 some `class`拥有 certain function, 所以你可以 pass it to `fairly generic method` that we'll just call that function.
