@@ -26,6 +26,36 @@ extern int s_Variable;
 
 尽量让你的 variable 和 function static, 除非你希望 them to be linked cross translation unit.
 
+### 22. Static for Classes and Structs in C++
+
+> global instance for that class.
+
+```cpp
+struct Entity {
+  static int x, y;
+};
+
+// error: Because x, y are not class member now!
+Entity e1 = {5, 8};
+
+// correct:
+Entity::x = 5;
+Entity::y = 8;
+```
+
+* we made two variable x&y, inside a namespace called `Entity`, they 不属于 class `Entity`.
+
+#### 这么做的意义:
+
+当你有 data 希望在所有的 instance 之间 shared, store it inside the `Entity` class, 虽然创建一个`staic global` variable 也可行.
+
+* static method 不能访问 non-static variable: 因为 static method doesn't have a class instance.
+* class 的每个 non-static method, always get a class instance as parameter.(内部机理)
+  * `method` just function with a hidden parameter.
+  * `static` method 却没有, it's same 如果 write a function outside the class.
+
+使用建议: `static` 对于 `static data`(doesn't change between class instances) 十分有用.
+
 ### 27. Inheritance
 
 write `:`(colon) 在 class 声明之后, 添加基类
