@@ -56,6 +56,22 @@ Entity::y = 8;
 
 使用建议: `static` 对于 `static data`(doesn't change between class instances) 十分有用.
 
+### 23. Local Static in C++
+
+> lifetime 整个 program 运行周期, scope inside the function.
+
+```cpp
+void Function() { static int i = 0; }
+```
+
+* first call 初始化 i, 之后不会再 create. (eg: 每次调用, +1)
+* 创建一个`Singleton` Class 也可以实现, 相比则会有 a lot of code.
+
+使用场景:
+
+* singleton
+* 初始化 function.
+
 ### 27. Inheritance
 
 write `:`(colon) 在 class 声明之后, 添加基类

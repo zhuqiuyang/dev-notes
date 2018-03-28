@@ -6,4 +6,4 @@
 //  Copyright © 2018年 qiuyang.zhu. All rights reserved.
 //
 
-extern int s_Variable = 5;
+int s_Variable = 5;

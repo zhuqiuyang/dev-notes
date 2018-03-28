@@ -33,3 +33,4 @@ Interviewed by Max Miller
 ### Visibility
 
 * `static`, `extern`控制 file 中变量对外的可见性, 因为最终会 link 在一起
+* `static`可以控制 translation unit, class, function 三种级别的 scope.

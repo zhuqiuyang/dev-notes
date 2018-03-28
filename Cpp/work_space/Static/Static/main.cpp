@@ -15,6 +15,38 @@ struct Entity {
 
   void Print() { std::cout << x << ", " << y << std::endl; }
 };
+
+// Local Static
+void Function() {
+  static int i = 0;
+  i++;
+  std::cout << i << std::endl;
+}
+
+class Singleton {
+ private:
+  static Singleton* s_Instance;
+
+ public:
+  static Singleton& Get() { return *s_Instance; }
+};
+
+Singleton* Singleton::s_Instance = nullptr;
+
+// or:
+
+class Singleton_New {
+ public:
+  static Singleton& Get() {
+    static Singleton instance;
+    return instance;
+  }
+};
+
+Singleton* Singleton::s_Instance = nullptr;
+
+// end Local static
+
 int main(int argc, const char* argv[]) {
   Entity e;
   e.x = 2;
@@ -29,5 +61,11 @@ int main(int argc, const char* argv[]) {
 
   // insert code here...
   std::cout << s_Variable << std::endl;
+
+  Function();
+  Function();
+  Function();
+  Function();
+  Function();
   return 0;
 }
