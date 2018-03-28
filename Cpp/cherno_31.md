@@ -87,3 +87,12 @@ void  printString (const std::string& string) {}
 如上定义会进行`class`/object copy, 开销大, 改进:
 
 * Ref, won't copy it .
+
+### 35. CONST in C++
+
+> fake keyword, 对 generate code 作用很小,
+>
+> promise: not change data. 这么承诺, 是因为可以简化 code.
+
+1.  应用于 pointer
+    > see code (03:40)
