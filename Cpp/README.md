@@ -29,3 +29,7 @@ Interviewed by Max Miller
 ### Compare with C
 
 * C 是中级语言, 面向过程, Cpp 增加了 OOP 和泛型 (class 和 template)
+
+### Visibility
+
+* `static`, `extern`控制 file 中变量对外的可见性, 因为最终会 link 在一起

@@ -245,7 +245,7 @@ struct Player {
 
 ### 20. How to Write a C++ Class?
 
-> 前言: Log System (日志系统)
+> 前言: Log System (日志系统), (code in Class/main.cpp)
 
 作者的习惯:
 

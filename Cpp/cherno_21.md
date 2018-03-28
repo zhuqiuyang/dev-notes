@@ -1,3 +1,31 @@
+### 21. Static in C++
+
+`staic`有两种意义(根据 context):
+
+* inside class/struct: shared memory 在所有 `instance` 中.
+* outside class/struct: means `internal`, 只在定义所在的 `translation unit` 可见.
+
+> 这节课只讨论 outside class 的场景(类似于 class 中的 private.04:50)
+
+```cpp
+static int s_Variable = 5;
+```
+
+* only 被 linked internally inside this Translation unit, 不能被其他 unit Link (\*)
+* `staic` Function or var 意味着: link 阶段只会在`Translation unit`内寻找`symbol definition`
+
+```cpp
+extern int s_Variable;
+```
+
+* 在`Translation unit` 之外寻找这个`s_Variable`;
+
+在`.h`中创建`static` variable: 在所有引用这个`.h`文件中都创建了`static` variable;
+
+#### 作者建议:
+
+尽量让你的 variable 和 function static, 除非你希望 them to be linked cross translation unit.
+
 ### 27. Inheritance
 
 write `:`(colon) 在 class 声明之后, 添加基类
