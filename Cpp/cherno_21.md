@@ -39,10 +39,11 @@ struct Entity {
 Entity e1 = {5, 8};
 
 // correct:
-Entity::x = 5;
-Entity::y = 8;
+int Entity::x = 5;
+int Entity::y = 8;
 ```
 
+* `static member`在 class 中是只是声明, 必须在 class 外初始化和定义, (用以分配空间并初始化) - book&video03:12
 * we made two variable x&y, inside a namespace called `Entity`, they 不属于 class `Entity`.
 
 #### 这么做的意义:
