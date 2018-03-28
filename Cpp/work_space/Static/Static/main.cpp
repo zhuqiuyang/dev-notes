@@ -16,6 +16,9 @@ struct Entity {
   void Print() { std::cout << x << ", " << y << std::endl; }
 };
 
+int Entity::x;
+int Entity::y;
+
 // Local Static
 void Function() {
   static int i = 0;
@@ -43,7 +46,7 @@ class Singleton_New {
   }
 };
 
-Singleton* Singleton::s_Instance = nullptr;
+//Singleton* Singleton::s_Instance = nullptr;
 
 // end Local static
 
