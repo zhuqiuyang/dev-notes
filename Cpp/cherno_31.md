@@ -1,3 +1,41 @@
+### 31. Arrays in C++
+
+> 先要 know pointer.
+
+* 便于 create a collection of data, 而非创建一堆 variable.
+
+```cpp
+int examples[5];
+int* ptr = examples;
+```
+
+* `examples`实际是 `integer pointer`(存储的数组的首地址)
+
+```cpp
+examples[2] = 5;
+*(ptr + 2) = 6;
+*(int*)((char*)ptr + 8) = 7;
+```
+
+* `ptr + 2` 所加的值是索引值, byte 长度会根据所指的数据类型, 被 add.
+* `char`占 1 byte, 所以 +8, 实际是`int`的长度.
+
+#### create in Heap
+
+```cpp
+int* another = new int[5];
+
+delete[] another
+```
+
+* 当 function 返回一个新的数组时, need `new` keyword.
+
+#### cpp11: std::array
+
+* 默认 array 无法直接获取长度. 可以用`sizeof(examples)/sizeof(int)`
+* 作者使用`raw array`, 因为会 fast 一些.
+* 使用`std::array` 会更安全一些.
+
 ### 32. How Strings Work in C++ (and how to use them)
 
 > string : a group of text
