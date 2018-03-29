@@ -88,7 +88,59 @@ void  printString (const std::string& string) {}
 
 * Ref, won't copy it .
 
-### 35. CONST in C++
+### 33. String Literals in C++
+
+> string literal: a series of char in ""
+
+```cpp
+// const char array, size is 7
+"Cherno"
+
+const char name[8] = "Che\0rno";
+// c string, get length is 3!
+std::cout << strlen(name) << std::endl;
+```
+
+```asm
+CONST SEGMENT
+??_C@ ....; `string'
+CONST ENDS
+```
+
+* string literal 存储在只读 memory 中.
+
+```cpp
+char* name = "Ace";
+name[2] = 'c';
+
+std::cout << name << std::endl;
+```
+
+* `name`存在于只读内存, 不能修改. (禁止这么做)
+
+```cpp
+using namespace std::string_literals;
+
+std::string name0 = "Ace"s + "Hello";
+// c14
+std::string name01 = "Ace"s + "Hello";
+
+const char* example = R"(Line1
+Line2
+...)";
+const char* ex =
+    "Line1\n"
+    "Line2\n"
+    "Line3";
+```
+
+* `s`一个 function return a `std::string`
+
+#### Memory of string literal (how works? 11: 22)
+
+> always read only. (ASM 级别解释, `const char* name[] = "", name[2] = 'a'`可行的原因)
+
+### 34. CONST in C++
 
 > fake keyword, 对 generate code 作用很小,
 >
