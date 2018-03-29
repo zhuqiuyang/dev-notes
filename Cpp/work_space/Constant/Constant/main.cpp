@@ -8,6 +8,13 @@
 
 #include <iostream>
 
+class Entity {
+  int m_x, m_y;
+
+ public:
+  int getX() const { return m_x; }
+};
+
 int main(int argc, const char* argv[]) {
   const int MAX_AGE = 90;
 

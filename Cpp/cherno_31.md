@@ -96,3 +96,66 @@ void  printString (const std::string& string) {}
 
 1.  应用于 pointer
     > see code (03:40)
+
+```cpp
+const int* a = new int;
+```
+
+* `*`之前用于约束 pointer 指向的 content 是`const`.(`a`的值可以改变.)
+
+```cpp
+int* const a = new int;
+```
+
+* `*`之后约束 pointer 自身值不可改变.
+
+2.  class & method:
+
+```cpp
+class Entity {
+  int m_x, m_y;
+
+ public:
+  int getX() const { return m_x; }
+};
+```
+
+* `const` at the right of method 意味着不改变 class 任何值.
+
+```cpp
+class Entity {
+  int* m_X, m_Y;
+
+ public:
+  const int* const GetX() const { return m_X; }
+};
+```
+
+* 上述方法 means: 返回一个`const pointer`, 且其指向 content 为`const`, and this method promise 不改变 class.
+* 上述: `m_X`是 pointer, `m_Y`仍是 integer, 如果都是 pointer, 改写成`int* m_X, *m_Y`
+
+```cpp
+void PrintEntity(const Entity& e) {
+  // 此处GetX method必须是const!
+  std::cout << e.GetX() << std::endl;
+}
+```
+
+* 在这`e`就是`Entity`(引用), 不可改变 e 的 content.
+* 作者建议:always mark your method as const, if 它不需要改变 class.
+
+#### Debug 或者其他情况: 我们需要 modify 某些 varibale, 但仍不改变 const method 的行为
+
+> mutable keyword.
+
+```cpp
+class Entity {
+  mutable int var
+
+ public:
+  int getX() const {
+    var =2;
+    return m_x;
+  }
+};
+```
