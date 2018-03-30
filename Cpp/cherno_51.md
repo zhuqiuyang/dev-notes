@@ -1,3 +1,53 @@
+### 52: How to Deal with Multiple Return Values in C++
+
+> tuple
+
+* same type: 使用 vector or array.
+
+#### 返回多 type
+
+1.  use `struct`: 然后 destructure 去除 (作者推荐的方式, end 介绍: 14:59)
+    > 易用, 代码清晰
+
+```cpp
+struct ShaderProgSource {
+  std::string vs;
+  std::string fs;
+}
+```
+
+2.  创建多个`variable`,(命名成`out`06:56) 传给调用函数(其内赋值)
+
+    > 暂不讲 optimization
+
+3.  返回一个 Array (09:00)
+
+```cpp
+return std::array<string, 2>(vs, fs);
+```
+
+* 或者 vector
+  > array in stack, vector in heap
+
+4.  Tuple(pair)
+
+    > Tuple is a class 可以包含 X amount of variables(不关心 type)
+
+// 12:15
+
+```cpp
+#inclue <utility>
+static std::tuple<std::string, std::string> functionName() {}
+
+return std::make_pair(fs, vs);
+
+auto sources = functionName();
+// souces.first, souces.second
+std::string vs = std::get<0>(sources);
+```
+
+* 作者 hate 这种`get`方式
+
 ### 53: template
 
 > 有一点像 macro
