@@ -78,7 +78,7 @@ class BlockChain {
       for (const trans of block.transactions) {
         if (trans.fromAddress === address) {
           balance -= trans.amount;
-        } else if (toAddress === address) {
+        } else if (trans.toAddress === address) {
           balance += trans.amount;
         }
       }
