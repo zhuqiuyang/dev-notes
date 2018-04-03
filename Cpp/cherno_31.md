@@ -206,8 +206,38 @@ class Entity {
 
  public:
   int getX() const {
-    var =2;
+    var = 2;
     return m_x;
   }
 };
 ```
+
+### 35. The Mutable Keyword in C++
+
+use:
+
+1.  const
+
+```cpp
+class Entity {
+  private:
+    mutable int var = 0
+}
+```
+
+* `mutable` here 表示 allow const method to change it .
+* 这几乎是在 class 中使用`mutable`的唯一场景. (Debug)
+
+2.  lambda
+
+```cpp
+int x = 8;
+auto f = [=]() mutable
+{
+  x++;
+  std::cout << "Hello" << std::endl;
+};
+f();
+```
+
+> `&`pass by ref, `=`by value
