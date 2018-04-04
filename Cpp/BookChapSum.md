@@ -2,7 +2,7 @@
 
 #### 5. 类和对象:
 
-* class 类型是 struct 类型的扩展, 通过`class`定义.
+* class 类型是 struct 类型的扩展, 通过`class`定义.
 * 类成员由`private`, `protected`, `public`决定可访问性. pulic 成员集称为类的接口, private 成员不能在类外被访问.
 * 构造函数是特殊的成员函数.
 * 重载构造函数和复制构造函数提供了创建对象的不同初始化方式.

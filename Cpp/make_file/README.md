@@ -6,7 +6,7 @@
 g++ main.cpp function1.cpp function2.cpp -o hello
 ```
 
-* `.o`是 excutable file
+* `.o`是 excutable file
 * 单独运行`make`会运行`Makefile all:`下的 command
 * `make install` 会运行 `Makefile install`下的 command
 * `hello: main.o function1.o function2.o`后面三个是`hello`的依赖

@@ -59,7 +59,7 @@ int main() {
 
 * string is immutable, fixed allocated block memory.
 * double quote `""`, 默认声明一个`char pointer`(字符指针)
-* ASCII 表中`\0`, 代表`NULL`, 字符串的结尾
+* ASCII 表中`\0`, 代表`NULL`, 字符串的结尾
 * stand lib of CPP 有一个`String` class;
 * `std::String` is a template version of that basic `String` class.
 
@@ -184,7 +184,7 @@ class Entity {
 ```
 
 * 上述方法 means: 返回一个`const pointer`, 且其指向 content 为`const`, and this method promise 不改变 class.
-* 上述: `m_X`是 pointer, `m_Y`仍是 integer, 如果都是 pointer, 改写成`int* m_X, *m_Y`
+* 上述: `m_X`是 pointer, `m_Y`仍是 integer, 如果都是 pointer, 改写成`int* m_X, *m_Y`
 
 ```cpp
 void PrintEntity(const Entity& e) {

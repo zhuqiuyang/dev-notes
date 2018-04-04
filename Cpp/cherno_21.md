@@ -20,7 +20,7 @@ extern int s_Variable;
 
 * 在`Translation unit` 之外寻找这个`s_Variable`;
 
-在`.h`中创建`static` variable: 在所有引用这个`.h`文件中都创建了`static` variable;
+在`.h`中创建`static` variable: 在所有引用这个`.h`文件中都创建了`static` variable;
 
 #### 作者建议:
 
