@@ -186,6 +186,75 @@ int main() {
 }
 ```
 
+### 56. The "auto" keyword in C++
+
+> 概念 simple, 根据 context deduce(推断) 出类型
+
+```cpp
+auto a = 5;
+```
+
+Ques:
+
+1.  everywhere use `auto`, ok?
+
+使用场景: `change api, client no code should change.`
+
+> 作者不会在这种场景使用; need 明确知道返回 type(08:06), more readable.
+
+```cpp
+std::string GetName() {
+  return "Ace";
+}
+char* GetName() {
+  return "Ace";
+}
+
+int main() {
+auto name = GetName();
+}
+```
+
+* 缺点: rely on 返回 type 的操作会有问题.
+
+2.  建议使用场景:
+
+* iterator:
+
+```cpp
+#inclue <vector>
+
+int main() {
+  std::verctor<std::string> strings;
+  strings.push_back("Apple");
+  strings.push_back("Orange");
+
+  for (auto it = strings.begin(); it != strings.end(); it++) {
+    std::count << *ite << std::endl;
+  }
+}
+```
+
+* `variable type`十分 huge
+
+```cpp
+#include <unordered_map>
+
+class Device {};
+
+class DeviceManager {
+  private:
+    std::unorder_map<std::string, std::vector<Device*>> m_Devices;
+  public:
+    const std::unorder_map<std::string, std::vector<Device*>>& GetDevice() {
+      return m_Device;
+    }
+};
+```
+
+* cannot 知道明确类型
+  > 当使用 template 等一些情况 have to.
+
 ### 60. Why I don't "using namespace std"
 
 > `using namespaceing std` 不用 type`std::`every time, 也可以定义在函数 scope 中.
