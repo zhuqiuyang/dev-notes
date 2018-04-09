@@ -4,7 +4,7 @@
 
 > Endorser & Commiter
 
-the peer actually hosts instances of the ledger, and instances of chaincode.
+ledger 和 chaincode 都在 peer 上都有一份实例. 访问 ledger 的时候, 最好通过 chaincode 编写的程序(smart contract).
 
 `smart contracts` with a technology concept it calls `chaincode` – simply a piece of code that accesses the ledger.
 
