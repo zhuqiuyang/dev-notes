@@ -95,7 +95,9 @@ Chaincode runs in a secured Docker `container` isolated from the endorsing peer 
 
 `Endorsement policies` are used to instruct a peer on how to decide whether a transaction is properly `endorsed`. When a peer receives a transaction, it `invokes` the VSCC (Validation System Chaincode) associated with the transaction’s Chaincode as part of the transaction validation flow to `determine the validity of the transaction`.
 
-## Architecture Explained
+## Architectur Reference
+
+### Architecture Explained
 
 #### 2.2. The endorsing peer simulates a transaction and produces an endorsement signature
 
@@ -106,3 +108,7 @@ Chaincode runs in a secured Docker `container` isolated from the endorsing peer 
 ```
 
 * `endorsements`: proposal hash, simulation result, signature
+
+#### 3. Endorsement policies
+
+> policy 规定了 transaction 执行公证所需`endorser`的最小节点数.
