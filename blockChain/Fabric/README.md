@@ -2,6 +2,34 @@
 
 > 个人理解: Endorser(公证节点)
 
+### Identity
+
+* principal(主角): like userIDs or groupIDs.
+
+Public Key Infrastructure (PKI)两大组成:
+
+* Certificate Authorities who issue digital certificates to parties
+* Certificate Revocation List (CRL) 包含 a reference for the certificates .
+
+There are four key elements to PKI:
+
+* Digital Certificates
+* Public and Private Keys
+* Certificate Authorities
+* Certificate Revocation Lists
+
+#### Root CAs, Intermediate CAs and Chains of Trust
+
+建立了一个认证的 chain. (减少 root ca 的暴露)
+
+#### Fabric CA
+
+**fabric-ca** is a private root CA provider capable of managing digital identities of Fabric participants that have the form of X.509 certificates.
+
+#### Identity 总结
+
+`PKI` 提供 verifiable identities through a chain of trust, the `next step` is to see how these `identities` can be used to represent the `trusted members` of a blockchain network. That’s where a Membership Service Provider (`MSP`) comes into play – it identifies the parties who are the members of a given organization in the blockchain network.
+
 ### Peer
 
 > Endorser & Commiter
