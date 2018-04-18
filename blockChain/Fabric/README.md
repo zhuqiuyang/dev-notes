@@ -1,6 +1,23 @@
+## Getting Started
+
+* API Documentation: Fabric 本身服务搭建 API
+
+* Hyperledger Fabric SDKs: 应用开发中(对接 Fabric 服务)所用到的 language 库.
+
+* Hyperledger Fabric CA: 提供可选的 `certificate authority` service that you may choose to use to generate the certificates and key material to configure and manage identity in your blockchain network.
+
 ## Key Concepts
 
 > 个人理解: Endorser(公证节点)
+
+### Hyperledger Fabric Model
+
+* Assets
+* Chaincode
+* Ledger Features - **one ledger per channel** (共享账本: 整个网络在一个 channel)
+* Privacy through Channels
+* Security & Membership Services
+* Consensus
 
 ### Identity
 
