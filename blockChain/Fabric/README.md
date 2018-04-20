@@ -25,7 +25,7 @@
 
 Public Key Infrastructure (PKI)两大组成:
 
-* Certificate Authorities who issue digital certificates to parties
+* Certificate Authorities(CA 即 certificate issuer 证书颁发者) who issue `digital certificates` to parties
 * Certificate Revocation List (CRL) 包含 a reference for the certificates .
 
 There are four key elements to PKI:
@@ -35,7 +35,15 @@ There are four key elements to PKI:
 * Certificate Authorities
 * Certificate Revocation Lists
 
+#### Authentication & Public keys and Private Keys
+
+> 公私钥的认证过程.
+
 #### Root CAs, Intermediate CAs and Chains of Trust
+
+> HTTPS 中, CA 颁发的证书, 包含授权者的 public key, 防止了中间人攻击.
+>
+> CA 的可信任程度最高.
 
 建立了一个认证的 chain. (减少 root ca 的暴露)
 
@@ -176,8 +184,6 @@ Chaincode runs in a secured Docker `container` isolated from the endorsing peer 
 `package`, `install`, `instantiate`, and `upgrade`. In a future release, we are considering adding `stop` and `start`
 `invoke`
 
-### Transaction Flow
-
 ## Operations Guides
 
 ### Endorsement policies
@@ -201,3 +207,11 @@ Chaincode runs in a secured Docker `container` isolated from the endorsing peer 
 #### 3. Endorsement policies
 
 > policy 规定了 transaction 执行公证所需`endorser`的最小节点数.
+
+### Transaction Flow
+
+个人备注:
+
+* app 即`Commiter`
+* `Endorser`通过 MSP 验证 proposal 的 signature
+* each valid transaction the write sets are `committed` to current `state database`.
