@@ -184,6 +184,27 @@ Chaincode runs in a secured Docker `container` isolated from the endorsing peer 
 `package`, `install`, `instantiate`, and `upgrade`. In a future release, we are considering adding `stop` and `start`
 `invoke`
 
+#### CLI
+
+```sh
+peer chaincode install -n mycc -v 0 -p path/to/my/chaincode/v0
+peer chaincode instantiate -n mycc -v 0 -c '{"Args":["a", "b", "c"]}' -C mychannel
+peer chaincode install -n mycc -v 1 -p path/to/my/chaincode/v1
+peer chaincode upgrade -n mycc -v 1 -c '{"Args":["d", "e", "f"]}' -C mychannel
+peer chaincode query -C mychannel -n mycc -c '{"Args":["query","e"]}'
+peer chaincode invoke -o orderer.example.com:7050  --tls --cafile $ORDERER_CA -C mychannel
+```
+
+#### System chaincode
+
+The purpose of system chaincode is to shortcut gRPC communication cost between peer and chaincode, and tradeoff the flexibility in management.
+
+1.  LSCC Lifecycle system chaincode handles lifecycle requests described above.
+2.  CSCC Configuration system chaincode handles channel configuration on the peer side.
+3.  QSCC Query system chaincode provides ledger query APIs such as getting blocks and transactions.
+4.  ESCC Endorsement system chaincode handles endorsement by signing the transaction proposal response.
+5.  VSCC Validation system chaincode handles the transaction validation, including checking endorsement policy and multiversioning concurrency control.
+
 ## Operations Guides
 
 ### Endorsement policies
