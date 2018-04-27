@@ -26,11 +26,13 @@ async function getClientForOrg(userorg, username) {
 }
 ```
 
-### fabcar
+#### fabcar 例子
 
-#### enroll
+* admin 是在 启动网络时, CA Server 中配置的. (basic-network/docker-compse.yml 中: `fabric-ca-server start -b admin:adminpw -d`)
+* 通过`enroll()`获取到 admin 的 eCert, 用于后续 register 和 enroll 新的 user
 
 ```js
+// A. enrollAdmin.js
 // 1. 获取admin
 fabric_client.getUserContext("admin", true);
 
@@ -60,6 +62,89 @@ fabric_ca_client
     // 3. set
     return fabric_client.setUserContext(admin_user);
   });
+```
+
+```js
+// B. fabcar/registerUser.js
+// admin 注册使用enroll, user 使用register
+then(user_from_store => {
+  if (user_from_store && user_from_store.isEnrolled()) {
+    console.log("Successfully loaded admin from persistence");
+    admin_user = user_from_store;
+  } else {
+    throw new Error("Failed to get admin.... run enrollAdmin.js");
+  }
+
+  // at this point we should have the admin user
+  // first need to register the user with the CA server
+  // 注册user时需传入 `registrar`(管理员-admin), 作为第二个参数
+  return fabric_ca_client.register(
+    { enrollmentID: "user1", affiliation: "org1.department1", role: "client" },
+    admin_user
+  );
+})
+  .then(secret => {
+    // next we need to enroll the user with CA server
+    console.log("Successfully registered user1 - secret:" + secret);
+
+    return fabric_ca_client.enroll({
+      enrollmentID: "user1",
+      enrollmentSecret: secret
+    });
+  })
+  .then(enrollment => {
+    console.log('Successfully enrolled member user "user1" ');
+    return fabric_client.createUser({
+      username: "user1",
+      mspid: "Org1MSP",
+      cryptoContent: {
+        privateKeyPEM: enrollment.key.toBytes(),
+        signedCertPEM: enrollment.certificate
+      }
+    });
+  });
+```
+
+```js
+// C. query.js cc查询
+
+// 1. 首先: setup the fabric network
+var channel = fabric_client.newChannel("mychannel");
+var peer = fabric_client.newPeer("grpc://localhost:7051");
+channel.addPeer(peer);
+
+// 2. chaincode 查询
+const request = {
+  //targets : --- letting this default to the peers assigned to the channel
+  chaincodeId: "fabcar",
+  fcn: "queryAllCars",
+  args: [""]
+};
+
+// send the query proposal to the peer
+return channel.queryByChaincode(request);
+// Channel.js: ->
+return channel.sendTransactionProposal();
+// -> static function
+return Channel.sendTransactionProposal(
+  request,
+  this._name,
+  this._clientContext,
+  timeout
+);
+// 此处包含 signed_proposal的生成过程.
+// ->
+return clientUtils.sendPeersProposal(request.targets, signed_proposal, timeout);
+// clientUtils.js: 对每一个target调用 ->
+peer.sendProposal();
+```
+
+```js
+// D. invoke.js
+
+channel.sendTransaction(request);
+
+eventHub.re
 ```
 
 #### Client
@@ -93,3 +178,31 @@ fabric_ca_client
 #### crypto store
 
 > 存储成对的公/私钥
+
+> `require('fabric-ca-client')` 时使用的是`FabricCAServices`, 其内部调用了`FabricCAClient` class 用于与 CA Client 交互.
+
+#### FabricCAClient
+
+> Client for communciating with the Fabric CA APIs
+
+```js
+register(
+  enrollmentID,
+  enrollmentSecret,
+  role,
+  affiliation,
+  maxEnrollments,
+  attrs,
+  signingIdentity
+);
+```
+
+#### FabricCAServices
+
+> This is an implementation of the member service client which communicates with the Fabric CA server.
+>
+> extend 自 BaseClient
+
+```js
+register(req, registrar);
+```
