@@ -142,9 +142,18 @@ peer.sendProposal();
 ```js
 // D. invoke.js
 
-channel.sendTransaction(request);
+// request 格式: https://fabric-sdk-node.github.io/global.html#ChaincodeInvokeRequest
+channel.sendTransactionProposal(request);
 
-eventHub.re
+// 发送给order
+var orderer_request = {
+  txId: tx_id,
+  proposalResponses: proposalResponses,
+  proposal: proposal
+};
+channel.sendTransaction(order_request);
+
+eventHub.registerTxEvent();
 ```
 
 #### Client
