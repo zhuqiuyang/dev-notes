@@ -51,6 +51,8 @@ There are four key elements to PKI:
 
 **fabric-ca** is a private root CA provider capable of managing digital identities of Fabric participants that have the form of X.509 certificates.
 
+CA 的存在是确保`公钥`的可靠性, 防止中间人攻击. (Pc)
+
 #### Identity 总结
 
 * `PKI` 提供 verifiable identities through a chain of trust
@@ -83,6 +85,12 @@ What’s most important about organizations (or orgs) is that they manage their 
 
 * **`channel MSPs` define administrative and participatory rights at the channel level. Every organization participating in a channel must have an MSP defined for it.**
 
+![MSP_Eg1](./img/membership.diagram.4.png)
+
+> An administrator B connects to the peer with an identity issued by RCA1 and stored in their local MSP. When B tries to install a smart contract on the peer, the peer checks its `local MSP`, ORG1-MSP, to verify that the identity of B is indeed a member of ORG1. A successful verification will allow the install command to complete successfully.
+>
+> Subsequently, B wishes to instantiate the smart contract on the channel. Because this is a channel operation, all organizations in the channel must agree to it. Therefore, the peer must check the `MSPs of the channel` before it can successfully commits this command. (Other things must happen too, but concentrate on the above for now.)
+
 * **Local MSPs are only defined on the file system of the node or user to which they apply.**
 * **channel MSPs are available to all nodes in the channel**
 * **a channel MSP is instantiated on the file system of every node in the channel and kept synchronized via consensus.**
@@ -91,6 +99,10 @@ What’s most important about organizations (or orgs) is that they manage their 
 
 * **MSPs at a higher level relating to network administration concerns**
 * **while MSPs at a lower level handle identity for the administration of private resources.**
+
+![MSP_Eg1](./img/membership.diagram.2.png)
+
+> In this figure, the network configuration channel is administered by `ORG1`, but another application channel can be managed by `ORG1 and ORG2`. The peer is a member of and managed by ORG2, whereas ORG1 manages the orderer of the figure. ORG1 trusts identities from RCA1, whereas ORG2 trusts identities from RCA2. Note that these are administration identities, reflecting who can administer these components. So while `ORG1` administers the network, ORG2.MSP does exist in the network definition.
 
 * Network MSP
 * Channel MSP
