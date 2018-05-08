@@ -24,6 +24,7 @@
 > https://github.com/fastify/fastify/blob/master/docs/Plugins-Guide.md
 
 * 增加一个 plugin, 唯一个 API `register`
+* 类似于`koa-mount`, 子 app, 新的 scope
 
 源码阅读:
 

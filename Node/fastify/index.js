@@ -1,7 +1,25 @@
 const fastify = require('fastify')();
 
-const opts = {
+const opts1 = {
+  response: {
+    200: {
+      type: 'object',
+      properties: {
+        hello: { type: 'string' }
+      }
+    }
+  }
+};
+
+const opts2 = {
   schema: {
+    body: {
+      type: 'object',
+      properties: {
+        someKey: { type: 'string' },
+        someOtherKey: { type: 'number' }
+      }
+    },
     response: {
       200: {
         type: 'object',
@@ -15,7 +33,12 @@ const opts = {
 
 console.log(fastify.use === fastify.register, '@@@@');
 
-fastify.get('/', opts, function(request, reply) {
+fastify.get('/', opts1, function(request, reply) {
+  reply.send({ hello: 'world' });
+});
+
+fastify.post('/test', function(request, reply) {
+  console.log('@@body : ', request.body);
   reply.send({ hello: 'world' });
 });
 
