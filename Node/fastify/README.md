@@ -101,9 +101,21 @@ Reply is a core Fastify object that exposes the following functions:
 
 #### 8. Hooks
 
+> https://github.com/fastify/fastify/blob/master/docs/Hooks.md#requestresponse-hooks
+
 关闭应用前, 关闭 db 连接
 
 ```js
+fastify.addHook('preHandler', async (request, reply) => {
+  // some code
+  await asyncMethod();
+  // error occurred
+  if (err) {
+    throw new Error('some errors occurred.');
+  }
+  return;
+});
+
 fastify.addHook('onClose', (instance, done) => {
   // some code
   done();
