@@ -33,6 +33,16 @@ const opts2 = {
 
 console.log(fastify.use === fastify.register, '@@@@');
 
+fastify.use((req, res, next) => {
+  console.log('use start');
+  next()
+});
+
+fastify.addHook('preHandler', (req, reply, next) => {
+  console.log('pre handle');
+  next();
+});
+
 fastify.get('/', opts1, function(request, reply) {
   reply.send({ hello: 'world' });
 });

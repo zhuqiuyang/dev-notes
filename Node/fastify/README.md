@@ -42,6 +42,9 @@ fastify.register(require('./my-plugin'), { options });
 
 > https://github.com/fastify/fastify/blob/master/docs/Routes.md
 
+* Promise resolution
+> https://github.com/fastify/fastify/blob/master/docs/Routes.md#promise-resolution
+
 #### 4. docorate
 
 `decorate` 是唯一能扩展 server functionalities 的`API`, you can also use `decorateRequest` and `decorateReply`.
