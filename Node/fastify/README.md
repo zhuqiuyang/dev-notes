@@ -10,6 +10,8 @@
 └── your services
 ```
 
+## fastify 默认监听`127.0.0.1`端口, 会导致外部通过 IP 访问导致连接拒绝.
+
 #### 1. JSON validate (\*)
 
 #### 2. Router (\*)
@@ -32,7 +34,7 @@
 * `fastify.use`是使用的其内部`use`函数
 
 ```js
-fastify.register(require('./my-plugin'), { options });
+fastify.register(require('./my-plugin'), { options })
 ```
 
 * 通过`fastify-plugin`包装一个 `plugin function` exposes the decorators, hooks, and middlewares declared inside the plugin to the parent scope.
@@ -43,7 +45,7 @@ fastify.register(require('./my-plugin'), { options });
 > https://github.com/fastify/fastify/blob/master/docs/Routes.md
 
 * Promise resolution
-> https://github.com/fastify/fastify/blob/master/docs/Routes.md#promise-resolution
+  > https://github.com/fastify/fastify/blob/master/docs/Routes.md#promise-resolution
 
 #### 4. docorate
 
@@ -69,14 +71,14 @@ Request is a core Fastify object containing the following fields:
 
 ```js
 fastify.post('/:params', options, function(request, reply) {
-  console.log(request.body);
-  console.log(request.query);
-  console.log(request.params);
-  console.log(request.headers);
-  console.log(request.raw);
-  console.log(request.id);
-  request.log.info('some info');
-});
+  console.log(request.body)
+  console.log(request.query)
+  console.log(request.params)
+  console.log(request.headers)
+  console.log(request.raw)
+  console.log(request.id)
+  request.log.info('some info')
+})
 ```
 
 #### 6. Reply
@@ -111,16 +113,16 @@ Reply is a core Fastify object that exposes the following functions:
 ```js
 fastify.addHook('preHandler', async (request, reply) => {
   // some code
-  await asyncMethod();
+  await asyncMethod()
   // error occurred
   if (err) {
-    throw new Error('some errors occurred.');
+    throw new Error('some errors occurred.')
   }
-  return;
-});
+  return
+})
 
 fastify.addHook('onClose', (instance, done) => {
   // some code
-  done();
-});
+  done()
+})
 ```
