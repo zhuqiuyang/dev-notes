@@ -109,15 +109,21 @@ What’s most important about organizations (or orgs) is that they manage their 
 * Peer MSP
 * Orderer MSP
 
-### Peer
+### Peers
 
-> Endorser & Commiter
+> 四种身份: Endorser & Commiter & Order & Consenter
 
 ledger 和 chaincode 都在 peer 上都有一份实例. 访问 ledger 的时候, 最好通过 chaincode 编写的程序(smart contract).
 
 `smart contracts` with a technology concept it calls `chaincode` – simply a piece of code that accesses the ledger.
 
+#### Applications and Peers
+
+* 通过 SDK, App 可以连接到多个 peer.
+
 #### Peers and Channels
+
+> it’s worth spending a little time understanding how `peers interact` with each other, and applications, via channels – a mechanism by which a set of components within a blockchain network can communicate and transact privately.
 
 Conceptually you can think of channels as being similar to groups of friends.
 
@@ -242,6 +248,27 @@ The purpose of system chaincode is to shortcut gRPC communication cost between p
 > policy 规定了 transaction 执行公证所需`endorser`的最小节点数.
 
 ### Transaction Flow
+
+### Channels
+
+* 加入: Each peer 加入 channel, MSP 都给予其一个`Identity`
+
+* 创建: SDK 调用 `configuration system chaincode`, 会生成`genesis block` (保存了 channel 的配置信息: channel policies, members and anchor peers)
+
+  * 更新 config, 需要调用`configuration system CC`
+
+* `leading peer` 需要代表 `channel 的每一个 member` 与 order service 通信
+
+* 一个 `anchor`可以加入多个 channel, ledger data 不是共享的.
+
+### Capability Requirements
+
+#### Setting Capabilities
+
+1.  2 Doc that talk through different aspects of `channel reconfigurations`.
+
+* https://hyperledger-fabric.readthedocs.io/en/latest/channel_update_tutorial.html
+* https://hyperledger-fabric.readthedocs.io/en/latest/config_update.html
 
 个人备注:
 
