@@ -18,3 +18,7 @@ do
   echo $i;
 done
 ```
+
+### ipconfig
+
+> interface config
