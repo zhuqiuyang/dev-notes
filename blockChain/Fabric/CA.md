@@ -1,0 +1,78 @@
+> http://hyperledger-fabric-ca.readthedocs.io/en/latest/users-guide.html
+
+## 0.
+
+### CA feature:
+
+* 颁发 Enrollment certificate (Ecert- 身份证书)
+
+## 1. Overview
+
+* `identities and certificates`信息存储在 LDAP(Lightweight Directory Access Protocol 轻量目录访问协议) 或者 database 中
+
+## 2. Getting Started
+
+### Configuration Settings
+
+配置优先级依次为:
+
+1.  CLI flags
+2.  Environment variables
+3.  Configuration file
+
+## 4. Fabric CA Server
+
+### Initializing the server
+
+```sh
+fabric-ca-server init -b admin:adminpw
+```
+
+* 如果没有配置`ldap.enabled`,`-b`必须提供
+
+* Server 配置包含 Certificate Signing Request (CSR) section, 例子如下:
+
+> 申请 cert 所需填写的信息.
+
+```sh
+cn: fabric-ca-server
+names:
+   - C: US
+     ST: "North Carolina"
+     L:
+     O: Hyperledger
+     OU: Fabric
+hosts:
+  - host1.example.com
+  - localhost
+ca:
+   expiry: 131400h
+   pathlength: 1
+```
+
+* `fabric-ca-server init`使用 self-signed CA certificate, 除非指定一个父 CA
+  * `-u <parent-fabric-ca-server-URL>`
+* 人工配置 CA 需要提供`ca.certfile` and `ca.keyfile`两个文件, 并满足
+  * must be PEM-encoded
+  * must not be encrypted
+
+## 5. CA Client
+
+### Attribute-Based Access Control
+
+ABAC can be made by chaincode, 原理:
+
+* identity’s `ECert` may contain one or more attribute name and value.
+* CC extracts an `attribute’s value` to 作为访问控制依据.
+
+## 6. HSM
+
+* 私钥存储在`PEM-encoded`的 file 中 (CA server/client 默认 )
+* 可以存于 HSM (Hardware Security Module), 通过 PKCS11 APIs:
+  * 需要在 `BCCSP` (BlockChain Crypto Service Provider) section of the server’s or client’s configuration file 配置.
+
+## 7. File Formats
+
+* CA Server 配置文件格式: http://hyperledger-fabric-ca.readthedocs.io/en/latest/serverconfig.html
+
+* CA Client 配置文件格式: http://hyperledger-fabric-ca.readthedocs.io/en/latest/clientconfig.html
