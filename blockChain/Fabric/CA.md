@@ -58,6 +58,14 @@ ca:
 
 ## 5. CA Client
 
+### Enrolling the bootstrap identity
+
+`fabric-ca-client enroll` will Enroll a Identify. 存储 (ECert)及其对应的 private key and CA certificate chain PEM files 在 Fabric CA CLient `msp`目录的子目录下.
+
+### Registering a new identity (\*)
+
+> 需要 check (包含 affiliation): http://hyperledger-fabric-ca.readthedocs.io/en/latest/users-guide.html#registering-a-new-identity
+
 ### Attribute-Based Access Control
 
 ABAC can be made by chaincode, 原理:
