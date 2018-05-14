@@ -275,3 +275,55 @@ The purpose of system chaincode is to shortcut gRPC communication cost between p
 * app 即`Commiter`
 * `Endorser`通过 MSP 验证 proposal 的 signature
 * each valid transaction the write sets are `committed` to current `state database`.
+
+## Glossary (术语表)
+
+### Anchor Peer
+
+* bootstrap gossip communication between peers from different organizations
+* 每个 org 至少有一个 anchor peer
+* anchor peer address 存储在`configuration block`中
+
+### Concurrency Control Version Check
+
+CCVC 是 peer 之间同步 state 的一种方式.
+
+### Configuration Block
+
+* Contains the configuration data defining members and policies for a system chain (ordering service) or channel.
+* Any configuration modifications to a channel or overall network (e.g. a member leaving or joining) will result in a new configuration block being appended to the appropriate chain.
+* This block will contain the contents of the genesis block, plus the delta.
+
+### Consortium (财团?)
+
+* A consortium is a collection of non-orderer organizations on the blockchain network.
+
+###Leading Peer
+
+* communicate with the network `ordering service` on behalf of the member
+* The `ordering service` “delivers” blocks to the leading peer(s) on a channel, 再分发给每个 peer.
+
+### Member
+
+See `Orgniztion`
+
+### Orgnization
+
+* organizations are invited to join the blockchain network by a `blockchain service provider`.
+* An organization is `joined` to a network by adding its `MSP` to the network. (方式)
+  * The `MSP` network 中的其他 member 如果 verify signatures 是否是一个有效的 Idnetity, 并由某个 org 颁发.
+* A collection of organizations form a Consortium.
+
+### Membership Service Provider
+
+* MSP provides credentials(资格证书) to clients,
+  * Clients use these credentials to authenticate their transactions
+  * peers use these credentials to authenticate transaction processing results (endorsements)
+
+### System Chain
+
+* Contains a `configuration block` defining the network at a system level
+* 存在于 `ordering service`中
+* Any change to the overall network 都会在 system chain 之后追加一个 configuration block
+
+
