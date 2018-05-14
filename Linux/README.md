@@ -33,3 +33,31 @@ done
 
 * `s` 命令:
   * `sed 's/line/text/g' test.txt` 将所有行的 `line` 替换为 `text`,`g` 代表全局选项，没有 `g` 只替换所有行的第一个匹配项
+
+### awk
+
+> 由三位发明者首字母命名
+>
+> http://awk.readthedocs.io/en/latest/chapter-one.html
+
+* AWK 程序是由一系列模式--动作对组成的，写做
+
+```sh
+pattern { action }
+```
+
+#### 使用
+
+> 现在你想打印出工作时间超过零小时的员工的姓名和工资（薪资乘以时间）
+
+```sh
+# cd awk
+awk '$3 >0 { print $1, $2 * $3 }' emp.data
+```
+
+* 打印多个 file: `awk 'program' input files`
+* 省略 file 将从终端接收数据, 直到(Ctrl-D): `awk '$3 == 0 { print $1 }'`
+* `NF`(字段数量), 可用于输入最后一个字段内容: `{ print NF, $1, $NF }`
+* `NR`(行号)
+* 内置函数
+  * `length()`: 计算字符串长度
