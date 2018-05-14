@@ -1,0 +1,31 @@
+#
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+version: '3'
+services:
+  mysql-server-57:
+    image: mysql/mysql-server:5.7
+    container_name: ca-mysql
+    command: sh -c 'fabric-ca-server start -b admin:adminpw'
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=fabric_ca
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=rootpw
+
+  fabric-ca-server:
+    image: hyperledger/fabric-ca:x86_64-1.1.0
+    container_name: fabric-ca-server
+    ports:
+      - "7054:7054"
+    environment:
+      - FABRIC_CA_HOME=$HOME/fabric-ca/server
+      - DBHOST=mysql-server-57
+    volumes:
+      - "./fabric-ca-server:$HOME/fabric-ca/server"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw'
+    depends_on:
+      - mysql-server-57

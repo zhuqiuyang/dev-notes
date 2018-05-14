@@ -12,6 +12,16 @@
 
 ## 2. Getting Started
 
+### Start Server with Docker
+
+* https://hub.docker.com/r/hyperledger/fabric-ca/tags/
+  `docker-compose up -d`
+
+### CLI
+
+* http://hyperledger-fabric-ca.readthedocs.io/en/latest/servercli.html
+* http://hyperledger-fabric-ca.readthedocs.io/en/latest/clientcli.html
+
 ### Configuration Settings
 
 配置优先级依次为:
@@ -19,6 +29,8 @@
 1.  CLI flags
 2.  Environment variables
 3.  Configuration file
+
+`fabric-ca-server --help`: 查看 CLI 使用
 
 ## 4. Fabric CA Server
 
