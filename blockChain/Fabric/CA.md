@@ -52,6 +52,7 @@ ca:
 
 * `fabric-ca-server init`使用 self-signed CA certificate, 除非指定一个父 CA
   * `-u <parent-fabric-ca-server-URL>`
+* `fabric-ca-server init`默认会生成一个 `fabric-ca-server-config.yaml` file 在 server 的 home 目录
 * 人工配置 CA 需要提供`ca.certfile` and `ca.keyfile`两个文件, 并满足
   * must be PEM-encoded
   * must not be encrypted
