@@ -1,5 +1,7 @@
 ## Get Start
 
+> https://docs.docker.com/get-started/
+
 ### Part 1: Orientation and setup
 
 #### Images and containers

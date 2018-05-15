@@ -1,6 +1,6 @@
 db:
   type: mysql
-  datasource: root:rootpw@tcp($DBHOST:3306)/fabric_ca?parseTime=true&tls=custom 
+  datasource: root:rootpw@tcp(db:3306)/fabric_ca?parseTime=true&tls=custom 
   tls:
       enabled: false
       certfiles:

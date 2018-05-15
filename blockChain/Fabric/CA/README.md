@@ -97,3 +97,17 @@ ABAC can be made by chaincode, 原理:
 * CA Server 配置文件格式: http://hyperledger-fabric-ca.readthedocs.io/en/latest/serverconfig.html
 
 * CA Client 配置文件格式: http://hyperledger-fabric-ca.readthedocs.io/en/latest/clientconfig.html
+
+## 集群搭建
+
+```sh
+export FABRIC_CA_CLIENT_HOME=$HOME/fabric-ca/clients/admin
+fabric-ca-server start -b admin:adminpw --db.type mysql --db.datasource root:rootpw@tcp(db:3306)/fabric_ca?parseTime=true
+
+# in db container
+mysql -uroot -p
+
+show databases;
+user fabric-ca;
+show tables;
+```
