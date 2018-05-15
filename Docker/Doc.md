@@ -133,6 +133,8 @@ docker-machine create --driver virtualbox \
 --engine-registry-mirror https://gs4gsjhk.mirror.aliyuncs.com \
 myvm1
 
+docker-machine --native-ssh ssh myvm1
+
 docker-machine ssh myvm1 "docker swarm init --advertise-addr 192.168.99.100:2377"
 
 docker-machine ssh myvm2 "docker swarm join --token <token> 192.168.99.100:2377"
@@ -159,9 +161,7 @@ docker-machine ssh myvm2 "docker swarm leave"
 docker-machine ssh myvm1 "docker swarm leave --force"
 ```
 
-
 ```sh
-
 eval $(docker-machine env myvm1)         # Mac command to connect shell to myvm1
 
 eval $(docker-machine env -u)     # Disconnect shell from VMs, use native docker
@@ -173,13 +173,18 @@ docker-machine rm $(docker-machine ls -q) # Delete all VMs and their disk images
 
 #### Introdution
 
+> 本节增加了 visualer, redis
+
 Here in part 5, you reach the 分布式应用的顶端: the `stack`.
 
 * A `stack` is a group of interrelated services that share dependencies, and can be orchestrated and scaled together.
-* `docker stack deploy` a single service stack running on a single host, 不适合 production
+* `docker stack deploy` a **single** service stack running on a single host, 通常不会这么用于 production.
+* 这节学习 make multiple services relate to each other, and run them on multiple machines.
 
 #### 总结
 
 * 通过修改 compose file, add more service 到 stack.
 
 ### Part 6: Deploy your app
+
+> AWS, Asure 等部署
