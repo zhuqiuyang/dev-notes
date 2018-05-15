@@ -8,3 +8,9 @@
 # 进入指定容器bash 交互
 docker exec -it 2c1a3842cecb bash
 ```
+
+### Docker CLI
+
+> https://docs.docker.com/engine/reference/commandline/container_ls/#description
+
+* `docker container ls -q`: `--quite, -q` (只 show numberIDs)
