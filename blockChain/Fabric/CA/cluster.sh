@@ -31,19 +31,20 @@ docker service create \
 
 # 中间CA
 
-docker service create \ 
+docker service create \
   --name imd-ca \
   --network ca-network \
   --replicas 5 \
   --env "FABRIC_CA_HOME=$HOME/fabric-ca/server" \
   --publish 7055:7054 \
-  hyperledger/fabric-ca:x86_64-1.1.0
-  fabric-ca-server start -b admin:adminpw --db.type mysql --db.datasource "root:rootpw@tcp(db:3306)/imd_ca?parseTime=true"
+  hyperledger/fabric-ca:x86_64-1.1.0 \
+  fabric-ca-server start -b admin:adminpw -u http://root-ca.:7054 --db.type mysql --db.datasource "root:rootpw@tcp(db:3306)/imd_ca?parseTime=true"
 
 # Test
 
 docker service create \
   --name my-nginx \
+  --hostname testnginx \
   --network ca-network \
   --replicas 1 \
   --publish 80:80 \
