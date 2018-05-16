@@ -102,7 +102,10 @@ docker stack deploy -c docker-compose.yml getstartedlab
 docker stack ls                                            # List stacks or apps
 docker stack deploy -c <composefile> <appname>  # Run the specified Compose file
 docker service ls                 # List running services associated with an app
+
+## 常用 (查看某个service下的task 运行在哪些host上)
 docker service ps <service>                  # List tasks associated with an app
+
 docker inspect <task or container>                   # Inspect task or container
 docker container ls -q                                      # List container IDs
 docker stack rm <appname>                             # Tear down an application
@@ -190,3 +193,92 @@ Here in part 5, you reach the 分布式应用的顶端: the `stack`.
 ### Part 6: Deploy your app
 
 > AWS, Asure 等部署
+
+## Configure Networking
+
+### Use bridge networks
+
+Bridge networks apply to containers running on the **same** Docker daemon host. 多 Docker darmon host 之间, 容器通信使用`overlay`网络
+
+### Use overlay networks
+
+The `overlay` network driver creates a distributed network among multiple Docker daemon hosts.
+
+When you initialize a swarm or join a Docker host to an existing swarm, two new networks are created on that Docker host:
+
+* an `overlay` network called `ingress`
+* a `bridge` network called `docker_gwbridge`
+
+You can create user-defined `overlay` networks using `docker network create`
+
+#### Operations for all overlay networks
+
+##### Create an overlay network (前提)
+
+You need the following ports open to traffic to and from each Docker host participating on an overlay network:
+
+* TCP port `2377` for cluster management communications
+* TCP and UDP port 7946 for communication among nodes
+* UDP port 4789 for overlay network traffic
+
+#### Networking with overlay networks
+
+##### Overlay networkingn tutorial (详细)
+
+> https://docs.docker.com/network/network-tutorial-overlay/
+
+This topic includes four different tutorials:
+
+* Use swarm 默认的 overlay 网络 (不是 production 的最佳方式)
+
+* Use `user-defined` overlay networks shows how to create and use your own custom overlay networks, to connect services. (推荐 production 使用)
+
+##### Use the default overlay network (swarm service)
+
+```sh
+$ docker network ls
+
+NETWORK ID          NAME                DRIVER              SCOPE
+495c570066be        bridge              bridge              local
+961c6cae9945        docker_gwbridge     bridge              local
+ff35ceda3643        host                host                local
+trtnl4tqnc3n        ingress             overlay             swarm
+c8357deec9cb        none                null                local
+```
+
+The `docker_gwbridge` connects the `ingress` network to the Docker host’s network interface so that traffic can flow to and from swarm managers and workers.
+
+##### Use a user-defined overlay network
+
+> 前提: 假设 the swarm is already set up and you are on a manager.
+
+Walkthrough:
+
+```sh
+# 1. Create the user-defined overlay network.
+
+$ docker network create -d overlay my-overlay
+
+# 2.Start a service using the overlay network (*)
+
+$ docker service create \
+  --name my-nginx \
+  --network my-overlay \
+  --replicas 1 \
+  --publish published=8080,target=80 \
+  nginx:latest
+
+# 3. Run `docker network inspect my-overlay` and verify that the my-nginx service task is connected to it, by looking at the Containers section.
+
+# 4. Remove the service and the network.
+
+$ docker service rm my-nginx
+
+$ docker network rm my-overlay
+```
+
+### docker service(CLI)
+
+> 可 works with swarm orchestrator.
+>
+> https://docs.docker.com/engine/reference/commandline/service_create/
