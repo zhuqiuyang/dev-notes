@@ -5,7 +5,7 @@
 #
 version: '3'
 services:
-  fabric-ca-server:
+  root-ca:
     image: hyperledger/fabric-ca:x86_64-1.1.0
     ports:
       - "7054:7054"
@@ -14,8 +14,20 @@ services:
       - DBHOST=db
     volumes:
       - "./fabric-ca-server:$HOME/fabric-ca/server"
-    command: sh -c 'fabric-ca-server start -b admin:adminpw --db.type mysql --db.datasource "root:rootpw@tcp(db:3306)/fabric_ca?parseTime=true"'
+    command: sh -c 'fabric-ca-server start -b admin:adminpw --db.type mysql --db.datasource "root:rootpw@tcp(db:3306)/root_ca?parseTime=true"'
     # command: sh -c 'fabric-ca-server start -b admin:adminpw'
+    depends_on:
+      - db
+  imd-ca:
+    image: hyperledger/fabric-ca:x86_64-1.1.0
+    ports:
+      - "7055:7054"
+    environment:
+      - FABRIC_CA_HOME=$HOME/fabric-ca/server
+      - DBHOST=db
+    volumes:
+      - "./fabric-ca-server:$HOME/fabric-ca/server"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw --db.type mysql --db.datasource "root:rootpw@tcp(db:3306)/imd_ca?parseTime=true"'
     depends_on:
       - db
   db:
