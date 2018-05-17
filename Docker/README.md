@@ -41,3 +41,21 @@ docker container inspect <container-id>
 
 * 优势: 灵活
 * 缺点: 不支持 file 配置, 多 service 启动都需要手动 command.
+
+#### Service 网络连接
+
+swarm 默认`ingress`网络 without `--attachable`, 所以只有`swarm services`可以使用.
+
+* 创建时`--attachable`, 则 standlone `container`可以加入.
+
+swarm 默认网络, 默认无法与用户创建的`overlay`网络通信.
+
+#### 使用环境变量
+
+You can use a `$$` 当你的配置需要使用`$` Literal.
+
+```sh
+web:
+  build: .
+  command: "$$VAR_NOT_INTERPOLATED_BY_COMPOSE"
+```

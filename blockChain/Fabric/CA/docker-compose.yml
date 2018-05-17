@@ -5,6 +5,15 @@
 #
 version: '3'
 services:
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=root_ca
+      - MYSQL_ROOT_PASSWORD=rootpw
+    volumes:
+      - "./mysql.conf:/etc/mysql/mysql.conf.d"
   root-ca:
     image: hyperledger/fabric-ca:x86_64-1.1.0
     ports:
@@ -13,8 +22,7 @@ services:
       - FABRIC_CA_HOME=$HOME/fabric-ca/server
     volumes:
       - "./fabric-ca-server:$HOME/fabric-ca/server"
-    command: sh -c 'fabric-ca-server start -b admin:adminpw --db.type mysql --db.datasource "root:rootpw@tcp(db:3306)/root_ca?parseTime=true"'
-    # command: sh -c 'fabric-ca-server start -b admin:adminpw'
+    command: fabric-ca-server start -b admin:adminpw --db.type mysql --db.datasource "root:rootpw@tcp(db:3306)/root_ca?parseTime=true"
     depends_on:
       - db
   imd-ca:
@@ -25,17 +33,13 @@ services:
       - FABRIC_CA_HOME=$HOME/fabric-ca/server
     volumes:
       - "./fabric-ca-server:$HOME/fabric-ca/server"
-    command: sh -c 'fabric-ca-server start -b admin:adminpw --db.type mysql --db.datasource "root:rootpw@tcp(db:3306)/imd_ca?parseTime=true"'
+    command: fabric-ca-server start -b admin:adminpw --db.type mysql --db.datasource "root:rootpw@tcp(db:3306)/imd_ca?parseTime=true"
     depends_on:
       - db
-  db:
-    image: mysql:5.7
-    ports:
-      - "3306:3306"
-    environment:
-      - MYSQL_DATABASE=fabric_ca
-      - MYSQL_ROOT_PASSWORD=rootpw
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=rootpw
-    volumes:
-      - "./mysql.conf:/etc/mysql/mysql.conf.d"
+    deploy:
+      replicas: 5
+      update_config:
+        parallelism: 2
+        delay: 5s
+      restart_policy:
+        condition: on-failure
