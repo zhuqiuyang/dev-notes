@@ -28,6 +28,12 @@ docker container ls
 docker container inspect <container-id>
 ```
 
+#### remove
+
+```sh
+docker service rm $(docker service ls -q)
+```
+
 #### overlay 网络使用
 
 > 前提: swarm cluster
