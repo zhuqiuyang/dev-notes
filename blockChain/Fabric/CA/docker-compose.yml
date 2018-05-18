@@ -23,7 +23,7 @@ services:
     volumes:
       - "./fabric-ca-server:$HOME/fabric-ca/server"
       - "./wait-for-mysql.sh:/app/wait-for-mysql.sh"
-    command: /app/wait-for-mysql.sh db:3306 'fabric-ca-server start -b admin:adminpw --db.type mysql --db.datasource "root:rootpw@tcp(db:3306)/root_ca?parseTime=true"'
+    command: /app/wait-for-mysql.sh db:3306 'fabric-ca-server start -b admin:adminpw --db.type mysql --db.datasource root:rootpw@tcp(db:3306)/root_ca?parseTime=true'
     depends_on:
       - db
       
