@@ -1,9 +1,0 @@
-db:
-  type: mysql
-  datasource: root:rootpw@tcp(db:3306)/fabric_ca?parseTime=true&tls=custom 
-  tls:
-      enabled: false
-      certfiles:
-      client:
-        certfile:
-        keyfile:

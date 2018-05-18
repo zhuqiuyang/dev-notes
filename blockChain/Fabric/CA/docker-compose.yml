@@ -21,27 +21,29 @@ services:
     environment:
       - FABRIC_CA_HOME=$HOME/fabric-ca/server
     volumes:
-      - "./fabric-ca-server:$HOME/fabric-ca/server"
+      - "./root-ca-server:$HOME/fabric-ca/server"
       - "./wait-for-mysql.sh:/app/wait-for-mysql.sh"
     command: /app/wait-for-mysql.sh db:3306 'fabric-ca-server start -b admin:adminpw --db.type mysql --db.datasource root:rootpw@tcp(db:3306)/root_ca?parseTime=true'
     depends_on:
+      - db      
+  imd-ca:
+    image: hyperledger/fabric-ca:x86_64-1.1.0
+    ports:
+      - "7055:7054"
+    environment:
+      - FABRIC_CA_HOME=$HOME/fabric-ca/server
+    volumes:
+      - "./imd-ca-server:$HOME/fabric-ca/server"
+      - "./wait-for-mysql.sh:/app/wait-for-mysql.sh"
+    command: /app/wait-for-mysql.sh root-ca:7054 'fabric-ca-server start -b admin:adminpw -u http://admin:adminpw@root-ca:7054 --db.type mysql --db.datasource root:rootpw@tcp(db:3306)/imd_ca?parseTime=true'
+    depends_on:
       - db
-      
-  # imd-ca:
-  #   image: hyperledger/fabric-ca:x86_64-1.1.0
-  #   ports:
-  #     - "7055:7054"
-  #   environment:
-  #     - FABRIC_CA_HOME=$HOME/fabric-ca/server
-  #   volumes:
-  #     - "./fabric-ca-server:$HOME/fabric-ca/server"
-  #   command: fabric-ca-server start -b admin:adminpw --db.type mysql --db.datasource "root:rootpw@tcp(db:3306)/imd_ca?parseTime=true"
-  #   depends_on:
-  #     - db
-  #   deploy:
-  #     replicas: 5
-  #     update_config:
-  #       parallelism: 2
-  #       delay: 5s
-  #     restart_policy:
-  #       condition: on-failure
+    deploy:
+      replicas: 5
+      update_config:
+        parallelism: 2
+        delay: 5s
+      restart_policy:
+        condition: on-failure
+
+# 次序: imd-ca -> root-ca -> mysql
