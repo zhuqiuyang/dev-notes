@@ -169,3 +169,26 @@ do
   mkdir rc${runlevel}.d
 done
 ```
+
+### 10. Variable(Part 2)
+
+* `$0`是`basename`of the program as it was called.
+* `$1 .. $9`: 前 9 个参数
+  * 通过`shift`获取更多的参数
+* `$@`是所有的参数`$1 .. whatever`; `$*`同理, 但是不包含空格, 尽量使用前者.
+* `$?`是一个特殊 variable, contains 上一个命令的`exit value`
+* `$#`参数的数量
+
+其他:
+
+* `$$`: PID(进程 ID)
+* `$!`: PID of the last run background process.
+* `IFS`(Internal Field Separator), default is `SPACE TAB NEWLINE`
+
+### 11. Variable(Part 3)
+
+* `:=`sets the variable to the default if it is undefined:
+
+```sh
+echo "Your name is : ${myname:=John Doe}"
+```
