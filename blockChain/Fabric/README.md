@@ -141,7 +141,7 @@ Conceptually you can think of channels as being similar to groups of friends.
 
 #### Peers and Identity
 
-a peer can only be owned by a single organization, and is therefore associated with a single MSP.
+a peer 只能隶属一个 organization, 且只能与一个 MSP 相关联.
 
 #### Peers and Orderers
 
@@ -325,5 +325,3 @@ See `Orgniztion`
 * Contains a `configuration block` defining the network at a system level
 * 存在于 `ordering service`中
 * Any change to the overall network 都会在 system chain 之后追加一个 configuration block
-
-
