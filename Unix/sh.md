@@ -94,3 +94,78 @@ touch "${USER_NAME}_file"
 ```
 
 * `"${USER_NAME}_file"`使用`"`包括, 是因为假如用户输入了`Steven Parker`, 会执行成`touch Steve Parker_file`, 创建`Steve`he `Parker_file`两个文件. `"`避免了这个问题的发生.
+
+### 6. Escape Characters
+
+大部分字母, 例如`*`, `'`不会被 interpreted, 当置于 double quotes 中时.
+
+```sh
+$ echo *
+case.shtml escape.shtml first.shtml
+functions.shtml hints.shtml index.shtml
+ip-primer.txt raid1+0.txt
+$ echo *txt
+ip-primer.txt raid1+0.txt
+```
+
+* In the first example, \* is expanded to mean all files in the current directory.
+* In the second example, \*txt means all files ending in txt.
+
+`"`, `$`, \`, and `\` 仍会被 shell interpreted, 即使置于 double quotes 中.
+
+* The backslash (\\) character is used to mark 特殊字符
+
+```sh
+$ echo "A quote is \", backslash is \\, backtick is \`."
+A quote is ", backslash is \, backtick is `.
+$ echo "A few spaces are    ; dollar is \$. \$X is ${X}."
+A few spaces are    ; dollar is $. $X is 5.
+```
+
+* Dollar ($) is special because it marks a variable
+
+### 7. Loops
+
+在 Bourne shell 中, 我们拥有`for` and `while` loops
+
+#### For Loop
+
+`for` loops iterate through a set of values until the list is exhausted:
+
+> 下面 script, 值得  尝试, `*`会匹配文件夹中的所有 file
+
+```sh
+for i in hello 1 * 2 goodbye
+do
+  echo "Looping ... i is set to $i"
+done
+```
+
+#### While Loops
+
+> The colon (:) always evaluates to true
+
+```sh
+#!/bin/sh
+while :
+do
+  echo "Please type something in (^C to quit)"
+  read INPUT_STRING
+  echo "You typed: $INPUT_STRING"
+done
+```
+
+--
+
+一些有用的 bash
+
+```sh
+# 创建多个文件夹
+mkdir rcdir rc{0,1,2,3,4,5,6,S}.d
+# instead of the more cumbersome:
+
+for runlevel in 0 1 2 3 4 5 6 S
+do
+  mkdir rc${runlevel}.d
+done
+```
