@@ -69,6 +69,18 @@ ca:
   * must be PEM-encoded
   * must not be encrypted
 
+### Enrolling an intermediate CA
+
+intermediate CA must enroll with a parent CA , 其方式与 a `fabric-ca-client` enrolls with a CA 相同.
+
+### Upgrading the server
+
+5.  确认 ca-server process is avaiable
+
+```sh
+fabric-ca-client getcacert -u http://<host>:7054
+```
+
 ## 5. CA Client
 
 ### Enrolling the bootstrap identity
