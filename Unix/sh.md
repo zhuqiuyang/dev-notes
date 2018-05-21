@@ -1,0 +1,96 @@
+## Shell Scripting Tutorial
+
+> https://www.shellscript.sh/
+
+### 2. Philosophy
+
+sh 给许多 UNIX admin 不良的印象, 由于两点:
+
+* speed 不如 C, 甚至 Perl
+* 有很多低质量的 shell script
+
+写出 good, clean, quick, shell scripts, 需:
+
+* The most important criteria must be a clear, readable layout.
+
+* 避免不必要的`command`
+
+A clear layout 可以使 shell script 变得更易于理解, 而非"黑魔法"(晦涩). 记住两点:
+
+1.  First, a simple script will, more often than anticipated, grow into a large, complex one.
+2.  如果没人理解, 将由你持续维护.
+
+```sh
+catat /tmpmp/myfile yfile | greprep "mystring"mystring"
+
+# 改写成如下, 更高效
+grep "mystring" /tmp/myfile
+```
+
+* 节省了`cat`excutable 的定位和加载
+* 没有 pipe 的建立和释放
+
+### 3. A First Script
+
+```sh
+#!/bin/sh
+# This is a comment!
+echo Hello World        # This is a comment, too!
+```
+
+* `#!`是一个特殊的指令, 告诉 UNIX 这个 script 的解析器.
+
+```sh
+echo Hello    World
+#上面等同于
+echo Hello World
+
+echo "Hello      World"
+```
+
+因为 shell 会先解析`argument`, 再传给 command.
+
+* 多个参数之间的空格会被`忽略`
+* `quote` 内的内容会被当成一个参数, 会被原封不动的传给 command
+
+看`frist2.sh`例子内容.
+
+### 4. Variables - Part I
+
+"=" sign 之间不可以有空格: `VAR=value` works
+
+* 一个包含`空格`的 string 必须用`"`包裹起来(shell knows to treat it all as one), 否则`MY_MESSAGE=Hello World`会执行 command`World`after assigning`MY_MESSAGE=Hello`
+* 所有变量都被存储成`strings`
+
+通过`read`command, 我们可以通过交互方式定义 variable:
+
+> var2.sh
+
+```sh
+#!/bin/sh
+echo What is your name?
+read MY_NAME
+echo "Hello $MY_NAME - hope you're well."
+```
+
+#### Scope of Variables
+
+export, source
+
+* `export` 会在当前 shell 的环境中添加
+* `source` 会使
+
+shell 有时不知道`变量`的起始点, 需要通过`curly`手动指定, 如下:
+
+> user.sh
+
+```sh
+#!/bin/sh
+echo "What is your name?"
+read USER_NAME
+echo "Hello $USER_NAME"
+echo "I will create you a file called ${USER_NAME}_file"
+touch "${USER_NAME}_file"
+```
+
+* `"${USER_NAME}_file"`使用`"`包括, 是因为假如用户输入了`Steven Parker`, 会执行成`touch Steve Parker_file`, 创建`Steve`he `Parker_file`两个文件. `"`避免了这个问题的发生.
