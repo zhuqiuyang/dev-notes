@@ -187,8 +187,73 @@ done
 
 ### 11. Variable(Part 3)
 
-* `:=`sets the variable to the default if it is undefined:
+* `:=`用于设置默认值:
 
 ```sh
 echo "Your name is : ${myname:=John Doe}"
 ```
+
+### 12. External Programs
+
+The backtick (`)is also often associated with external commands.
+
+* backtick simply catches the `standard output` from any command
+
+```sh
+find / -name "*.html" -print | grep "/index.html$"
+find / -name "*.html" -print | grep "/contents.html$"
+
+# 优化, find once
+HTML_FILES=`find / -name "*.html" -print`
+echo "$HTML_FILES" | grep "/index.html$"
+echo "$HTML_FILES" | grep "/contents.html$"
+```
+
+### 13. Functions
+
+A function may return a value in one of four different ways:
+
+* Change the state of a variable or variables
+* Use the `exit` command
+* Use the `return` command
+* echo output to stdout, which will be caught by the caller just as c=`expr $a + $b` is caught
+
+* 函数不能改变传入的参数
+
+函数会在一个`sub shell`中被调用, 当它的输出需要`pipe`到某个地方时
+
+```sh
+# `grep` 先启动, 然后把其 stdin 绑定到`ls`的 stdout.
+ls | grep foo
+```
+
+### 14. Hints and Tips
+
+Unix 操作 text 的工具很多, 有一些很强大. Vitually, Unix 内的一切都是`text`.
+
+### 15. Quick Reference
+
+| Command | Description                                | Example                                       |
+| ------- | ------------------------------------------ | --------------------------------------------- |
+| &       | Run the previous command in the background | ls &                                          |
+| &&      | Logical AND                                | if [ "$foo" -ge "0" ] && [ "$foo" -le "9"]    |
+| `||`    | Logical OR                                 | if [ "$foo" -lt "0" ] `||` [ "$foo" -gt "9" ] |
+| ^       | Start of line                              | grep "^foo"                                   |
+| $       | End of line                                | grep "foo$"                                   |
+| =       | String equality                            | (cf. -eq) if [ "$foo" = "bar" ]               |
+| !       | Logical NOT                                | if [ "$foo" != "bar" ]                        |
+| -eq     | Numeric Equality                           | if [ "$foo" -eq "9" ]                         |
+| -ne     | Numeric Inquality                          | if [ "$foo" -ne "9" ]                         |
+| -lt     | Less Than                                  | if [ "$foo" -lt "9" ]                         |
+| -le     | Less Than or Equal                         | if [ "$foo" -le "9" ]                         |
+| -gt     | Greater Than                               | if [ "$foo" -gt "9" ]                         |
+| -ge     | Greater Than or Equal                      | if [ "$foo" -ge "9" ]                         |
+| -z      | String is zero length                      | if [ -z "$foo" ]                              |
+| -n      | String is not zero length                  | if [ -n "$foo" ]                              |
+| -nt     | Newer Than                                 | if [ "$file1" -nt "$file2" ]                  |
+| -d      | Is a Directory                             | if [ -d /bin ]                                |
+| -f      | Is a File                                  | if [ -f /bin/ls ]                             |
+| -r      | Is a readable file                         | if [ -r /bin/ls ]                             |
+| -w      | Is a writable file                         | if [ -w /bin/ls ]                             |
+| -x      | Is an executable file                      | if [ -x /bin/ls ]                             |
+| ( ... ) | Function definition                        | function myfunc() { echo hello }              |
