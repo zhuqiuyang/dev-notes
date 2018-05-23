@@ -259,6 +259,41 @@ The purpose of system chaincode is to shortcut gRPC communication cost between p
 4.  ESCC Endorsement system chaincode handles endorsement by signing the transaction proposal response.
 5.  VSCC Validation system chaincode handles the transaction validation, including checking endorsement policy and multiversioning concurrency control.
 
+## Tutorial
+
+### Add an Org to a Channel
+
+> https://hyperledger-fabric.readthedocs.io/en/latest/channel_update_tutorial.html
+
+#### Prepare the CLI Environment
+
+```sh
+docker exec -it cli bash
+# 在容器中执行, 需要jq
+export ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  && export CHANNEL_NAME=mychannel
+```
+
+#### Fetch the Configuration
+
+```sh
+peer channel fetch config config_block.pb -o orderer.example.com:7050 -c $CHANNEL_NAME --tls --cafile $ORDERER_CA
+```
+
+#### Convert the Configuration to JSON and Trim It Down
+
+```sh
+apt-get -y update && apt-get -y install jq
+
+configtxlator proto_decode --input config_block.pb --type common.Block | jq .data.data[0].payload.data.config > config.json
+
+# 执行结果: tutorial_data/config.json
+```
+
+#### Add the Org3 Crypto Material
+```sh
+jq -s '.[0] * {"channel_group":{"groups":{"Application":{"groups": {"Org3MSP":.[1]}}}}}' config.json ./channel-artifacts/org3.json > modified_config.json
+```
+
 ## Operations Guides
 
 ### Endorsement policies
