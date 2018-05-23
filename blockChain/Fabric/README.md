@@ -19,6 +19,42 @@
 * Security & Membership Services
 * Consensus
 
+### Hyperledger Fabric Network (重要, 网络的建立)
+
+> https://hyperledger-fabric.readthedocs.io/en/latest/network/network.html
+
+图 1, 网络描述
+
+#### Creating the Network
+
+> 网络对应`order service`
+
+The `ordering service` 是网络的`administration point`, 因为它包含了 channel 的配置. 主要包括:
+
+* the policies for the channel
+* the membership information (in this example X509 root certificates) for each member of the channel.
+
+#### Defining a Consortium
+
+A consortium 有 network 中的多个 org 组成(至少两个)
+
+#### Creating a channel for a consortium
+
+`Channels are created` by `generating the configuration block` on the `ordering service`
+
+* Channels are governed by the policies they are configured with.
+
+#### Peers and Channels
+
+* Endorsing peer – policy 中指定的 node, 执行 cc 模拟交易, 并返回 a `proposal response` (endorsement) to client.
+* Committing peer - 所有 peer 都是(因为本地都有 ledger)
+* Anchor peer – 在`channel configuration` 定义, 第一个作为 org 代表在网络中被发现.
+* Leading peer – 代表 org 与`order service`通信
+
+#### Applications and Smart Contracts
+
+app 位于 network 之外, endorsor 执行 smart contract 返回 Endorsement, app 接收到之后, 广播给`ordering service`.
+
 ### Identity
 
 * principal(主角): like userIDs or groupIDs.
@@ -298,7 +334,7 @@ CCVC 是 peer 之间同步 state 的一种方式.
 
 * A consortium is a collection of non-orderer organizations on the blockchain network.
 
-###Leading Peer
+### Leading Peer
 
 * communicate with the network `ordering service` on behalf of the member
 * The `ordering service` “delivers” blocks to the leading peer(s) on a channel, 再分发给每个 peer.
@@ -319,6 +355,23 @@ See `Orgniztion`
 * MSP provides credentials(资格证书) to clients,
   * Clients use these credentials to authenticate their transactions
   * peers use these credentials to authenticate transaction processing results (endorsements)
+
+### Policy
+
+有两种策略:
+
+* Signature
+  * 策略的满足必须获得指定 user 的`签名`,such as `Org1.Peer OR Org2.Peer`
+* ImplicitMeta
+  * eg: `MAJORITY Admins`
+  * `configtx.yaml` file under `Application: Policies` 可用于定于 network 全局的策略
+  * channel 特定的策略可以定义在 channel profile section 中
+
+### Qurey
+
+> query 是查询 state 的 cc.
+
+因为 query 不改变 ledger state, 所以不必发给 order, 如果 ledger 需要 auditable proof, 可以选择发送给 order.
 
 ### System Chain
 
