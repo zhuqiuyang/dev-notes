@@ -290,6 +290,7 @@ configtxlator proto_decode --input config_block.pb --type common.Block | jq .dat
 ```
 
 #### Add the Org3 Crypto Material
+
 ```sh
 jq -s '.[0] * {"channel_group":{"groups":{"Application":{"groups": {"Org3MSP":.[1]}}}}}' config.json ./channel-artifacts/org3.json > modified_config.json
 ```
@@ -413,3 +414,34 @@ See `Orgniztion`
 * Contains a `configuration block` defining the network at a system level
 * 存在于 `ordering service`中
 * Any change to the overall network 都会在 system chain 之后追加一个 configuration block
+
+## Policy
+
+> https://hyperledger-fabric.readthedocs.io/en/latest/policies.html
+
+bc network 的配置通过 policy 来管理. 这部分主要介绍如何 define policy, 并如何与 channel 的配置交互.
+
+### What is a Policy?
+
+a policy is a `function` which accepts as input a set of signed data and evaluates successfully, `or` returns an error because some aspect of the signed data did not satisfy the policy.
+
+### Policy Types
+
+Policies are encoded in a common.Policy message as defined in fabric/protos/common/policies.proto. They are defined by the following message:
+
+```proto
+message Policy {
+    enum PolicyType {
+        UNKNOWN = 0; // Reserved to check for proper initialization
+        SIGNATURE = 1;
+        MSP = 2;
+        IMPLICIT_META = 3;
+    }
+    int32 type = 1; // For outside implementors, consider the first 1000 types reserved, otherwise one of PolicyType
+    bytes policy = 2;
+}
+```
+
+### Configuration and Policies
+
+The channel configuration is expressed as a hierarchy of configuration groups

@@ -69,6 +69,14 @@ ca:
   * must be PEM-encoded
   * must not be encrypted
 
+### Starting the server
+
+```sh
+fabric-ca-server start -b <admin>:<adminpw>
+```
+
+server 会自生成 `ca-cert.pem` and `ca-key.pem` 和 `default configuration` file if it does not exist.
+
 ### Enrolling an intermediate CA
 
 intermediate CA must enroll with a parent CA , 其方式与 a `fabric-ca-client` enrolls with a CA 相同.
