@@ -297,6 +297,12 @@ jq -s '.[0] * {"channel_group":{"groups":{"Application":{"groups": {"Org3MSP":.[
 
 ## Operations Guides
 
+### Channel Configuration (configtx)
+
+#### Anatomy(剖析) of a configuration
+
+The `mod_policy` is used to govern the required signatures to modify that element.
+
 ### Endorsement policies
 
 `Endorsement policies` are used to instruct a peer on how to decide whether a transaction is properly `endorsed`. When a peer receives a transaction, it `invokes` the VSCC (Validation System Chaincode) associated with the transaction’s Chaincode as part of the transaction validation flow to `determine the validity of the transaction`.
@@ -442,6 +448,12 @@ message Policy {
 }
 ```
 
+> 补充: 此处`= 0`定义的是 field number, 对应`channel-config.json`中的`"type": 1`(用的最多的是`1`和`3`)
+
 ### Configuration and Policies
 
 The channel configuration is expressed as a hierarchy of configuration groups
+
+* 系统中不同的组件, 对应不同的策略名, 如:
+  * `Deliver` on order, 需要满足`/Channel/Readers`policy
+  * gossip a block to a peer 需`/Channel/Application/Readers`policy
