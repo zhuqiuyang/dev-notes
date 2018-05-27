@@ -457,3 +457,8 @@ The channel configuration is expressed as a hierarchy of configuration groups
 * 系统中不同的组件, 对应不同的策略名, 如:
   * `Deliver` on order, 需要满足`/Channel/Readers`policy
   * gossip a block to a peer 需`/Channel/Application/Readers`policy
+
+### 策略(个人理解)
+
+1.  ImplicitMeta 是基于 Sign 的
+2.  策略分为: 策略的定义, 交易背书策略, 链码实例化策略, 通道管理策略.

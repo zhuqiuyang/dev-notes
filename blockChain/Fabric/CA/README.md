@@ -2,6 +2,11 @@
 
 ## 0.
 
+### 重点总结
+
+* 只有已注册(enroll)的用户, 可以登记新用户(在自己管辖范围内)
+* enroll 是注册, register 是登记. admin 默认由 ca-server`-b`指定(已登记), 所以可以直接 enroll.
+
 ### CA feature:
 
 * 颁发 Enrollment certificate (Ecert- 身份证书)
