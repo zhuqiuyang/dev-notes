@@ -371,6 +371,26 @@ The `mod_policy` 用于 govern 改变某个元素 所需要的`signatures`.
 * `Endorser`通过 MSP 验证 proposal 的 signature
 * each valid transaction the write sets are `committed` to current `state database`.
 
+##### Capabilities in an Initial Configuration
+
+> 谈到了`configtx.yaml`
+
+```yaml
+SampleSingleMSPSoloV1_1:
+    Capabilities:
+        <<: *GlobalCapabilities
+    Orderer:
+        <<: *OrdererDefaults
+        Organizations:
+            - *SampleOrg
+        Capabilities:
+            <<: *OrdererCapabilities
+    Consortiums:
+        SampleConsortium:
+            Organizations:
+                - *SampleOrg
+```
+
 ## Glossary (术语表)
 
 ### Anchor Peer
