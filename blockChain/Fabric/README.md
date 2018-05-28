@@ -433,7 +433,12 @@ a policy is a `function` which accepts as input a set of signed data and evaluat
 
 ### Policy Types
 
-Policies are encoded in a common.Policy message as defined in fabric/protos/common/policies.proto. They are defined by the following message:
+两种 Policy Type:
+
+1.  `SignaturePolicy`: 最常用的, 一套针对 MSP Principals 的执行 rules 的集合.
+2.  `ImplicitMetaPolicy`: 基于第一种,
+
+Policies are encoded in a common.Policy message as defined in `fabric/protos/common/policies.proto`. They are defined by the following message:
 
 ```proto
 message Policy {
@@ -457,6 +462,75 @@ The channel configuration is expressed as a hierarchy of configuration groups
 * 系统中不同的组件, 对应不同的策略名, 如:
   * `Deliver` on order, 需要满足`/Channel/Readers`policy
   * gossip a block to a peer 需`/Channel/Application/Readers`policy
+
+### Constructing a SignaturePolicy (重要)
+
+SignaturePolicy 的 protobuf 表达如下:
+
+```proto
+message SignaturePolicyEnvelope {
+    int32 version = 1;
+    SignaturePolicy policy = 2;
+    repeated MSPPrincipal identities = 3;
+}
+
+message SignaturePolicy {
+    message NOutOf {
+        int32 N = 1;
+        repeated SignaturePolicy policies = 2;
+    }
+    oneof Type {
+        int32 signed_by = 1;
+        NOutOf n_out_of = 2;
+    }
+}
+```
+
+* `MSPPrincipals`: 代表一组`identify`
+* `policy`代表一组 rule (其内部通过 index, 引用`identity`)
+* `SignaturePolicy`由递归定义
+  * 1.  需要特定`identify`的签名
+  * 2.  或者是一组`SignaturePolicys`的集合, 需要其中`N`个被满足
+
+> eg 见: https://hyperledger-fabric.readthedocs.io/en/latest/policies.html#constructing-a-signaturepolicy
+
+```go
+SignaturePolicyEnvelope{
+    version: 0,
+    policy: SignaturePolicy{
+        n_out_of: NOutOf{
+            N: 2,
+            policies: [
+                SignaturePolicy{ signed_by: 0 },
+                SignaturePolicy{
+                    n_out_of: NOutOf{
+                        N: 1,
+                        policies: [
+                            SignaturePolicy{ signed_by: 1 },
+                            SignaturePolicy{ signed_by: 2 },
+                        ],
+                    },
+                },
+            ],
+        },
+    },
+    identities: [mspP1, mspP2, mspP3],
+}
+```
+
+> 上述例子定义了 a signature policy over MSP Principals `mspP1`, `mspP2`, and `mspP3`. 满足条件: `mspP1` 与 `mspP2 or mspP3`其中之一.
+
+#### 重点:
+
+`identities` 应当从高->低(优先级)定义, `signatures` 应当从低->高定义.
+
+> 当个一个`admin`身份, 对只有`member`要求的 policy 进行了签名, 就不能再在 policy 集内再签名(consumed)
+
+### Constructing an ImplicitMetaPolicy
+
+`ImplicitMetaPolicy`是递归策略的定义方法(只在 channel configuration 中有效)
+
+* `implicit`是指 rule 由子策略生成的, `Meta`是指其依赖其他`policy`的执行结果.
 
 ### 策略(个人理解)
 
