@@ -299,9 +299,26 @@ jq -s '.[0] * {"channel_group":{"groups":{"Application":{"groups": {"Org3MSP":.[
 
 ### Channel Configuration (configtx)
 
+> https://hyperledger-fabric.readthedocs.io/en/latest/configtx.html (policy 相关)
+
+`configuration transaction` 简写是: `configtx`
+
 #### Anatomy(剖析) of a configuration
 
-The `mod_policy` is used to govern the required signatures to modify that element.
+The `mod_policy` 用于 govern 改变某个元素 所需要的`signatures`.
+
+* For Groups, `modification` is adding or removing elements to the `Values, Policies, or Groups maps` (or changing the mod_policy).
+* For Values and Policies, `modification` is changing the `Value and Policy fields` respectively (or changing the mod_policy).
+
+* `mod_policy` is evaluated in the context of the current level of the config.
+
+  > 举例, `mod policies` defined at `Channel.Groups["Application"]`
+
+  * `policy1` maps to `Channel.Groups["Application"].Policies["policy1"]`
+  * `Org1/policy2` maps to `Channel.Groups["Application"].Groups["Org1"].Policies["policy2"]`
+  * `/Channel/policy3` maps to `Channel.Policies["policy3"]`
+
+* 如果`mod_policy`引用一个不存在的 policy, 则这个 item 不能被改变.
 
 ### Endorsement policies
 
@@ -529,9 +546,17 @@ SignaturePolicyEnvelope{
 
 ### Constructing an ImplicitMetaPolicy
 
-`ImplicitMetaPolicy`是递归策略的定义方法(只在 channel configuration 中有效)
+`ImplicitMetaPolicy`由`rule, sub_policy`两个字段定义:
+
+```go
+ImplicitMetaPolicy{
+    rule: ANY,
+    sub_policy: "foo",
+}
+```
 
 * `implicit`是指 rule 由子策略生成的, `Meta`是指其依赖其他`policy`的执行结果.
+* `sub_policy`指定子策略`set`, `rule`指定满足条件`ALL, ANY, MAJORITY`
 
 ### 策略(个人理解)
 
