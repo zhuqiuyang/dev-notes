@@ -82,6 +82,10 @@ fabric-ca-server start -b <admin>:<adminpw>
 
 server 会自生成 `ca-cert.pem` and `ca-key.pem` 和 `default configuration` file if it does not exist.
 
+`registry.maxenrollments`定义了同一个`admin:passwd`可以`enroll`的次数
+
+* `-1`表示一个账号只能申请一个 Ecert, 失效了可以`reenroll`
+
 ### Enrolling an intermediate CA
 
 intermediate CA must enroll with a parent CA , 其方式与 a `fabric-ca-client` enrolls with a CA 相同.

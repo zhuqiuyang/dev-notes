@@ -147,8 +147,8 @@ registry:
 #  or "mysql".
 #############################################################################
 db:
-  type: sqlite3
-  datasource: fabric-ca-server.db
+  type: mysql
+  datasource: root:rootpw@tcp(db:3306)/root_ca?parseTime=true
   tls:
       enabled: false
       certfiles:

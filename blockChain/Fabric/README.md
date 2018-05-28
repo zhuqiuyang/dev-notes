@@ -522,9 +522,10 @@ SignaturePolicyEnvelope{
 
 #### 重点:
 
-`identities` 应当从高->低(优先级)定义, `signatures` 应当从低->高定义.
+1.  `identities` 应当从高->低(优先级)定义(in the policy identities specification)
+2.  `signatures` 应当从低->高定义(in the signature set).
 
-> 当个一个`admin`身份, 对只有`member`要求的 policy 进行了签名, 就不能再在 policy 集内再签名(consumed)
+* 让权重低的签名先被`consumed`(田忌赛马)
 
 ### Constructing an ImplicitMetaPolicy
 
