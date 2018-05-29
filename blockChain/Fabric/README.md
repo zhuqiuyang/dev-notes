@@ -23,7 +23,7 @@
 
 > https://hyperledger-fabric.readthedocs.io/en/latest/network/network.html
 
-图 1, 网络描述
+![网络最终图](./img/network.diagram.14.png)
 
 #### Creating the Network
 
@@ -104,34 +104,41 @@ CA 的存在是确保`公钥`的可靠性, 防止中间人攻击. (Pc)
 
 还包括:
 
-* 识别 acotr 在指定 network 中的 role`identify specific roles an actor might play`
+* 识别 actor 在指定 network 中的 role`identify specific roles an actor might play`
 * 设置访问特权(eg.channel admins, readers.)
 * MSP 对 all channel 是公开的
 
 #### Mapping MSPs to Organizations
 
-What’s most important about organizations (or orgs) is that they manage their members under a single MSP.
+An `organization` is a managed group of members.
 
-此处`org`概念和 X.509 中`org`不同.
+* org 与 MSP 可以是一对一/多的关系(见下图), 和 X.509 中`org`不同.
+
+#### Organizational Units and MSPs
+
+一个 orgniztion 常被划分成不同的 OUs, 负责不同职责.
+
+* `OU`也可以做访问权限的控制.
+
+![msp-eg-3](./img/membership.diagram.3.png)
 
 #### Local and Channel MSPs
 
-* **`Local MSPs` defined for nodes (peer or orderer) and users (administrators that use the CLI or client applications that use the SDK).**
-  Every node and user must have a local MSP defined, as it defines who has administrative or participatory rights at that level and outside the context of a channel (who the administrators of a peer’s organization, for example).
+> 两者只是 scope 不同.
 
-* **`channel MSPs` define administrative and participatory rights at the channel level. Every organization participating in a channel must have an MSP defined for it.**
+* **`Local MSPs` defined for nodes (peer or orderer) and users**
+
+  * 存储在本地文件系统
+
+* **`channel MSPs` 存储在 channel configuration 中**.
+  * 并且每一个 peer 都有拷贝, 便于正确认证 channel participants
+  * org 加入 channel 的方式, 就是把其 MSP 放入 channel 配置.
 
 ![MSP_Eg1](./img/membership.diagram.4.png)
 
-> An administrator B connects to the peer with an identity issued by RCA1 and stored in their local MSP. When B tries to install a smart contract on the peer, the peer checks its `local MSP`, ORG1-MSP, to verify that the identity of B is indeed a member of ORG1. A successful verification will allow the install command to complete successfully.
->
-> Subsequently, B wishes to instantiate the smart contract on the channel. Because this is a channel operation, all organizations in the channel must agree to it. Therefore, the peer must check the `MSPs of the channel` before it can successfully commits this command. (Other things must happen too, but concentrate on the above for now.)
-
-* **Local MSPs are only defined on the file system of the node or user to which they apply.**
-* **channel MSPs are available to all nodes in the channel**
-* **a channel MSP is instantiated on the file system of every node in the channel and kept synchronized via consensus.**
-
 #### MSP Levels
+
+MSP 分成两个 level 反应出 org 管理其 local 资源的需要.
 
 * **MSPs at a higher level relating to network administration concerns**
 * **while MSPs at a lower level handle identity for the administration of private resources.**
@@ -141,9 +148,25 @@ What’s most important about organizations (or orgs) is that they manage their 
 > In this figure, the network configuration channel is administered by `ORG1`, but another application channel can be managed by `ORG1 and ORG2`. The peer is a member of and managed by ORG2, whereas ORG1 manages the orderer of the figure. ORG1 trusts identities from RCA1, whereas ORG2 trusts identities from RCA2. Note that these are administration identities, reflecting who can administer these components. So while `ORG1` administers the network, ORG2.MSP does exist in the network definition.
 
 * Network MSP
+  * 定义 network 内的成员
 * Channel MSP
+  * Channel policies interpreted in the context of that channel’s MSPs define who has ability to participate in certain action on the channel
+  * channel 的 admin 和 network 的 admin 是不同的概念
 * Peer MSP
 * Orderer MSP
+  * 此处指的是 order 作为 node, 也属于某个 org, 其本地 file 系统存储的 MSP
+
+疑惑: order 标志 network 的建立, 两者 MSP 的区别?
+
+#### MSP Structure
+
+可见 CA 是 MSP 最重要的 element,
+
+![MSP_Eg1](./img/membership.diagram.5.png)
+
+* Administrators: Note 一个 admin role, 对某个资源的权限, 需要看 policy 如何定义.
+  * `X.509`中的`ROLE: admin`, 表示其在 org 中的身份, 而非 bc 网络
+* **Signing Certificate(Node Identity): ** this folder contains an `X.509` certificate. This is the certificate a peer places in a `transaction proposal response`(eg: 可用于交易背书的认证.)
 
 ### Peers
 
@@ -238,7 +261,30 @@ Chaincode runs in a secured Docker `container` isolated from the endorsing peer 
 `package`, `install`, `instantiate`, and `upgrade`. In a future release, we are considering adding `stop` and `start`
 `invoke`
 
-#### CLI
+#### Package
+
+##### Creating the package
+
+packing cc 有两种 approaches:
+
+1.  多个 owner 共同签名
+2.  only 执行`install`的 node 签名
+
+```sh
+peer chaincode package -n mycc -p github.com/hyperledger/fabric/examples/chaincode/go/example02/cmd -v 0 -s -S -i "AND('OrgA.admin')" ccpack.out
+```
+
+* `-i`指定 cc instantiation 时的 policy, 默认需要 peer 所在 MSP 的 admin 身份.(在此例中, 只允许`admin of OrgA`实例化 cc)
+
+##### Package signing
+
+> If the instantiation policy is not specified, the default policy is any MSP administrator of the channel.
+
+##### Installing chaincode
+
+在 peer 上安装 cc, the`SignedProposal` 必须要有 peer’s local MSP administrators 的`signature`
+
+##### CLI
 
 ```sh
 peer chaincode install -n mycc -v 0 -p path/to/my/chaincode/v0
@@ -323,6 +369,22 @@ The `mod_policy` 用于 govern 改变某个元素 所需要的`signatures`.
 ### Endorsement policies
 
 `Endorsement policies` are used to instruct a peer on how to decide whether a transaction is properly `endorsed`. When a peer receives a transaction, it `invokes` the VSCC (Validation System Chaincode) associated with the transaction’s Chaincode as part of the transaction validation flow to `determine the validity of the transaction`.
+
+### Membership Service Providers (MSP)
+
+> setup of the MSP
+
+#### MSP Configuration
+
+#### MSP setup on the peer & orderer side
+
+`core.yaml` file (peer), and `orderer.yaml` (order)
+
+* mspconfig 文件夹相对于 `FABRIC_CFG_PATH`
+* 字段名: `mspConfigPath` (peer), and `LocalMSPDir` (order)
+* MSP identifier: localMspId (peer) and LocalMSPID (order)
+
+> 当前重新配置 “local” MSP 只能手动重启 node, 后续版本会优化.
 
 ## Architectur Reference
 
