@@ -108,6 +108,10 @@ fabric-ca-client getcacert -u http://<host>:7054
 
 > 需要 check (包含 affiliation): http://hyperledger-fabric-ca.readthedocs.io/en/latest/users-guide.html#registering-a-new-identity
 
+### Enrolling a peer identity
+
+包含`OU`字段, 与其`affiliation`相关(略)
+
 ### Attribute-Based Access Control
 
 ABAC can be made by chaincode, 原理:

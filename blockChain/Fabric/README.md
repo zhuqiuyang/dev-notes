@@ -372,11 +372,24 @@ The `mod_policy` 用于 govern 改变某个元素 所需要的`signatures`.
 
 ### Membership Service Providers (MSP)
 
+> http://hyperledger-fabric.readthedocs.io/en/latest/msp.html
+
 > setup of the MSP
 
 #### MSP Configuration
 
 #### MSP setup on the peer & orderer side
+
+local MSP 包含 6 个文件夹:
+
+* `admincerts/`: 管理员证书
+* `cacerts/`: rootCA 证书
+* (optional)`intermediatecerts/`
+* (optional)`config.yaml`
+* `keystore/`: node’s signing key (私钥, PEM file)
+* `signcerts/`: 本 node 的证书
+* (optional)`tlscacerts/`
+* (optional)`tlsintermediatecerts/`
 
 `core.yaml` file (peer), and `orderer.yaml` (order)
 
@@ -385,6 +398,10 @@ The `mod_policy` 用于 govern 改变某个元素 所需要的`signatures`.
 * MSP identifier: localMspId (peer) and LocalMSPID (order)
 
 > 当前重新配置 “local” MSP 只能手动重启 node, 后续版本会优化.
+
+#### Organizational Units
+
+定义在 msp 的`config.yaml`中
 
 ## Architectur Reference
 
@@ -626,6 +643,30 @@ SignaturePolicyEnvelope{
 
 * 让权重低的签名先被`consumed`(田忌赛马)
 
+### MSP Principals
+
+MSP 策略配置中的 identity:
+
+```json
+{
+  "principal": {
+    "msp_identifier": "Org2MSP",
+    "role": "ADMIN"
+  },
+  "principal_classification": "ROLE"
+}
+```
+
+* `principal_classification`: Enum(`ROLE`, `IDENTITY`, `ORGANIZATIONAL_UNIT`尚未支持)
+  * ROLE 可以支持 MSP's CA 颁发的不同证书
+  * IDENTITY: 指定证书的 bytes
+* `pricipal`是`MSPRole`message
+  * `msp_identifier`是 MSP 的 ID
+  * `role`可以设置成四种
+    * `MEMBER` matches MSP 下任何 cert
+    * `ADMIN` matches MSP 定义时 enum 出的 admin cert
+    * `CLIENT` (`PEER`) matches certificates that carry the client (peer) Organizational unit.
+
 ### Constructing an ImplicitMetaPolicy
 
 `ImplicitMetaPolicy`由`rule, sub_policy`两个字段定义:
@@ -639,6 +680,23 @@ ImplicitMetaPolicy{
 
 * `implicit`是指 rule 由子策略生成的, `Meta`是指其依赖其他`policy`的执行结果.
 * `sub_policy`指定子策略`set`, `rule`指定满足条件`ALL, ANY, MAJORITY`
+
+### Identity Classification
+
+> MSP 实现允许基于其证书中的`OU`, 更进一步将`identity`分成 clients and peers
+
+需要在 msp 目录下`confix.yaml`中做如下配置:
+
+```yaml
+NodeOUs:
+  Enable: true
+  ClientOUIdentifier:
+    Certificate: "cacerts/cacert.pem"
+    OrganizationalUnitIdentifier: "client"
+  PeerOUIdentifier:
+    Certificate: "cacerts/cacert.pem"
+    OrganizationalUnitIdentifier: "peer"
+```
 
 ### 策略(个人理解)
 
