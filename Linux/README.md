@@ -71,3 +71,31 @@ awk '$3 >0 { print $1, $2 * $3 }' emp.data
 > 删除一个入参, $1 从此不是最初的 $1
 
 `$@` 显示当前所有参数.
+
+### dirname
+
+获取文件夹名:
+
+```sh
+dirname foo/bar/baz
+foo/bar
+```
+
+### 字符串
+
+* `/`: 匹配第一个
+* `//`: 匹配所有
+* `/#`: 匹配开头
+* `/`: 匹配末尾
+
+```sh
+$ foo=JPG.JPG
+$ echo ${foo/JPG/jpg}
+jpg.JPG
+$ echo ${foo//JPG/jpg}
+jpg.jpg
+$ echo ${foo/#JPG/jpg}
+jpg.JPG
+$ echo ${foo/%JPG/jpg}
+JPG.jpg
+```

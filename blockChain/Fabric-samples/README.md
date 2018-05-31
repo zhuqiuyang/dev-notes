@@ -1,3 +1,7 @@
+### node-sdk-tutorial
+
+> https://fabric-sdk-node.github.io/tutorial-network-config.html
+
 ### 1. Register and enroll new users in Organization - Org1 涉及的步骤
 
 1.  `helper/getClientForOrg()`
@@ -7,22 +11,22 @@
 
 ```js
 async function getClientForOrg(userorg, username) {
-  logger.debug("getClientForOrg - ****** START %s %s", userorg, username);
+  logger.debug('getClientForOrg - ****** START %s %s', userorg, username)
   // get a fabric client loaded with a connection profile for this org
-  let config = "-connection-profile-path";
+  let config = '-connection-profile-path'
 
   // 找到并加载配置文件!
-  let client = hfc.loadFromConfig(hfc.getConfigSetting("network" + config));
+  let client = hfc.loadFromConfig(hfc.getConfigSetting('network' + config))
 
   // 加载连接指定org的 client config
-  client.loadFromConfig(hfc.getConfigSetting(userorg + config));
+  client.loadFromConfig(hfc.getConfigSetting(userorg + config))
 
   // this will create both the state store and the crypto store 基于client config
-  await client.initCredentialStores();
+  await client.initCredentialStores()
 
   //...
 
-  return client;
+  return client
 }
 ```
 
@@ -34,14 +38,14 @@ async function getClientForOrg(userorg, username) {
 ```js
 // A. enrollAdmin.js
 // 1. 获取admin
-fabric_client.getUserContext("admin", true);
+fabric_client.getUserContext('admin', true)
 
 // 2. 不存在向ca注册
 fabric_ca_client
   // 2.1 EnrollmentRequest: https://fabric-sdk-node.github.io/global.html#EnrollmentRequest
   .enroll({
-    enrollmentID: "admin",
-    enrollmentSecret: "adminpw"
+    enrollmentID: 'admin',
+    enrollmentSecret: 'adminpw'
   })
   .then(enrollment => {
     // enrollment: "key": for private key, "certificate": the signed certificate
@@ -49,19 +53,19 @@ fabric_ca_client
     // 2. createUser(UserOpts): https://fabric-sdk-node.github.io/global.html#UserOpts
     // Returns a `User` object with signing identities
     return fabric_client.createUser({
-      username: "admin",
-      mspid: "Org1MSP",
+      username: 'admin',
+      mspid: 'Org1MSP',
       cryptoContent: {
         privateKeyPEM: enrollment.key.toBytes(),
         signedCertPEM: enrollment.certificate
       }
-    });
+    })
   })
   .then(user => {
-    admin_user = user;
+    admin_user = user
     // 3. set
-    return fabric_client.setUserContext(admin_user);
-  });
+    return fabric_client.setUserContext(admin_user)
+  })
 ```
 
 ```js
@@ -69,91 +73,91 @@ fabric_ca_client
 // admin 注册使用enroll, user 使用register
 then(user_from_store => {
   if (user_from_store && user_from_store.isEnrolled()) {
-    console.log("Successfully loaded admin from persistence");
-    admin_user = user_from_store;
+    console.log('Successfully loaded admin from persistence')
+    admin_user = user_from_store
   } else {
-    throw new Error("Failed to get admin.... run enrollAdmin.js");
+    throw new Error('Failed to get admin.... run enrollAdmin.js')
   }
 
   // at this point we should have the admin user
   // first need to register the user with the CA server
   // 注册user时需传入 `registrar`(管理员-admin), 作为第二个参数
   return fabric_ca_client.register(
-    { enrollmentID: "user1", affiliation: "org1.department1", role: "client" },
+    { enrollmentID: 'user1', affiliation: 'org1.department1', role: 'client' },
     admin_user
-  );
+  )
 })
   .then(secret => {
     // next we need to enroll the user with CA server
-    console.log("Successfully registered user1 - secret:" + secret);
+    console.log('Successfully registered user1 - secret:' + secret)
 
     return fabric_ca_client.enroll({
-      enrollmentID: "user1",
+      enrollmentID: 'user1',
       enrollmentSecret: secret
-    });
+    })
   })
   .then(enrollment => {
-    console.log('Successfully enrolled member user "user1" ');
+    console.log('Successfully enrolled member user "user1" ')
     return fabric_client.createUser({
-      username: "user1",
-      mspid: "Org1MSP",
+      username: 'user1',
+      mspid: 'Org1MSP',
       cryptoContent: {
         privateKeyPEM: enrollment.key.toBytes(),
         signedCertPEM: enrollment.certificate
       }
-    });
-  });
+    })
+  })
 ```
 
 ```js
 // C. query.js cc查询
 
 // 1. 首先: setup the fabric network
-var channel = fabric_client.newChannel("mychannel");
-var peer = fabric_client.newPeer("grpc://localhost:7051");
-channel.addPeer(peer);
+var channel = fabric_client.newChannel('mychannel')
+var peer = fabric_client.newPeer('grpc://localhost:7051')
+channel.addPeer(peer)
 
 // 2. chaincode 查询
 const request = {
   //targets : --- letting this default to the peers assigned to the channel
-  chaincodeId: "fabcar",
-  fcn: "queryAllCars",
-  args: [""]
-};
+  chaincodeId: 'fabcar',
+  fcn: 'queryAllCars',
+  args: ['']
+}
 
 // send the query proposal to the peer
-return channel.queryByChaincode(request);
+return channel.queryByChaincode(request)
 // Channel.js: ->
-return channel.sendTransactionProposal();
+return channel.sendTransactionProposal()
 // -> static function
 return Channel.sendTransactionProposal(
   request,
   this._name,
   this._clientContext,
   timeout
-);
+)
 // 此处包含 signed_proposal的生成过程.
 // ->
-return clientUtils.sendPeersProposal(request.targets, signed_proposal, timeout);
+return clientUtils.sendPeersProposal(request.targets, signed_proposal, timeout)
 // clientUtils.js: 对每一个target调用 ->
-peer.sendProposal();
+peer.sendProposal()
 ```
 
 ```js
 // D. invoke.js
 
 // request 格式: https://fabric-sdk-node.github.io/global.html#ChaincodeInvokeRequest
-channel.sendTransactionProposal(request);
+channel.sendTransactionProposal(request)
 
 // 发送给order
 var orderer_request = {
   txId: tx_id,
   proposalResponses: proposalResponses,
   proposal: proposal
-};
-channel.sendTransaction(order_request);
+}
+channel.sendTransaction(order_request)
 
-eventHub.registerTxEvent();
+eventHub.registerTxEvent()
 ```
 
 #### Client
@@ -203,7 +207,7 @@ register(
   maxEnrollments,
   attrs,
   signingIdentity
-);
+)
 ```
 
 #### FabricCAServices
@@ -213,5 +217,5 @@ register(
 > extend 自 BaseClient
 
 ```js
-register(req, registrar);
+register(req, registrar)
 ```
