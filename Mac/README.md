@@ -25,3 +25,5 @@
   * `cmd + shift + l`: 所有出现一次选中
 * `alt + cmd + ↑`: 向上增加 cursor
 * `shift + alt + cursor`: 矩形区域 drag
+* `⌃-`和`⌃⇧-`: 在 edit location 之间切换
+* `shift + cmd + \`: jump match bractet`{`

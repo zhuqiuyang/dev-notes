@@ -200,7 +200,8 @@ Conceptually you can think of channels as being similar to groups of friends.
 
 #### Peers and Identity
 
-a peer 只能隶属一个 organization, 且只能与一个 MSP 相关联.
+* a peer 只能隶属一个 organization, 且只能与一个 MSP 相关联.
+* We give a name to every entity that interacts with a blockchain network using an identity — a `principal`.
 
 #### Peers and Orderers
 
