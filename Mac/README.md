@@ -20,7 +20,7 @@
 
 #### 2. 编辑
 
-* `cmd + shift + [`: fold 代码块; `]`(unfold)
+* `alt + cmd + [`: fold 代码块; `]`(unfold)
 * `cmd + d`: (duplicate)多点选中
   * `cmd + shift + l`: 所有出现一次选中
 * `alt + cmd + ↑`: 向上增加 cursor

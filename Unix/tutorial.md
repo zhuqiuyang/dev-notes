@@ -21,7 +21,7 @@ A clear layout 可以使 shell script 变得更易于理解, 而非"黑魔法"(�
 2.  如果没人理解, 将由你持续维护.
 
 ```sh
-catat /tmpmp/myfile yfile | greprep "mystring"mystring"
+cat /tmpmp/myfile yfile | grep "mystring"mystring"
 
 # 改写成如下, 更高效
 grep "mystring" /tmp/myfile
