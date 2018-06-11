@@ -48,19 +48,24 @@ alias ngrok="./ngrok"
   "editor.tabSize": 2,
   "files.autoSave": "on",
   "files.associations": {
-    "*.vue": "vue"
+    "*.vue": "vue",
+    "*.el": "lisp"
   },
   "workbench.iconTheme": "vscode-icons",
   "window.zoomLevel": 0,
   "javascript.format.enable": false,
   "prettier.singleQuote": true,
   "prettier.eslintIntegration": true,
+  "prettier.semi": false,
   "C_Cpp.clang_format_style": "google",
-  "eslint.validate": ["javascript", "javascriptreact", "vue"],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "vue"
+  ],
   "extensions.ignoreRecommendations": false,
-  "[markdown]": {},
   "workbench.colorTheme": "One Dark Pro",
-  "[go]": {}
+  "editor.minimap.enabled": false,
 }
 ```
 

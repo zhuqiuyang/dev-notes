@@ -1,3 +1,34 @@
+#### 启动/关闭
+
+- `SPC q R`: restart emacs.
+- `SPC f e R`: reload 配置
+- `SPC f s`: 保存 dotfile 更改
+- `SPC q q`: 退出
+
+#### Window
+
+- `SPC w /`: 右侧分屏
+- `SPC 0..9`: 切换
+- `SPC w d`: 关闭当前 window
+
+#### Buffer
+
+- `SPC b h`: 回到首页
+- `SPC TAB`: 切换
+
+#### Edit
+
+- `gd`: 跳转到定义
+- `C-o`: evil jump back
+
+#### Theme
+
+- `all-the-icons`: 安装后`SPC SPC` 执行`install`
+  ```el
+   (setq neo-theme 'icons)
+  ```
+- `dotspacemacs-additional-packages '(doom-themes all-the-icons)`
+
 ### Home 跳转
 
 - `TAB` or `J` to move to next button.
@@ -29,21 +60,3 @@
 - When reading a document, you can use `SPC s j` to jump to a heading.
 
 - Please consult Spacemacs documentation from `SPC h SPC` for more details.
-
-#### 启动/关闭
-
-- `SPC q R`: restart emacs.
-- `SPC f e R`: reload 配置
-- `SPC f s`: 保存 dotfile 更改
-- `SPC q q`: 退出
-
-#### Window
-
-- `SPC w /`: 右侧分屏
-- `SPC 0..9`: 切换
-- `SPC w d`: 关闭当前 window
-
-#### Buffer
-
-- `SPC b h`: 回到首页
-- `SPC TAB`: 切换
