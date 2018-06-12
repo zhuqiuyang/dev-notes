@@ -41,3 +41,15 @@ gcc -Wall calc.c -lm -o calc
 > `-lNAME` 尝试 link object files with a library file `libNAME.a` in the standard library directories
 
 ### The C Programming Language
+
+#### Chap 1
+
+- C 语言本身没有定义输入/输出功能, `printf`是函数库提供的.
+
+> ./work_space/temp.c
+
+- `#define name value`: 增加可读性
+
+```sh
+gcc -Wall temp.c -o temp.o
+```
