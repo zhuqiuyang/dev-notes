@@ -20,6 +20,24 @@
 
 - `gd`: 跳转到定义
 - `C-o`: evil jump back
+- `g c c`: line 注释
+- `u`: undo
+- `C-r`: redo
+- `SPC j =`: buffer 个代码 indent
+- `dired mode`?
+
+#### Dired mode
+
+Dired Mode 是一个强大的模式它能让我们完成和文件管理相关的所有操作。
+
+- `+` 创建目录
+- `g` 刷新目录
+- `C` 拷贝
+- `D` 删除
+- `R` 重命名
+- `d` 标记删除
+- `u` 取消标记
+- `x` 执行所有的标记
 
 #### Theme
 
