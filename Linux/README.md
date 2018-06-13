@@ -99,3 +99,10 @@ jpg.JPG
 $ echo ${foo/%JPG/jpg}
 JPG.jpg
 ```
+
+### 系统资源
+
+```sh
+# 每个核的负载
+mpstat -P ALL 5
+```
