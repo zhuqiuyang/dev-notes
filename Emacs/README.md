@@ -16,6 +16,13 @@
 - `SPC b h`: 回到首页
 - `SPC TAB`: 切换
 
+#### scroll
+
+- `C-y`: scroll line up
+- `C-e`: scroll line down
+- `C-u`: scroll page up
+- `C-d`: scroll page down
+
 #### Edit
 
 - `gd`: 跳转到定义
