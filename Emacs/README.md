@@ -18,8 +18,10 @@
 
 #### Buffer
 
-- `SPC b h`: 回到首页
-- `SPC TAB`: 切换
+- `SPC b`
+  - `h`: 回到首页
+  - `C-d`: 删除其他 buffer
+- `SPC TAB`: last buffer
 
 #### scroll
 
