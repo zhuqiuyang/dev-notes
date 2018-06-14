@@ -1,3 +1,8 @@
+#### Help
+
+- `C-h i`: 帮助手册, `d`: 回到首页
+- `M-x`/`SPC SPC`: Run by cmd Name
+
 #### 启动/关闭
 
 - `SPC q R`: restart emacs.
@@ -32,6 +37,10 @@
 - `C-r`: redo
 - `SPC j =`: buffer 个代码 indent
 - `dired mode`?
+
+#### Magit
+
+- `SPC g s`: magit status
 
 #### Dired mode
 
