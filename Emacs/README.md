@@ -65,7 +65,7 @@ Dired Mode 是一个强大的模式它能让我们完成和文件管理相关的
 
 ```lisp
 ;; Set your lisp system and, optionally, some contribs
-(setq inferior-lisp-program "/opt/sbcl/bin/sbcl")
+(setq inferior-lisp-program "/opt/sbcl/bin/clisp")
 ;; 目前加载太多, 连接不成功.
 (setq slime-contribs '(slime-fancy))
 ```
