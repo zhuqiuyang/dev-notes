@@ -6,3 +6,4 @@
     (format t "Sum: ~a ~%" acc)
   )
 )
+(sum 1 2 3 4)
