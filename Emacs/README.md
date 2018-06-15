@@ -57,13 +57,21 @@ Dired Mode 是一个强大的模式它能让我们完成和文件管理相关的
 - `u` 取消标记
 - `x` 执行所有的标记
 
-#### common-lisp layer
+#### Slime
 
 > http://spacemacs.org/layers/+lang/common-lisp/README.html
 >
 > https://github.com/slime/slime
 
-layer 加载后, 通过 `M-x slime` 连接到 an inferior Lisp.(默认`sbcl`)
+```lisp
+;; Set your lisp system and, optionally, some contribs
+(setq inferior-lisp-program "/opt/sbcl/bin/sbcl")
+;; 目前加载太多, 连接不成功.
+(setq slime-contribs '(slime-fancy))
+```
+
+1.  layer 加载后, 通过 `M-x slime`或者 `, '` 连接到 an inferior Lisp.(默认`sbcl`)
+2.  断开`, s q`
 
 - 当前 OSX sbcl 版本低, 不能启动
 - fix `common-lisp`layer error: `https://github.com/syl20bnr/spacemacs/commit/12a4d63b30b3da4bb2012fdddae1ad8f6d0f5db8#diff-6c8e3545de06bc931eec4a2098202dfa`
