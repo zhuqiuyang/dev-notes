@@ -17,3 +17,12 @@ http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature
 
 - Digest(摘要), 是内容的`Hash`值.
 - Signature(数字签名), 是对`Digest`的公钥加密结果. (通过 Signatur 解密出 Digest, 作比对)
+
+### 图解密码技术
+
+- 加密用`公钥(E)`, 签名用`私钥(D)`
+- 离散对数, `MOD`(模)本质是`时钟转动`
+
+#### RSA Signature
+
+> https://www.youtube.com/watch?v=DIfOvWymmP0
