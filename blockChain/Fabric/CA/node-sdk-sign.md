@@ -35,6 +35,12 @@ var SigningIdentity = idModule.SigningIdentity;
 var Signer = idModule.Signer;
 // CryptoSetting: https://fabric-sdk-node.github.io/global.html#CryptoSetting__anchor
 
+// ##
+idModule.sign(msg, opts) {
+  //.. 对proposal msg进行 hash
+  return this._signer.sign(Buffer.from(digest, 'hex'), null);
+}
+
 //Sign
 constructor(cryptoSuite, key) {
   this._cryptoSuite = cryptoSuite;

@@ -12,5 +12,6 @@ openssl list-cipher-algorithms
 
   - RSA 一种加密算法, 三个 creater name
   - ECDH
+    - https://www.youtube.com/watch?v=yDXiDOJgxmg
   - Elliptic Curve Diffie-Hellman Ephemeral (ECDHE) key exchange for `key establishment`
   - Elliptic Curve Digital Signature Algorithms (ECDSA) for `authentication`
