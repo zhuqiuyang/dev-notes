@@ -39,6 +39,14 @@
 - fabric-node-sdk 默认使用`elliptic`版本, 是纯 js 实现, 性能平常, 但支持曲线丰富
 - `scep256k1`使我们压测使用的库, 性能较多, 问题是目前 fabric 使用的曲线是`secp256r1`, 其不支持.
 
+> 主要对比 secp256k1_node(C 实现), 和 elliptic(js 实现)的性能对比
+
+| 签名模块       | 生成 publicKey | sign       | verify     | recovery   | ecdh 握手  |
+| -------------- | -------------- | ---------- | ---------- | ---------- | ---------- |
+| secp256k1_node | 16500 ops/s    | 9925 ops/s | 6652 ops/s | 6024 ops/s | 6213 ops/s |
+| ellipic        | 626 ops/s      | 531 ops/s  | 283 ops/s  | 217 ops/s  | 291 ops/   |
+
+详细指标见下图:
 ![cert](./img/ec_bench.png)
 
 ### ECDSA 签名其他内容
