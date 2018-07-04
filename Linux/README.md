@@ -106,3 +106,8 @@ JPG.jpg
 # 每个核的负载
 mpstat -P ALL 5
 ```
+
+### 工作遇到
+
+- `declare`: 声明变量
+- `exit 0`: 正常退出
