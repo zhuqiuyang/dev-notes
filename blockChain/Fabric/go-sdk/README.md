@@ -9,11 +9,34 @@ make dockerenv-stable-up
 TEST_CHANGED_ONLY=true FABRIC_CRYPTOCONFIG_VERSION=v1 FABRIC_SDKGO_CODELEVEL_VER=v1.1 FABRIC_SDKGO_CODELEVEL_TAG=stable TEST_LOCAL=true  test/scripts/integration.sh
 ```
 
+### 签名测试
+
+> `/Users/Ace/Documents/go/src/github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt/resmgmt.go`
+
+```go
+start := time.Now()
+
+// var configSignatures []*common.ConfigSignature
+
+// var arr [1000](*big.Int)
+// for i := 0; i < 1000; i++ {
+// configSignatures, err = rc.getConfigSignatures(req, chConfig)
+// }
+configSignatures, err := rc.getConfigSignatures(req, chConfig)
+t := time.Now()
+elapsed := t.Sub(start)
+fmt.Println("Sign time:", elapsed)
+```
+
+### 备注
+
+- `fabric-sdk-go`在`github.com/hyperledger/`目录下.
+
 ### 区块链操作 API
 
 - `config.FromFile`: 读取`yaml`配置.
 
-  - `github.com/hyperledger/fabric-sdk-go/pkg/core/config`
+  - `fabric-sdk-go/pkg/core/config`
   - 内部依赖`https://github.com/spf13/viper`: 解析不同格式配置文件.
   - yaml 字段:
     - `cryptoconfig`: msp 存储目录
@@ -21,7 +44,49 @@ TEST_CHANGED_ONLY=true FABRIC_CRYPTOCONFIG_VERSION=v1 FABRIC_SDKGO_CODELEVEL_VER
 
 - `fabsdk.New()`:使用 yaml, 启动 sdk`:
 
-  - `github.com/hyperledger/fabric-sdk-go/pkg/fabsdk`
+  - `fabric-sdk-go/pkg/fabsdk`
 
 - `ccPkg, err := packager.NewCCPackage(ccPath, goPath)`: 打包 CC
-  - `packager "github.com/hyperledger/fabric-sdk-go/pkg/fab/ccpackager/gopackager"`
+  - `packager "fabric-sdk-go/pkg/fab/ccpackager/gopackager"`
+
+### Doc
+
+- https://godoc.org/github.com/hyperledger/fabric-sdk-go/pkg/client/msp
+- 升级 Channel: https://godoc.org/github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt#Client.UpgradeCC
+
+### 存储
+
+#### Enrollment 过程返回的
+
+- `private key` is stored in the SDK crypto provider's key store
+- `Ecert` is stored in the SKD's user store (state store).
+
+#### 自定义用户存储
+
+> 思路, 实现接口
+
+- 参考`fabric-sdk-go/pkg/msp/memory_user_store.go`
+
+### Client YAML 配置
+
+> node, go SDK 所用配置格式一致(2018-07-10)
+
+```yaml
+- version
+# 1. 定义这个 APP 属于哪个组织.
+- client
+  # client 使用的用户身份存储?
+  - credentialStore
+    # CryptoSuit 使用到的存储
+    - cryptoStore
+# 2. channel 的 peers, policy
+- channels
+# 3. 列出 network 中有哪些组织 ?
+- organizations
+# 4. network 所对应的 order
+- orderers
+# 5. 列出 所有需要使用的 peer
+- peers
+# 6. CA
+- certificateAuthorities
+```
