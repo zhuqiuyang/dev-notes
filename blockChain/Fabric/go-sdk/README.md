@@ -46,6 +46,12 @@ fmt.Println("Sign time:", elapsed)
 
   - `fabric-sdk-go/pkg/fabsdk`
 
+- Channel:
+
+  - `JoinChannel`: 不指定参数, 默认所有 peer.
+    > https://godoc.org/github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt#Client.JoinChannel
+  - `SaveChannel`: 用于创建 Channel
+
 - `ccPkg, err := packager.NewCCPackage(ccPath, goPath)`: 打包 CC
   - `packager "fabric-sdk-go/pkg/fab/ccpackager/gopackager"`
 
@@ -59,7 +65,7 @@ fmt.Println("Sign time:", elapsed)
 #### Enrollment 过程返回的
 
 - `private key` is stored in the SDK crypto provider's key store
-- `Ecert` is stored in the SKD's user store (state store).
+- `Ecert` is stored in the SDK's user store (state store).
 
 #### 自定义用户存储
 
@@ -70,11 +76,15 @@ fmt.Println("Sign time:", elapsed)
 ### Client YAML 配置
 
 > node, go SDK 所用配置格式一致(2018-07-10)
+>
+> `CRYPTOCONFIG_FIXTURES_PATH`在`/Users/Ace/Documents/go/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config`目录
 
 ```yaml
 - version
 # 1. 定义这个 APP 属于哪个组织.
 - client
+  # Root of the MSP directories with keys and certs.(每个org的cryptoPath依赖root path)
+  - cryptoconfig
   # client 使用的用户身份存储?
   - credentialStore
     # CryptoSuit 使用到的存储
@@ -90,3 +100,11 @@ fmt.Println("Sign time:", elapsed)
 # 6. CA
 - certificateAuthorities
 ```
+
+- SDK 公钥存储: `client.credentialStore.path` (user store)
+- SDK 私钥存储: `client.credentialStore.cryptoStore.path` (key 由 BCCSP 管理)
+
+#### 名词
+
+- credential: 及数字证书
+  > https://hyperledger-fabric.readthedocs.io/en/latest/idemix.html?highlight=credential
