@@ -77,7 +77,7 @@ fmt.Println("Sign time:", elapsed)
 
 > node, go SDK 所用配置格式一致(2018-07-10)
 >
-> `CRYPTOCONFIG_FIXTURES_PATH`在`/Users/Ace/Documents/go/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config`目录
+> `CRYPTOCONFIG_FIXTURES_PATH`在`fabric-sdk-go/test/fixtures/fabric/v1/crypto-config`目录
 
 ```yaml
 - version
@@ -102,7 +102,9 @@ fmt.Println("Sign time:", elapsed)
 ```
 
 - SDK 公钥存储: `client.credentialStore.path` (user store)
+  - `fabric-sdk-go/pkg/msp/memory_key_store.go`: 可以在`StoreKey/GetKey`通过 channel, 发给外部
 - SDK 私钥存储: `client.credentialStore.cryptoStore.path` (key 由 BCCSP 管理)
+  - `fabric-sdk-go/pkg/msp/memory_user_store.go`
 
 #### 名词
 
