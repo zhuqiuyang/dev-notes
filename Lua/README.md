@@ -16,10 +16,30 @@ Lua 设计初衷: 脚本, 黏合
 - all is global
 - set `nil` is delete
 
+#### oop
+
+> new 方法中, setmetatable(原型继承)
+>
+> https://www.lua.org/pil/16.1.html
+
+```lua
+local _M = {}
+
+local mt = { __index = _M }
+
+function _M.new (self, balance)
+    balance = balance or 0
+    return setmetatable({balance = balance}, mt)
+end
+```
+
 #### metatable 原表
 
 - lua 原型继承(较 js 更简洁):
-  - setmetatable(table, metatable): 此方法用于为一个表设置元表.
+  - setmetatable(table, metatable): 此方法用于为一个表设置`元表`
+    ```lua
+    t = setmetatable({[1] = "hello"}, {__index = {[2] = "world"}})
+    ```
   - getmetatable(table): 此方法用于获取表的元表对象。
 - 对比 js
   - 实例化对象的`__proto__`属性指向其`原型`
