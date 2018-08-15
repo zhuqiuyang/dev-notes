@@ -38,3 +38,10 @@ otool -L time.so
 # which include ./?.so
 = package.cpath
 ```
+
+#### 增加了 get_time
+
+- `lua_` prefix in lua core library(`lua.h`)
+- `luaL_`prefix: 易于区分, small & build on the top of core api(`lauxlib.h`)
+
+> `return 0` 改成了`return 1`, 即可以返回.
