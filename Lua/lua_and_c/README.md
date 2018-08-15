@@ -72,3 +72,31 @@ lua `settable` 的 C 版 `void lua_settable (lua_Value a, lua_Value k, lua_Value
 ### Lua C API tutorial: using the stack and working with tables
 
 > https://www.youtube.com/watch?v=5uhHkeVpcgo
+
+#### write values
+
+- all c fn called by lua, signature 一致
+  - input: `lus_State` ptr
+  - output: `int`(`zero`return value 对 lua 可见.)
+
+```c
+int f(lua_State *L) {
+  print_stack(L);
+  return 0;
+}
+```
+
+```sh
+require 'demo'
+f()
+f(1,2,3)
+f(1, {}, 'hola')
+
+make; lua -i -e "require 'demo'"
+```
+
+#### stack ctrl
+
+#### reading values
+
+#### using tables

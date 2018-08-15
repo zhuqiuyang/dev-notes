@@ -10,6 +10,13 @@ gcc
 # -W[all]: 输出warn信息(all)
 ```
 
+### 个人简解
+
+> C 就两点: 类型, 指针
+
+- 一切定义先有类型`type`: `struct`, `typedef`, `#define`
+- 一切皆可指向`pointer`: 可以指向一切. (ptr 也需要`类型`)
+
 ### 制作 static library
 
 > ./static_lib;
