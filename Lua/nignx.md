@@ -22,3 +22,13 @@ Todo:
 - nginx c moudle 的 build 方式
 - nginx 提供了哪些 C API
 - lua C 模块的开发
+
+### C moudle 开发
+
+- config_file: https://www.nginx.com/resources/wiki/extending/old_config/
+- compile module: https://www.nginx.com/resources/wiki/extending/compiling/
+  - 例子: https://github.com/openresty/lua-upstream-nginx-module#installation
+
+#### ngx_foo_module C 代码 (官方例子)
+
+> http://nginx.org/en/docs/dev/development_guide.html

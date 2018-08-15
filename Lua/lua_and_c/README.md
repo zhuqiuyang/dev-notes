@@ -45,3 +45,30 @@ otool -L time.so
 - `luaL_`prefix: 易于区分, small & build on the top of core api(`lauxlib.h`)
 
 > `return 0` 改成了`return 1`, 即可以返回.
+
+#### Make a module universally avaiable
+
+- `= package.cpath`, and `copy *.so` to `/usr/local/lua/lib/5.3/`
+- `Makefile`: 要用`tab`做分隔符.
+
+### Chapter 24. An Overview of the C API
+
+> https://www.lua.org/pil/24.2.html#API-stack
+
+lua `settable` 的 C 版 `void lua_settable (lua_Value a, lua_Value k, lua_Value v);`, 没有这样设计的原因:
+
+- Lua 定义出的接口, 应普适各种语言, C/Cpp/Java...
+- 变量置于 C 中, Lua 无法进行 GC.
+
+所以, Lua 和 C 的交互通过`Stack`(LIFO)传递:
+
+#### 24.2 Pushing Elements
+
+不同类型, 入栈, 调用不同的 `C` fn:
+
+- `void lua_pushnil (lua_State \*L);`
+- `void lua_pushboolean (lua_State \*L, int bool);`
+
+### Lua C API tutorial: using the stack and working with tables
+
+> https://www.youtube.com/watch?v=5uhHkeVpcgo

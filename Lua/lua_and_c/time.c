@@ -43,7 +43,8 @@ int luaopen_time(lua_State *L) {
   luaL_Reg fns[] = {// {"lua_fn_name", c_fn_name}
                     {"get_time", get_time},
                     {NULL, NULL}};
-  luaL_newlib(L, fns);
+  luaL_newlib(L, fns);           // need return
+  // lua_register(L, "time", fns);  // global value
   printf("Hi From %s\n", __FUNCTION__);
   return 1;
 }
