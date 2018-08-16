@@ -9,6 +9,7 @@
 #include "lua.h"
 
 int f(lua_State *L) {
+  lua_checkstack(L, 50);
   // stack = [<args>]
   lua_pushnumber(L, 12.3);
   // stack = [<args>, 12.3]
@@ -18,6 +19,9 @@ int f(lua_State *L) {
   // stack = [<args>, 12.3, "Hi", nil]
   lua_pushboolean(L, 1);
   // stack = [<args>, 12.3, "Hi", nil, true]
+
+  int n = lua_gettop(L);
+  printf("%d values are on the stack right now.\n", n);
   print_stack(L);
   return 1;
   // stack = [<args>, 数字代表 LAST 可见数]
