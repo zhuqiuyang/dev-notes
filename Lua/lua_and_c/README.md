@@ -126,6 +126,36 @@ void  lua_replace (lua_State *L, int index);
 - `lua_insert`: moves the top element into the given position, 其余元素`shift up`到空位(右移).
 - `lua_replace`: pops 栈顶元素, 然后`set`到指定 `index`, without moving anything.
 
-#### reading values
+补充:
+
+> https://github.com/tylerneylon/lua_api_demo/blob/master/readme.md#using-the-module
+
+```sh
+luarocks install apidemo
+# 可以在lua 内模拟 lua C API
+```
+
+#### 24.2.2 querying element
+
+- `negative indices`: `-1`代表栈顶元素, `-2`代表倒数第二个.
+
+##### check type
+
+> check 指定的 index 的元素, 是否是对应 type.
+
+```c
+int lua_is... (lua_State *L, int index);
+```
+
+`lua_type`:
+
+##### 返回指定类型
+
+```c
+int            lua_toboolean (lua_State *L, int index);
+double         lua_tonumber (lua_State *L, int index);
+const char    *lua_tostring (lua_State *L, int index);
+size_t         lua_strlen (lua_State *L, int index);
+```
 
 #### using tables
