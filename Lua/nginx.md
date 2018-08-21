@@ -5,12 +5,23 @@
   - all `set` commands within `location` are executed in `rewrite` phase
     > https://openresty.org/download/agentzh-nginx-tutorials-en.html#02-nginxdirectiveexecorder01
 
+#### 1.1 Location 匹配:
+
+- `= /uri`: 精确匹配
+- `^~`: 前缀匹配(先于正则)
+- `~`, `~*` 用于 **正则匹配**:
+  - `?<name>`: capture 部分可通过`$name` 变量访问.
+- `/uri`: 前缀匹配 (后于正则)
+- `/`: default
+
 ### 2. Nginx 内如何使用 Lua
 
 - 核心模块, 把 lua 嵌入 ningx: https://github.com/openresty/lua-nginx-module
-- nginx docs: http://nginx.org/en/docs/
-- nginx dev guide: http://nginx.org/en/docs/dev/development_guide.html
-- ningx dev api: https://www.nginx.com/resources/wiki/extending/api/
+- [nginx docs](http://nginx.org/en/docs/)
+- [nginx dev guide](http://nginx.org/en/docs/dev/development_guide.html)
+- [ngx compile module](https://www.nginx.com/resources/wiki/extending/compiling/)
+- [ningx dev api](https://www.nginx.com/resources/wiki/extending/api/)
+- [nginx C api eg](https://www.nginx.com/resources/wiki/extending/examples/)
 
 ### 3. HC, LB, upstream 三者关系
 
