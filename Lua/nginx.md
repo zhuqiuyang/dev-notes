@@ -62,6 +62,24 @@ server {
   - [nginx_upstream_check_module](https://github.com/yaoweibin/nginx_upstream_check_module)
   - [nginx_upstream_check_module](https://github.com/yzprofile/nginx_upstream_check_module) (fork 自前者)
 
+#### 3.2 实战解决
+
+##### 3.2.1 upstream 变量获取
+
+- 通过`ngx.var.VARIABLE`获取 `upstream` 变量
+
+```conf
+# 模块要求如下
+set $ups upstream_name;
+proxy_pass http://$ups;
+
+# 当 upstream_name 存于 变量中时, 需要
+
+set_by_lua_block $ups {
+    return ngx.var[1] -- 获取 upstream 变量
+}
+```
+
 ### 4. C moudle 开发
 
 - [config_file](https://www.nginx.com/resources/wiki/extending/old_config/)
