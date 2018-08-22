@@ -23,6 +23,11 @@
 - [ningx dev api](https://www.nginx.com/resources/wiki/extending/api/)
 - [nginx C api eg](https://www.nginx.com/resources/wiki/extending/examples/)
 
+#### 2.1
+
+- [lua_package_path](https://github.com/openresty/lua-nginx-module#lua_package_path)
+  - [$prefix 介绍](http://openresty.org/en/installation.html)
+
 ### 3. HC, LB, upstream 三者关系
 
 1. health check 要实时获取最新的`ups`, filter 出可用 peer, 传递给`LB`.
