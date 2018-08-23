@@ -71,10 +71,11 @@ server {
 
 ##### 3.2.1 upstream 变量获取
 
-- 通过`ngx.var.VARIABLE`获取 `upstream` 变量
+- 通过[ngx.var.VARIABLE](https://github.com/openresty/lua-nginx-module#ngxvarvariable)获取 `upstream` 变量
 
 ```conf
-# 模块要求如下
+# dyups 要求, 传入 nginx 变量即可
+# 测试传入 upstream_name 对应的 字符串 即可.
 set $ups upstream_name;
 proxy_pass http://$ups;
 
