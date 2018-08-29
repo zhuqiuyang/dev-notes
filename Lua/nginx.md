@@ -30,7 +30,7 @@
 
 ### 3. HC, LB, upstream 三者关系
 
-1. health check 要实时获取最新的`ups`, filter 出可用 peer, 传递给`LB`.
+1. `ups`(实时) -> `hc` -> `LB`.
 
 #### 3.1 使用 upstream 的利弊
 
@@ -95,3 +95,28 @@ set_by_lua_block $ups {
 #### 4.1 ngx_foo_module C 代码 (官方例子)
 
 > http://nginx.org/en/docs/dev/development_guide.html
+
+### 5. 纯 lua 开发
+
+```conf
+upstream foo {
+  # server 127.0.0.1:8080;
+
+  # 不使用 server; hc, LB 需自实现
+  local balancer = require "ngx.balancer"
+  local ok, err = balancer.set_current_peer(host, port)
+}
+```
+
+- [ngx.balance](https://github.com/openresty/lua-resty-core/blob/master/lib/ngx/balancer.md)只具备在`upstream`内动态使用特定`host/port`的功能, `LB`要自己做
+- 所以`ups`, `hc`, `LB`全部要自己开发:
+  - `ups` 通过`shared.DICT`
+  - `hc`过滤出可用`addr` -> `LB` (\*)
+- 结合了`hc`和`LB`的两个模块
+  - https://github.com/hamishforbes/lua-resty-upstream
+    - `connect`
+  - [upyun-checkups](https://github.com/upyun/lua-resty-checkups)
+    > 功能完整, 可以使用
+    - `select_peer`
+- 纯 hc
+  - https://github.com/Kong/lua-resty-healthcheck
