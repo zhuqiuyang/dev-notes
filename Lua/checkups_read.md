@@ -56,3 +56,27 @@ local ok, err = mutex:set(ckey, 1, overtime)
 - `ready_ok`基于`try.try_cluster(skey, call_back)`
 - `iterator`: 是一个 function, 可以与`for`一起使用.
   > https://www.lua.org/pil/7.1.html
+- [weight rr](https://www.kancloud.cn/digest/sknginx/130030)
+
+```lua
+-- peer_cb 表示节点健康
+if peer_cb(idx, srv) then
+    -- 1. 上浮: current 代表真实权重, 用于做计算; 未被选取节点, 权重不断增加 !
+    srv.current_weight = srv.current_weight + srv.effective_weight
+    weight_sum = weight_sum + srv.effective_weight
+
+    -- effective_weight(有效权重), 正常等于 weight, 出错时降低其权重.
+    if srv.effective_weight < srv.weight then
+        srv.effective_weight = srv.effective_weight + 1
+    end
+
+    -- 2. 比拼 真实权重
+    if not max_weight or srv.current_weight > max_weight then
+        max_weight = srv.current_weight
+        best = srv
+    end
+end
+
+-- 3. 下降: 选取成功, 真实权重降低!(这样所有节点的被选中机会, 会更分散)
+best.current_weight = best.current_weight - weight_sum
+```
