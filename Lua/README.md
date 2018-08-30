@@ -64,3 +64,13 @@ end
 
 - 冒号的操作，只有当变量是类对象时才需要
 - `.`获得的就是普通函数, 所以需要指定`操作对象`
+
+#### Iterator function (\*)
+
+- `for`作用于`function`, 此 function 称为`iterator`, 每次调用返回`next element`, 直到`nil`
+
+```for
+for word in allwords() do
+  print(word)
+end
+```

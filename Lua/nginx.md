@@ -98,6 +98,12 @@ set_by_lua_block $ups {
 
 ### 5. 纯 lua 开发
 
+#### 5.1 方案
+
+- 舍弃`upstream`, 直接`proxy_pass: http://host:port`使用
+  - 更直接, 不需要对`upstream` name 再做域名映射, 也不需要`set_current_peer`
+  - [ngx.balance](https://github.com/openresty/lua-resty-core/blob/master/lib/ngx/balancer.md)只具备在`upstream`内指定`host/port`的功能, `LB`要自己做
+
 ```conf
 upstream foo {
   # server 127.0.0.1:8080;
@@ -108,7 +114,6 @@ upstream foo {
 }
 ```
 
-- [ngx.balance](https://github.com/openresty/lua-resty-core/blob/master/lib/ngx/balancer.md)只具备在`upstream`内动态使用特定`host/port`的功能, `LB`要自己做
 - 所以`ups`, `hc`, `LB`全部要自己开发:
   - `ups` 通过`shared.DICT`
   - `hc`过滤出可用`addr` -> `LB` (\*)
