@@ -74,3 +74,40 @@ for word in allwords() do
   print(word)
 end
 ```
+
+### [Coroutine](https://www.lua.org/pil/9.1.html)
+
+#### resume/yield 数据互传
+
+```lua
+-- 首次 resume, 传给 main function
+co = coroutine.create(function (a,b,c)
+        print("co", a,b,c)
+      end)
+coroutine.resume(co, 1, 2, 3)    --> co  1  2  3
+
+-- 后续 resume, 传参
+co = coroutine.create (function ()
+        print("co", coroutine.yield())
+      end)
+coroutine.resume(co)
+coroutine.resume(co, 4, 5)     --> co  4  5
+```
+
+- `coroutine.yield(i)`: `yield`会把`i`append 到对应`resume()`的返回值.
+- `coroutine.resume(co, ...)`: `resume`传入的参数(非 first), 会作为上次`yield()`的返回值.
+  - 首次`resume`, 会把参数传给`couroutine main function`
+
+* lua 提供的是 `asymmetric coroutine`(非对称协程)
+  - suspend/resume 是两个不同的`function`
+
+#### 9.2 生产者/消费者
+
+- 代码见`src/9.2.lua`
+  > consumer-driven design (消费者, 需要了再 call)
+
+#### 9.3 Coroutines as Iterators
+
+> 和 9.2 个人改进思路相近, 不需要 while true
+
+- `coroutine.wrap()`
