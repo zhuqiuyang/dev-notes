@@ -80,3 +80,37 @@ end
 -- 3. 下降: 选取成功, 真实权重降低!(这样所有节点的被选中机会, 会更分散)
 best.current_weight = best.current_weight - weight_sum
 ```
+
+#### update_upstream, 如何确保 hc 生效.
+
+> 功能全看, 更新的 cluster config 中是否存在此信息:
+
+-`base.SKEYS_KEY`的作用, cluster 如果存在, 置`1`
+
+```lua
+-- 1. `update`会把`cluster`信息更新到 shd:
+local key = _gen_shd_key(skey)
+ok, err = shd_config:set(key, cjson.encode(upstream))
+
+-- 2. `create_shd_config_syncer`会定期把, shd 更新到`base.upstream.checkups[skey]`
+local shd_servers, err = shd_config:get(_gen_shd_key(skey))
+shd_servers = cjson.decode(shd_servers)
+base.upstream.checkups[skey] = base.table_dup(shd_servers)
+
+-- 3. `hc`的 timer, 会从`base.upstream.checkups`读取需要检测的列表
+for skey in pairs(base.upstream.checkups) do
+  thread[#thread + 1] = spawn(cluster_heartbeat, skey)
+end
+```
+
+- 如何保证`cluster`读取配置和初始化时格式一致.
+  - 默认取`ups.cluster[1].servers`, `ups.cluster.servers`应该是不存在的.
+
+```lua
+-- 1. init
+local key = dyconfig._gen_shd_key(skey)
+local ok, err = shd_config:set(key, cjson.encode(base.table_dup(ups)))
+-- 2. do_update_upstream, 没有调用 table_dup
+local key = _gen_shd_key(skey)
+ok, err = shd_config:set(key, cjson.encode(upstream))
+```
