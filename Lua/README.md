@@ -56,6 +56,12 @@ end
   - 原型上定义了的: 可被实例共享的`method`
 - self
 
+#### 16.3 Multiple Inheritance
+
+- 单继承, 即`metatable`形成链.
+- `__index`作为 meta method, 当做函数使用.
+  > https://www.lua.org/pil/16.3.html
+
 #### 点号与冒号操作符的区别
 
 > https://moonbingbing.gitbooks.io/openresty-best-practices/content/lua/dot_diff.html
