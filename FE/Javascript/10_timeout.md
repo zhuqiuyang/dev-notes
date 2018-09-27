@@ -8,7 +8,8 @@ async ASYNC_TIME_OUT({ rootState, dispatch }) {
       // 2. 设置 interval 之后, 是否继续
       setTimeout(() => {
         if (rootState.route.name === 'xxx') {
-          interval()
+          // 3. 间隔一致
+          interval(ms)
         }
       }, ms)
     }
