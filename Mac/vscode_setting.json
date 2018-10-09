@@ -1,0 +1,49 @@
+{
+  "editor.fontSize": 14,
+  "editor.tabSize": 2,
+  "files.autoSave": "off",
+  "files.associations": {
+    "*.vue": "vue",
+    "*.el": "lisp",
+    "*.h": "c"
+  },
+  "go.formatTool": "gofmt",
+  "workbench.iconTheme": "vscode-icons",
+  "window.zoomLevel": 0,
+  "javascript.format.enable": false,
+  "prettier.singleQuote": true,
+  "prettier.eslintIntegration": true,
+  "prettier.semi": false,
+  "C_Cpp.clang_format_style": "google",
+  "eslint.enable": true,
+  "eslint.autoFixOnSave": true,
+  "eslint.run": "onType",
+  "eslint.options": {
+    "extensions": [
+      ".js",
+      ".vue"
+    ]
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    {
+      "language": "vue",
+      "autoFix": true
+    }
+  ],
+  "extensions.ignoreRecommendations": false,
+  "terminal.integrated.fontFamily": "Meslo LG S for Powerline",
+  "terminal.integrated.shell.osx": "zsh",
+  "workbench.colorTheme": "One Dark Pro",
+  "editor.minimap.enabled": false,
+  "workbench.editor.showTabs": true,
+  "workbench.sideBar.location": "right",
+  "plantuml.includes": [
+    "styles/blue"
+  ],
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": false,
+  "terminal.integrated.cursorStyle": "underline",
+  "terminal.integrated.fontSize": 14,
+}

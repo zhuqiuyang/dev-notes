@@ -5,14 +5,100 @@
   - all `set` commands within `location` are executed in `rewrite` phase
     > https://openresty.org/download/agentzh-nginx-tutorials-en.html#02-nginxdirectiveexecorder01
 
-#### 1.1 Location 匹配:
+#### 1.1 Location:
+
+```text
+Syntax:	location [ = | ~ | ~* | ^~ ] uri { ... }
+location @name { ... }
+Default:	—
+Context:	server, location
+```
+
+##### 1.1.1 匹配顺序
 
 - `= /uri`: 精确匹配
-- `^~`: 前缀匹配(先于正则)
-- `~`, `~*` 用于 **正则匹配**:
+- `^~`: 前缀匹配(`^`regx 含义是匹配开头; `^~`表示`先于正则`?)
+- `~`: 表示 **正则匹配** (`~*`不区分大小写)
   - `?<name>`: capture 部分可通过`$name` 变量访问.
 - `/uri`: 前缀匹配 (后于正则)
 - `/`: default
+
+##### 1.1.2 实战(根据 APP_NAME 转发)
+
+推导:
+
+1. 匹配`app_name`只能通过正则(顺序第三)
+
+所以:
+
+1. 重要, 可能重叠的匹配, 尽量使用`=` 或 `^~`(先于正则)
+
+其他方案:
+
+1. 匹配不到转发到, `proxy_pass`到其他服务端口.
+2. `^~ /`: 匹配所有服务, 内部做正则
+3. `@name`: named location 代替`proxy_pass`跳转?(**优先考虑**)
+
+#### 1.1.3 Named Location
+
+> http://nginx.org/en/docs/http/ngx_http_core_module.html
+
+用途:
+
+- 用作 `request redirection`
+
+局限:
+
+- 不能嵌套
+- 不能包含其他`location`
+
+```conf
+location @fallback {
+  internal;
+  proxy_pass http://backend;
+}
+```
+
+#### 1.2 ngx_http_rewrite_module module
+
+- `break`: 继续在当前`location`处理请求, 但停止`ngx_http_rewrite_module`下的所有`directive`.
+- `return`: 返回`code` 到 client 端, 停止处理请求.
+- `rewrite` flag:
+  - `last`: 停止在当前 set 处理请求, 对新的 URL 开始新一轮匹配.
+  - `break`: 同上`break`
+  - `redirect`: 302 返回给 client
+
+```conf
+server {
+    listen 8080;
+    # 此处 break 会停止执行 server 块的 return 指令(return 指令属于rewrite模块)
+    # 如果把它注释掉 则所有请求进来都返回 ok
+    break;
+    return 200 "ok";
+    location = /testbreak {
+        break;
+        return 200 $request_uri;
+        proxy_pass http://127.0.0.1:8080/other;
+    }
+    location / {
+        return 200 $request_uri;
+    }
+}
+
+# 发送请求如下
+# curl 127.0.0.1:8080/testbreak
+# /other
+
+# 可以看到 返回 `/other` 而不是 `/testbreak`，说明 `proxy_pass` 指令还是被执行了
+# 也就是说 其他模块的指令是不会被 break 中断执行的
+# (proxy_pass是ngx_http_proxy_module的指令)
+```
+
+#### 1.3 pass_proxy
+
+1. 何时`截断`前缀匹配:
+
+- `proxy_pass: host:port/;` url 后增加`/`即可 (`/ ^~` 皆可用)
 
 ### 2. Nginx 内如何使用 Lua
 
