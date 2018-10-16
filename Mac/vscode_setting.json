@@ -45,5 +45,5 @@
   "editor.formatOnPaste": true,
   "editor.formatOnType": false,
   "terminal.integrated.cursorStyle": "underline",
-  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.fontSize": 14
 }

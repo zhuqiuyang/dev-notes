@@ -13,3 +13,9 @@
 ### Order of Directivess
 
 - [流程图](https://github.com/openresty/lua-nginx-module#directives): 之下
+
+### Timer 与 原生 Context 的数据共享
+
+- 同一进程下, module export 的变量是共享的. (`此次 timer 引用的不是最新数据, 是因为只有worker 0 执行了更新操作.`)
+
+> https://github.com/openresty/lua-nginx-module#ngxtimerat , 末尾有介绍
