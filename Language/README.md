@@ -10,6 +10,7 @@
 #### 2. operands
 
 - 基本类型(`强类型`): `int, string, array, boolean`
+  - `类型+变量名`: Perl
 - 复合类型: `struct, interface`
 
 #### 3. 抽象
