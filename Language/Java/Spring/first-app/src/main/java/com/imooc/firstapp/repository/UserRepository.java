@@ -3,6 +3,7 @@ package com.imooc.firstapp.repository;
 import com.imooc.firstapp.domain.User;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,5 +31,9 @@ public class UserRepository {
         user.setId(id);
         return repository.put(id, user)  == null;
 
+    }
+
+    public Collection<User> findAll(){
+        return repository.values();
     }
 }
