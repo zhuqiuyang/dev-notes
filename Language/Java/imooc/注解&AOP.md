@@ -25,9 +25,9 @@ Class c = Class.forName("com.ann.test.Child");
 //2、找到类上面的注解
 boolean isExit = c.isAnnotationPersent(Description.class);
 if(isExit){
-        //3、拿到注解实例
-        Description d = (Description)c.getAnnotation(Description.class);
-        System.out.println(d.value);
+  //3、拿到注解实例
+  Description d = (Description)c.getAnnotation(Description.class);
+  System.out.println(d.value);
 }
 ```
 
@@ -41,8 +41,15 @@ if(isExit){
 // 告诉 Filter 使用的 Table
 @Table("user")
 public class Filter {
-        // 字段名也可以用注解
-        @Column("id")
-        private int id;
+  // 字段名也可以用注解
+  @Column("id")
+  private int id;
 }
 ```
+
+### 6. 总结
+
+- 作用范围`@Target`
+  - package, class, field, method...
+- 生命周期`@Retention`
+  - src, 编译class, runtime

@@ -71,6 +71,9 @@ public class Test {
             }
             // 4.3 拼装SQL
             if (fieldValue == null || (fieldValue instanceof Integer && (Integer)fieldValue == 0)) continue;
+            if (fieldValue instanceof String) {
+                fieldValue = String.format("'%s'", fieldValue);
+            }
             sb.append(" and ")
                     .append(fieldName)
                     .append("=")
