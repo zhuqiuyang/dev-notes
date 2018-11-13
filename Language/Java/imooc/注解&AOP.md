@@ -32,3 +32,17 @@ if(isExit){
 ```
 
 - 通过`getAnnotation`拿到**注解实例**
+
+### 5. 注解实战
+
+1. 需求: `SQL`查询用户表
+
+```java
+// 告诉 Filter 使用的 Table
+@Table("user")
+public class Filter {
+        // 字段名也可以用注解
+        @Column("id")
+        private int id;
+}
+```

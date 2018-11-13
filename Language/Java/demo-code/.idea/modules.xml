@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/DAO/DAO.iml" filepath="$PROJECT_DIR$/DAO/DAO.iml" />
       <module fileurl="file://$PROJECT_DIR$/demo-code.iml" filepath="$PROJECT_DIR$/demo-code.iml" />
     </modules>
   </component>
