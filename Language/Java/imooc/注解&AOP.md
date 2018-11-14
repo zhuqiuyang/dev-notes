@@ -3,8 +3,9 @@
 - AOP 是一种思想: 切面, 拦截
   - 通过`切面`来`新增逻辑`
   - 通过`代理`操作对象, 保证`Object`的纯净, 不含本身无关的逻辑
-- AOP 通过 `Annotation`(**注解**) 来实现
-  - 通过`注解配置`, 可以新建**切面**(代理层)
+- AOP 可以新建**切面**(代理层)
+  - 1. 通过`xml`配置, 实现 class 的加载(`注解`出现之前, pc 更灵活)
+  - 2. (**注解**), 更易读, 但没有`配置文件方式`灵活.
 - 反射, 提供了`动态`拿到`注解信息`的功能.
 
 ### Reflection (反射)
@@ -52,4 +53,4 @@ public class Filter {
 - 作用范围`@Target`
   - package, class, field, method...
 - 生命周期`@Retention`
-  - src, 编译class, runtime
+  - src, 编译 class, runtime
