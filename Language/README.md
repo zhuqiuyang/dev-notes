@@ -22,18 +22,32 @@
 - OOP: `class -> Object`
 - FP: `Functor.map(fn) -> Functor`
 
-3. 不同泛型中, 优秀的思想
+### 程序管理
 
-- Lisp Macro: `generator code`
-
-4. 约束: `为了大型工程`
+1. 约束: `目的: 拍错 & 易管理`
 
 - 强数据类型
 - 不可变: `const, static`
 - 访问控制: `public, private`
 - 继承控制: `final`
 
-4. 动/静态
+2. 减少代码量: `目的: 少, 易管理`
+
+- 生成代码: `macro`
+
+3. 更高编程能力: `目的: 突破限制, idea -> 实践`
+
+- 手段: `data -(编译器/解释器)-> data/操作`(获得更多动态特性)
+
+### (待定)
+
+1. 动/静态
 
 - 静态: 所有操作`runtime`前完全 ok
 - 动态: `runtime`时, 可以通过`data -> 操作`
+
+2. 不同泛型中, 优秀的思想
+
+- Macro(Lisp, C): 调用 compiler `generator code`
+- AOP: 通过**代理**操作(Object), 切面可自定义
+- IOC: 通过`配置文件 or 注解`, 让`Class`被统一管理.(装载, 实例化, 调用)
