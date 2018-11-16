@@ -38,3 +38,11 @@ mvn archetype:generate -DgroupId=org.seckill -DartifactId=seckill -DarchetypeArt
 - code:
   - `demo-code/com.ann`: 解析注解 demo
   - `demo-code/DAO`: 实战, 拼装 SQL
+
+### SpringBoot+MyBatis搭建迷你小程序
+
+> https://www.imooc.com/learn/945
+
+### https://www.imooc.com/learn/810
+
+> https://www.imooc.com/learn/810

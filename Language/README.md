@@ -19,7 +19,10 @@
 2. 编程泛型:
 
 - List: `数据/函数调用` 使用同一泛型
+- OPP: (procedure)
+  - 类 c: `c, go, js`
 - OOP: `class -> Object`
+- AOP
 - FP: `Functor.map(fn) -> Functor`
 
 ### 程序管理
@@ -49,5 +52,12 @@
 2. 不同泛型中, 优秀的思想
 
 - Macro(Lisp, C): 调用 compiler `generator code`
-- AOP: 通过**代理**操作(Object), 切面可自定义
-- IOC: 通过`配置文件 or 注解`, 让`Class`被统一管理.(装载, 实例化, 调用)
+- AOP:
+  - `横切, 讲Object 构建的庞大体系, 进行水平的切割`
+  - 影响到多个 Class 的行为, 封装成可重用的模块, 即 `切面`
+  - 通过**代理**操作(Object), 切面可自定义
+- IOC:
+  - 通过`配置文件 or 注解`, 让`Class`被统一管理.(装载, 实例化, 调用)
+- 并发编程& 异步控制
+  - js: `基于事件的non-blocking I/O模型, cb`
+  - go: `channel, goroutine`
