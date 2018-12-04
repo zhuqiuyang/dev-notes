@@ -13,3 +13,9 @@
 - Profile-多环境配置
   - `java -jar xxx.jar --spring.profiles.active=dev` 就会使用`application-{profile}.properties`的配置
   - `spring.profiles.include`: 可以用来叠加 profile
+
+### 数据库
+
+- druid(阿里开源): 是 db 连接池管理. (一般生成 dataSource 由 spring 管理, 注入给使用方)
+- mybatis: SQL Mapper.
+- mysql-connector: 是 mysql 的桥接器.
