@@ -119,7 +119,7 @@ console.log("Starting mining 1st times...\n");
 sCoin.miningPendingTransactions("AceAddress");
 
 console.log('\nBalance of address1: ', sCoin.getBalanceAddress('address1'))
-console.log('\nBalance of address1: ', sCoin.getBalanceAddress('address2'))
+console.log('\nBalance of address2: ', sCoin.getBalanceAddress('address2'))
 console.log('\nBalance of Ace: ', sCoin.getBalanceAddress('AceAddress'))
 
 console.log('\n')
