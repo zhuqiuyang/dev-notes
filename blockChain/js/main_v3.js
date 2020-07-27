@@ -55,10 +55,11 @@ class BlockChain {
   }
 
   miningPendingTransactions(miningRewardAddress) {
+    // append block to the chain!!
     const block = new Block(Date.now(), this.pendingTransactions);
     block.mineBlock(this.diffculty);
 
-    console.log("Block Successfully mined!");
+    console.log("BLOCK Successfully Mined!");
     this.chain.push(block);
 
     // reset & send reward
@@ -107,10 +108,25 @@ class BlockChain {
 
 const sCoin = new BlockChain();
 
+// 1. excute tx
 sCoin.createTransaction(new Transaction("address1", "address2", 100));
-sCoin.createTransaction(new Transaction("address2", "address", 50));
+sCoin.createTransaction(new Transaction("address2", "address1", 50));
 
-console.log("\n Starting mining...");
+// 2. 1st mining
+console.log("Starting mining 1st times...\n");
+
+// reward tx in next block
 sCoin.miningPendingTransactions("AceAddress");
 
+console.log('\nBalance of address1: ', sCoin.getBalanceAddress('address1'))
+console.log('\nBalance of address1: ', sCoin.getBalanceAddress('address2'))
 console.log('\nBalance of Ace: ', sCoin.getBalanceAddress('AceAddress'))
+
+console.log('\n')
+// 3. 2nd mining 
+console.log("Starting mining 2nd times...\n");
+sCoin.miningPendingTransactions("AceAddress");
+
+// 4. 2nd mine done, 1st block pend to block chain.
+console.log('\nBalance of Ace: ', sCoin.getBalanceAddress('AceAddress'))
+console.log('\n')
