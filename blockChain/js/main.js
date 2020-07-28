@@ -70,10 +70,12 @@ class BlockChain {
   }
 }
 
-let sCoin = new BlockChain();
+const sCoin = new BlockChain();
 
 console.log("Mining Block 1 ...");
 sCoin.addBlock(new Block(1, "03/03/2018", { amount: 4 }));
 
 console.log("Mining Block 2 ...");
-sCoin.addBlock(new Block(2, "19/03/2018", { amount: 10 }));
+sCoin.addBlock(new Block(2, "28/07/2020", { amount: 10 }));
+
+console.log("Is BlockChain Valid: ", sCoin.isChainValid());
