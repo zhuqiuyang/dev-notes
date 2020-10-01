@@ -12,3 +12,13 @@ print "--- \n";
 $str = "I'm fine. Thank you.";
 my $count = ($str =~ tr/././);
 print $count, "\n";
+
+my $str2 = "welcome to my world.";
+
+$str2 =~ m/my/;
+
+print "matched before: $` \n";
+print "matched: $& \n";
+print "matched after: $' \n";
+
+
